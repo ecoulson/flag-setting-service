@@ -12,7 +12,7 @@
     "license": "ISC",
     "dependencies": {
         "fastify": "^4.2.1",
-        "noose-injection": "^1.0.2",
+        "noose-injection": "^1.0.6",
         "reflect-metadata": "^0.1.13"
     },
     "devDependencies": {

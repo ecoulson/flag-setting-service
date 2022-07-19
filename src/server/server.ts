@@ -1,11 +1,3 @@
-import { FastifyInstance } from 'fastify'
-
-export class Server {
-    constructor(private readonly fastify: FastifyInstance) {}
-
-    async start(port: number) {
-        this.fastify.listen({
-            port: 0,
-        })
-    }
+export interface Server {
+    listen(port: number): Promise<void>;
 }
