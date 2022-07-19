@@ -48,4 +48,36 @@ describe('Optional Test Suite', () => {
             );
         });
     });
+
+    describe('empty constructor', () => {
+        test('Should create an empty optional', () => {
+            const optional = Optional.empty();
+
+            expect(optional.isEmpty()).toBeTruthy();
+        });
+    });
+
+    describe('of constructor', () => {
+        test('Should create an optional with a value', () => {
+            const optional = Optional.of(100);
+
+            expect(optional.get()).toEqual(100);
+        });
+    });
+
+    describe('ofPromise constructor', () => {
+        test('Should create an optional with a value when promise resolves', async () => {
+            const optional = await Optional.ofPromise(Promise.resolve(100));
+
+            expect(optional.get()).toEqual(100);
+        });
+
+        test('Should create an empty optional when promise rejects', async () => {
+            const optional = await Optional.ofPromise(
+                Promise.reject(new Error())
+            );
+
+            expect(optional.isEmpty()).toBeTruthy();
+        });
+    });
 });
