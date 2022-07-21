@@ -1,6 +1,7 @@
 import { ConsoleLoggerModule } from '.';
 import { EnvironmentModule } from '../../environment';
 import { LogLevelModule } from '../log-level';
+import { TimestampModule } from '../timestamp';
 import {
     ChalkAnnotation,
     ConsoleLoggerAnnotation,
@@ -12,6 +13,7 @@ describe('Console Logger Module Test Suite', () => {
     beforeAll(() => {
         new LogLevelModule().configure();
         new EnvironmentModule().configure();
+        new TimestampModule().configure();
         module.configure();
     });
 

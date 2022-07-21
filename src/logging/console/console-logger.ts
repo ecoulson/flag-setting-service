@@ -5,6 +5,12 @@ import { LogLevelType } from '../log-level/log-level-type';
 import { Logger } from '../logger';
 import { ChalkAnnotation } from './console-logger-annotations';
 import { Chalk } from 'chalk';
+import {
+    TimestampFormatterAnnotation,
+    TimestampGeneratorAnnotation,
+} from '../timestamp/timestamp-annotations';
+import { TimestampGenerator } from '../timestamp/timestamp-generator';
+import { TimestampFormatter } from '../timestamp/timestamp-formatter';
 
 @Injectable()
 export class ConsoleLogger implements Logger {
@@ -12,7 +18,11 @@ export class ConsoleLogger implements Logger {
         @LogLevelAnnotation.inject()
         private readonly logLevel: LogLevel,
         @ChalkAnnotation.inject()
-        private readonly chalk: Chalk
+        private readonly chalk: Chalk,
+        @TimestampGeneratorAnnotation.inject()
+        private readonly timestampGenerator: TimestampGenerator,
+        @TimestampFormatterAnnotation.inject()
+        private readonly timestampFormatter: TimestampFormatter
     ) {}
 
     fatal(message: string): Promise<boolean> {
@@ -76,6 +86,8 @@ export class ConsoleLogger implements Logger {
     }
 
     private getTimestamp(): string {
-        return this.chalk.underline('');
+        const datetime = this.timestampGenerator.generateCurrentTimestamp();
+        const formattedTimestamp = this.timestampFormatter.format(datetime);
+        return this.chalk.underline(formattedTimestamp);
     }
 }

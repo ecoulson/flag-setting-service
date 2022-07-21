@@ -1,6 +1,8 @@
+import { Injectable } from 'noose-injection';
 import { TimestampFormatter } from './timestamp-formatter';
 import { UTCDatetime } from './utc-datetime';
 
+@Injectable()
 export class ISO8601TimestampFormatter implements TimestampFormatter {
     format(datetime: UTCDatetime): string {
         const month = this.ensureTwoDigits(datetime.month());

@@ -1,6 +1,8 @@
+import { Injectable } from 'noose-injection';
 import { TimestampGenerator } from './timestamp-generator';
 import { UTCDatetime } from './utc-datetime';
 
+@Injectable()
 export class NativeTimestampGenerator implements TimestampGenerator {
     generateCurrentTimestamp(): UTCDatetime {
         const date = new Date();
