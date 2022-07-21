@@ -1,6 +1,7 @@
 import { TypeORMRepositoriesModule } from '.';
 import { TypeORMModule } from '..';
 import { SystemEnvironmentModule } from '../../../environment/system';
+import { LoggingModule } from '../../../logging';
 import { ModelModule } from '../../../models';
 import { ConnectionStringModule } from '../../connection-string';
 import { DatabaseDebugModule } from '../../debug-info';
@@ -19,6 +20,7 @@ describe('TypeORM Repositores Test Suite', () => {
         new DatabaseDebugModule().configure();
         new DatabaseEntitiesModule().configure();
         new ModelModule().configure();
+        new LoggingModule().configure();
         module.configure();
     });
 

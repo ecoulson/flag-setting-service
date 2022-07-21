@@ -11,6 +11,8 @@ import { DialectType } from '../dialect/dialect-type';
 import { PostgreSQLDataSourceAnnotation } from './typeorm-annotations';
 import { DatabaseEntitiesAnnotation } from '../entities/entities-annotations';
 import { DatabaseEntities } from '../entities/database-entities';
+import { LoggerAnnotation } from '../../logging/logging-annotations';
+import { Logger } from '../../logging/logger';
 
 @Injectable()
 export class TypeORMDataSource implements DataSource {
@@ -24,18 +26,20 @@ export class TypeORMDataSource implements DataSource {
         @DatabaseDebugInfoAnnotation.inject()
         private readonly debugInfo: DatabaseDebugInfo,
         @DatabaseEntitiesAnnotation.inject()
-        private readonly entities: DatabaseEntities
+        private readonly entities: DatabaseEntities,
+        @LoggerAnnotation.inject()
+        private readonly logger: Logger
     ) {}
 
     async initialize(): Promise<boolean> {
         const connectionParameters = this.connectionString.parse();
         if (!connectionParameters.isPresent()) {
-            console.log(
+            this.logger.error(
                 'No connection string is present in the environment. Please set one in your system variables.'
             );
             return false;
         } else if (this.dialect.type() === DialectType.UNKNOWN) {
-            console.log(
+            this.logger.error(
                 'No database dialect has been selected. Please set one in your system environment'
             );
             return false;

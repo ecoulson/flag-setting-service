@@ -11,12 +11,7 @@ export class Optional<T> {
 
     static ofPromise<T>(value?: Promise<T | null>): Promise<Optional<T>> {
         return new Promise(async (resolve) => {
-            try {
-                resolve(Optional.of(await value));
-            } catch (error) {
-                console.log(error);
-                resolve(Optional.empty());
-            }
+            resolve(Optional.of(await value));
         });
     }
 

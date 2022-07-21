@@ -71,14 +71,6 @@ describe('Optional Test Suite', () => {
 
             expect(optional.get()).toEqual(100);
         });
-
-        test('Should create an empty optional when promise rejects', async () => {
-            const optional = await Optional.ofPromise(
-                Promise.reject(new Error())
-            );
-
-            expect(optional.isEmpty()).toBeTruthy();
-        });
     });
 
     describe('getOrDefault', () => {
