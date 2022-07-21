@@ -1,3 +1,7 @@
 export interface Logger {
-    log(message: string): Promise<boolean>;
+    fatal(message: string): Promise<boolean>;
+    error(message: string): Promise<boolean>;
+    warn(message: string): Promise<boolean>;
+    info(message: string): Promise<boolean>;
+    debug(message: string): Promise<boolean>;
 }

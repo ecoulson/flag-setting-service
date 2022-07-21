@@ -1,4 +1,4 @@
-enum LogLevel {
+enum LogLevelType {
     FATAL = 5,
     ERROR = 4,
     WARN = 3,
@@ -6,4 +6,4 @@ enum LogLevel {
     DEBUG = 1,
 }
 
-export { LogLevel };
+export { LogLevelType };

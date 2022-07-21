@@ -2,7 +2,7 @@ import { Injectable } from 'noose-injection';
 import { Optional } from '../../common/optional/optional';
 import { Environment } from '../../environment/environment';
 import { SystemEnvironmentAnnotation } from '../../environment/system/system-annotation';
-import { LogLevel } from '../../logging/log-level';
+import { LogLevelType } from '../../logging/log-level/log-level-type';
 import { DatabaseDebugOptions } from './database-debug-options';
 import { DatabaseDebugInfo } from './database-debug-info';
 
@@ -18,7 +18,7 @@ export class SystemDatabaseDebugInfo implements DatabaseDebugInfo {
             parseInt(
                 this.environment
                     .get('LOG_LEVEL')
-                    .getOrDefault(LogLevel.INFO.toString())
+                    .getOrDefault(LogLevelType.INFO.toString())
             )
         );
         const synchronize = Optional.of<boolean>(
@@ -28,7 +28,8 @@ export class SystemDatabaseDebugInfo implements DatabaseDebugInfo {
             this.environment.get('DROP_SCHEMA').getOrDefault('false') === 'true'
         );
         return {
-            logging: logLevel.getOrDefault(LogLevel.WARN) < 3,
+            logging:
+                logLevel.getOrDefault(LogLevelType.WARN) <= LogLevelType.INFO,
             synchronize: synchronize.getOrDefault(false),
             dropSchema: dropSchema.getOrDefault(false),
         };

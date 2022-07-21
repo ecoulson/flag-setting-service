@@ -1,7 +1,7 @@
 import { anyString, instance, mock, reset, when } from 'ts-mockito';
 import { Optional } from '../../common/optional/optional';
 import { Environment } from '../../environment/environment';
-import { LogLevel } from '../../logging/log-level';
+import { LogLevelType } from '../../logging/log-level/log-level-type';
 import { DatabaseDebugOptions } from './database-debug-options';
 import { SystemDatabaseDebugInfo } from './system-database-debug-info';
 
@@ -60,7 +60,7 @@ describe('System Database Debug Info Test Suite', () => {
     test('Should get default debug options when log level is not in logging range', () => {
         when(mockedEnvironment.get(anyString())).thenReturn(Optional.empty());
         when(mockedEnvironment.get('LOG_LEVEL')).thenReturn(
-            Optional.of(LogLevel.WARN.toString())
+            Optional.of(LogLevelType.WARN.toString())
         );
 
         const options = systemDebugInfo.get();
