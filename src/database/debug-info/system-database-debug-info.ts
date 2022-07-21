@@ -4,10 +4,10 @@ import { Environment } from '../../environment/environment';
 import { SystemEnvironmentAnnotation } from '../../environment/system/system-annotation';
 import { LogLevel } from '../../logging/log-level';
 import { DatabaseDebugOptions } from './database-debug-options';
-import { DebugInfo } from './debug-info';
+import { DatabaseDebugInfo } from './database-debug-info';
 
 @Injectable()
-export class SystemDebugInfo implements DebugInfo {
+export class SystemDatabaseDebugInfo implements DatabaseDebugInfo {
     constructor(
         @SystemEnvironmentAnnotation.inject()
         private readonly environment: Environment

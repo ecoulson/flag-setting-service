@@ -4,6 +4,8 @@ import { Flag } from '../../models/flags/flag';
 import { ConnectionString } from '../connection-string/connection-string';
 import { PostgresConnectionStringAnnotation } from '../connection-string/connection-string-annotation';
 import { DataSource } from '../data-source';
+import { DatabaseDebugInfoAnnotation } from '../debug-info/debug-annotation';
+import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
 import { Dialect } from '../dialect/dialect';
 import { DialectAnnotation } from '../dialect/dialect-annotations';
 import { DialectType } from '../dialect/dialect-type';
@@ -17,7 +19,9 @@ export class TypeORMDataSource implements DataSource {
         @PostgresConnectionStringAnnotation.inject()
         private readonly connectionString: ConnectionString,
         @DialectAnnotation.inject()
-        private readonly dialect: Dialect
+        private readonly dialect: Dialect,
+        @DatabaseDebugInfoAnnotation.inject()
+        private readonly debugInfo: DatabaseDebugInfo
     ) {}
 
     async initialize(): Promise<boolean> {
@@ -37,9 +41,7 @@ export class TypeORMDataSource implements DataSource {
                 .setOptions({
                     type: this.dialect as any,
                     ...connectionParameters.get(),
-                    dropSchema: true,
-                    synchronize: true,
-                    logging: true,
+                    ...this.debugInfo.get(),
                     entities: [Flag],
                 })
                 .initialize();

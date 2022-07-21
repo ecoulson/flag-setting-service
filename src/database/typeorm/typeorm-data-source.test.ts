@@ -2,6 +2,7 @@ import { anything, instance, mock, reset, verify, when } from 'ts-mockito';
 import { DataSource, Repository } from 'typeorm';
 import { Optional } from '../../common/optional/optional';
 import { PostgreSQLConnectionString } from '../connection-string/postgresql-connection-string';
+import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
 import { Dialect } from '../dialect/dialect';
 import { DialectType } from '../dialect/dialect-type';
 import { TypeORMDataSource } from './typeorm-data-source';
@@ -11,16 +12,20 @@ describe('TypeORM Data Source Test Suite', () => {
     const mockedDataSource = mock(DataSource);
     const mockedRepository = mock(Repository);
     const mockedDialect = mock<Dialect>();
+    const mockedDebugInfo = mock<DatabaseDebugInfo>();
     const dataSource = new TypeORMDataSource(
         instance(mockedDataSource),
         instance(mockedConnectionString),
-        instance(mockedDialect)
+        instance(mockedDialect),
+        instance(mockedDebugInfo)
     );
 
     beforeEach(() => {
         reset(mockedDataSource);
         reset(mockedRepository);
         reset(mockedConnectionString);
+        reset(mockedDebugInfo);
+        reset(mockedDialect);
     });
 
     test('Should initialize the data source', async () => {
@@ -44,6 +49,8 @@ describe('TypeORM Data Source Test Suite', () => {
         verify(mockedDataSource.setOptions(anything())).once();
         verify(mockedDataSource.initialize()).once();
         verify(mockedConnectionString.parse()).once();
+        verify(mockedDebugInfo.get()).once();
+        verify(mockedDialect.type()).once();
     });
 
     test('Should not initialize the data source when the connection string parse is empty', async () => {
@@ -59,6 +66,8 @@ describe('TypeORM Data Source Test Suite', () => {
         verify(mockedConnectionString.parse()).once();
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
+        verify(mockedDebugInfo.get()).never();
+        verify(mockedDialect.type()).never();
     });
 
     test('Should not initialize the data source when no dialect is provided', async () => {
@@ -82,6 +91,33 @@ describe('TypeORM Data Source Test Suite', () => {
         verify(mockedConnectionString.parse()).once();
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
+        verify(mockedDebugInfo.get()).never();
+        verify(mockedDialect.type()).once();
+    });
+
+    test('Should not initialize the data source when no dialect is provided', async () => {
+        when(mockedDialect.type()).thenReturn(DialectType.UNKNOWN);
+        when(mockedDataSource.setOptions(anything())).thenReturn(
+            instance(mockedDataSource)
+        );
+        when(mockedConnectionString.parse()).thenReturn(
+            Optional.of({
+                database: 'database',
+                host: 'host',
+                password: 'password',
+                username: 'username',
+                port: 5432,
+            })
+        );
+
+        const result = await dataSource.initialize();
+
+        expect(result).toBeFalsy();
+        verify(mockedConnectionString.parse()).once();
+        verify(mockedDataSource.setOptions(anything())).never();
+        verify(mockedDataSource.initialize()).never();
+        verify(mockedDialect.type()).once();
+        verify(mockedDebugInfo.get()).never();
     });
 
     test('Should get a repository for an entity', () => {

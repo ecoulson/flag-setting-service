@@ -1,6 +1,7 @@
 import { TypeORMModule } from '.';
 import { SystemEnvironmentModule } from '../../environment/system';
 import { ConnectionStringModule } from '../connection-string';
+import { DatabaseDebugModule } from '../debug-info';
 import { DialectModule } from '../dialect';
 import {
     TypeORMDataSourceAnnotation,
@@ -14,6 +15,7 @@ describe('TypeORM Module Test Suite', () => {
         new SystemEnvironmentModule().configure();
         new ConnectionStringModule().configure();
         new DialectModule().configure();
+        new DatabaseDebugModule().configure();
         module.configure();
     });
 

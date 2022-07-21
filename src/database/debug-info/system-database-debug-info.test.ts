@@ -3,11 +3,13 @@ import { Optional } from '../../common/optional/optional';
 import { Environment } from '../../environment/environment';
 import { LogLevel } from '../../logging/log-level';
 import { DatabaseDebugOptions } from './database-debug-options';
-import { SystemDebugInfo } from './system-debug-info';
+import { SystemDatabaseDebugInfo } from './system-database-debug-info';
 
-describe('System Debug Info Test Suite', () => {
+describe('System Database Debug Info Test Suite', () => {
     const mockedEnvironment = mock<Environment>();
-    const systemDebugInfo = new SystemDebugInfo(instance(mockedEnvironment));
+    const systemDebugInfo = new SystemDatabaseDebugInfo(
+        instance(mockedEnvironment)
+    );
 
     beforeEach(() => {
         reset(mockedEnvironment);
