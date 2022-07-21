@@ -4,6 +4,10 @@ import { Flag } from '../../models/flags/flag';
 import { ConnectionString } from '../connection-string/connection-string';
 import { PostgresConnectionStringAnnotation } from '../connection-string/connection-string-annotation';
 import { DataSource } from '../data-source';
+import { Dialect } from '../dialect/dialect';
+import { DialectAnnotation } from '../dialect/dialect-annotations';
+import { DialectType } from '../dialect/dialect-type';
+import { SystemEnvironmentDialect } from '../dialect/system-environment-dialect';
 import { PostgreSQLDataSourceAnnotation } from './typeorm-annotations';
 
 @Injectable()
@@ -12,7 +16,9 @@ export class TypeORMDataSource implements DataSource {
         @PostgreSQLDataSourceAnnotation.inject()
         private readonly dataSource: PostgreSQLDataSource,
         @PostgresConnectionStringAnnotation.inject()
-        private readonly connectionString: ConnectionString
+        private readonly connectionString: ConnectionString,
+        @DialectAnnotation.inject()
+        private readonly dialect: Dialect
     ) {}
 
     async initialize(): Promise<boolean> {
@@ -22,11 +28,16 @@ export class TypeORMDataSource implements DataSource {
                 'No connection string is present in the environment. Please set one in your system variables.'
             );
             return false;
+        } else if (this.dialect.type() === DialectType.UNKNOWN) {
+            console.log(
+                'No database dialect has been selected. Please set one in your system environment'
+            );
+            return false;
         } else {
             await this.dataSource
                 .setOptions({
+                    type: this.dialect as any,
                     ...connectionParameters.get(),
-                    type: 'postgres',
                     dropSchema: true,
                     synchronize: true,
                     logging: true,

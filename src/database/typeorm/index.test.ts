@@ -1,6 +1,7 @@
 import { TypeORMModule } from '.';
 import { SystemEnvironmentModule } from '../../environment/system';
 import { ConnectionStringModule } from '../connection-string';
+import { DialectModule } from '../dialect';
 import {
     TypeORMDataSourceAnnotation,
     PostgreSQLDataSourceAnnotation,
@@ -12,6 +13,7 @@ describe('TypeORM Module Test Suite', () => {
     beforeAll(() => {
         new SystemEnvironmentModule().configure();
         new ConnectionStringModule().configure();
+        new DialectModule().configure();
         module.configure();
     });
 

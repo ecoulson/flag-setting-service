@@ -2,6 +2,7 @@ import { TypeORMRepositoriesModule } from '.';
 import { TypeORMModule } from '..';
 import { SystemEnvironmentModule } from '../../../environment/system';
 import { ConnectionStringModule } from '../../connection-string';
+import { DialectModule } from '../../dialect';
 import { FlagTypeORMRepositoryAnnotation } from './repository-annotations';
 
 describe('TypeORM Repositores Test Suite', () => {
@@ -11,6 +12,7 @@ describe('TypeORM Repositores Test Suite', () => {
         new SystemEnvironmentModule().configure();
         new ConnectionStringModule().configure();
         new TypeORMModule().configure();
+        new DialectModule().configure();
         module.configure();
     });
 
