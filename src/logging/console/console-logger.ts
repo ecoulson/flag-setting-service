@@ -39,14 +39,20 @@ export class ConsoleLogger implements Logger {
         if (level < this.logLevel.level()) {
             return false;
         }
-        console.log(`${this.getFormattedLogLevel(level)} ${message}`);
+        console.log(this.getFormattedLogMessage(level, message));
         return true;
+    }
+
+    private getFormattedLogMessage(level: LogLevelType, message: string) {
+        return `${this.getFormattedLogLevel(
+            level
+        )} ${this.getTimestamp()} ${message}`;
     }
 
     private getFormattedLogLevel(level: LogLevelType): string {
         return (
             this.chalk.blue(this.chalk.bold('[')) +
-            this.chalk.underline(this.colorLogLevelDisplayString(level)) +
+            this.chalk.bold(this.colorLogLevelDisplayString(level)) +
             this.chalk.blue(this.chalk.bold(']'))
         );
     }
@@ -67,5 +73,9 @@ export class ConsoleLogger implements Logger {
             default:
                 return displayString.get();
         }
+    }
+
+    private getTimestamp(): string {
+        return this.chalk.underline('');
     }
 }
