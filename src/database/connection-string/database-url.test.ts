@@ -1,20 +1,20 @@
 import { instance, mock, reset, when } from 'ts-mockito';
 import { Optional } from '../../common/optional/optional';
-import { SystemEnvironment } from '../../environment/system/system-environment';
+import { Environment } from '../../environment/environment';
 import { DatabaseURL } from './database-url';
 
 describe('Database URL Test Suite', () => {
-    const mockedSystemEnvironment = mock(SystemEnvironment);
+    const mockedEnvironment = mock<Environment>();
 
     beforeEach(() => {
-        reset(mockedSystemEnvironment);
+        reset(mockedEnvironment);
     });
 
     test('Should retireve an empty database url', () => {
-        when(mockedSystemEnvironment.get('DATABASE_URL')).thenReturn(
+        when(mockedEnvironment.get('DATABASE_URL')).thenReturn(
             Optional.empty()
         );
-        const databaseURL = new DatabaseURL(instance(mockedSystemEnvironment));
+        const databaseURL = new DatabaseURL(instance(mockedEnvironment));
 
         const value = databaseURL.value();
 
@@ -22,8 +22,8 @@ describe('Database URL Test Suite', () => {
     });
 
     test('Should retireve database url from the environment', () => {
-        const databaseURL = new DatabaseURL(instance(mockedSystemEnvironment));
-        when(mockedSystemEnvironment.get('DATABASE_URL')).thenReturn(
+        const databaseURL = new DatabaseURL(instance(mockedEnvironment));
+        when(mockedEnvironment.get('DATABASE_URL')).thenReturn(
             Optional.of('database_url')
         );
 

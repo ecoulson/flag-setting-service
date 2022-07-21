@@ -80,4 +80,22 @@ describe('Optional Test Suite', () => {
             expect(optional.isEmpty()).toBeTruthy();
         });
     });
+
+    describe('getOrDefault', () => {
+        test('Should get default value', () => {
+            const optional = Optional.empty();
+
+            const result = optional.getOrDefault(100);
+
+            expect(result).toEqual(100);
+        });
+
+        test('Should get the optional value', () => {
+            const optional = Optional.of(20);
+
+            const result = optional.getOrDefault(100);
+
+            expect(result).toEqual(20);
+        });
+    });
 });

@@ -34,4 +34,11 @@ export class Optional<T> {
         }
         return this.value as T;
     }
+
+    getOrDefault(defaultValue: T): T {
+        if (this.isEmpty()) {
+            return defaultValue;
+        }
+        return this.get();
+    }
 }

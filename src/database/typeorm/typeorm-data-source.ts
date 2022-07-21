@@ -7,7 +7,6 @@ import { DataSource } from '../data-source';
 import { Dialect } from '../dialect/dialect';
 import { DialectAnnotation } from '../dialect/dialect-annotations';
 import { DialectType } from '../dialect/dialect-type';
-import { SystemEnvironmentDialect } from '../dialect/system-environment-dialect';
 import { PostgreSQLDataSourceAnnotation } from './typeorm-annotations';
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Injectable } from 'noose-injection';
 import { Optional } from '../../common/optional/optional';
+import { Environment } from '../../environment/environment';
 import { SystemEnvironmentAnnotation } from '../../environment/system/system-annotation';
-import { SystemEnvironment } from '../../environment/system/system-environment';
 
 @Injectable()
 export class DatabaseURL {
@@ -9,7 +9,7 @@ export class DatabaseURL {
 
     constructor(
         @SystemEnvironmentAnnotation.inject()
-        private readonly environment: SystemEnvironment
+        private readonly environment: Environment
     ) {}
 
     value(): Optional<string> {

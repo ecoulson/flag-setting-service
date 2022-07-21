@@ -1,6 +1,6 @@
 import { Injectable } from 'noose-injection';
+import { Environment } from '../../environment/environment';
 import { SystemEnvironmentAnnotation } from '../../environment/system/system-annotation';
-import { SystemEnvironment } from '../../environment/system/system-environment';
 import { Dialect } from './dialect';
 import { DialectType } from './dialect-type';
 
@@ -10,7 +10,7 @@ export class SystemEnvironmentDialect implements Dialect {
 
     constructor(
         @SystemEnvironmentAnnotation.inject()
-        private readonly systemEnvironment: SystemEnvironment
+        private readonly systemEnvironment: Environment
     ) {}
 
     type(): DialectType {
