@@ -45,9 +45,9 @@ export class ConsoleLogger implements Logger {
 
     private getFormattedLogLevel(level: LogLevelType): string {
         return (
-            this.chalk.bold('[') +
-            this.colorLogLevelDisplayString(level) +
-            this.chalk.bold(']')
+            this.chalk.blue(this.chalk.bold('[')) +
+            this.chalk.underline(this.colorLogLevelDisplayString(level)) +
+            this.chalk.blue(this.chalk.bold(']'))
         );
     }
 
@@ -63,7 +63,7 @@ export class ConsoleLogger implements Logger {
             case LogLevelType.INFO:
                 return this.chalk.white(displayString.get());
             case LogLevelType.DEBUG:
-                return this.chalk.gray(displayString.get());
+                return this.chalk.green(displayString.get());
             default:
                 return displayString.get();
         }

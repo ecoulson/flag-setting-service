@@ -25,6 +25,8 @@ describe('Console Logger Test Suite', () => {
         );
         when(mockedChalk.bold(anyString())).thenCall((x) => x);
         when(mockedChalk.black(anyString())).thenCall((x) => x);
+        when(mockedChalk.underline(anyString())).thenCall((x) => x);
+        when(mockedChalk.blue(anyString())).thenCall((x) => x);
 
         const result = await logger.fatal('message');
 
@@ -41,6 +43,8 @@ describe('Console Logger Test Suite', () => {
         );
         when(mockedChalk.bold(anyString())).thenCall((x) => x);
         when(mockedChalk.red(anyString())).thenCall((x) => x);
+        when(mockedChalk.underline(anyString())).thenCall((x) => x);
+        when(mockedChalk.blue(anyString())).thenCall((x) => x);
 
         const result = await logger.error('message');
 
@@ -68,6 +72,8 @@ describe('Console Logger Test Suite', () => {
         );
         when(mockedChalk.bold(anyString())).thenCall((x) => x);
         when(mockedChalk.yellow(anyString())).thenCall((x) => x);
+        when(mockedChalk.underline(anyString())).thenCall((x) => x);
+        when(mockedChalk.blue(anyString())).thenCall((x) => x);
 
         const result = await logger.warn('message');
 
@@ -79,8 +85,6 @@ describe('Console Logger Test Suite', () => {
 
     test('Should not log an warn message when the log level is error', async () => {
         when(mockedLogLevel.level()).thenReturn(LogLevelType.ERROR);
-        when(mockedChalk.bold(anyString())).thenCall((x) => x);
-        when(mockedChalk.yellow(anyString())).thenCall((x) => x);
 
         const result = await logger.warn('message');
 
@@ -97,6 +101,8 @@ describe('Console Logger Test Suite', () => {
         );
         when(mockedChalk.bold(anyString())).thenCall((x) => x);
         when(mockedChalk.white(anyString())).thenCall((x) => x);
+        when(mockedChalk.underline(anyString())).thenCall((x) => x);
+        when(mockedChalk.blue(anyString())).thenCall((x) => x);
 
         const result = await logger.info('message');
 
@@ -108,8 +114,6 @@ describe('Console Logger Test Suite', () => {
 
     test('Should not log an info message when the log level is warn', async () => {
         when(mockedLogLevel.level()).thenReturn(LogLevelType.WARN);
-        when(mockedChalk.bold(anyString())).thenCall((x) => x);
-        when(mockedChalk.white(anyString())).thenCall((x) => x);
 
         const result = await logger.info('message');
 
@@ -125,26 +129,26 @@ describe('Console Logger Test Suite', () => {
             Optional.of('debug')
         );
         when(mockedChalk.bold(anyString())).thenCall((x) => x);
-        when(mockedChalk.gray(anyString())).thenCall((x) => x);
+        when(mockedChalk.underline(anyString())).thenCall((x) => x);
+        when(mockedChalk.blue(anyString())).thenCall((x) => x);
+        when(mockedChalk.green(anyString())).thenCall((x) => x);
 
         const result = await logger.debug('message');
 
         expect(result).toBeTruthy();
         verify(mockedLogLevel.level()).once();
         verify(mockedLogLevel.getDisplayString(LogLevelType.DEBUG)).once();
-        verify(mockedChalk.gray(anyString())).once();
+        verify(mockedChalk.green(anyString())).once();
     });
 
     test('Should not log an info message when the log level is info', async () => {
         when(mockedLogLevel.level()).thenReturn(LogLevelType.INFO);
-        when(mockedChalk.bold(anyString())).thenCall((x) => x);
-        when(mockedChalk.gray(anyString())).thenCall((x) => x);
 
         const result = await logger.debug('message');
 
         expect(result).toBeFalsy();
         verify(mockedLogLevel.level()).once();
         verify(mockedLogLevel.getDisplayString(LogLevelType.DEBUG)).never();
-        verify(mockedChalk.gray(anyString())).never();
+        verify(mockedChalk.green(anyString())).never();
     });
 });

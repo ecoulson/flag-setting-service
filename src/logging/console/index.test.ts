@@ -1,6 +1,6 @@
 import { ConsoleLoggerModule } from '.';
 import { EnvironmentModule } from '../../environment';
-import LogLevelModule from '../log-level';
+import { LogLevelModule } from '../log-level';
 import {
     ChalkAnnotation,
     ConsoleLoggerAnnotation,

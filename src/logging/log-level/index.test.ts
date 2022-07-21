@@ -1,4 +1,4 @@
-import LogLevelModule from '.';
+import { LogLevelModule } from '.';
 import { EnvironmentModule } from '../../environment';
 import { LogLevelAnnotation } from './log-level-annotations';
 
