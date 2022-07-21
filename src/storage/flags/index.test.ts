@@ -1,6 +1,8 @@
 import { FlagStorageModule } from '.';
 import { DatabaseModule } from '../../database';
+import { DatabaseEntitiesModule } from '../../database/entities';
 import { EnvironmentModule } from '../../environment';
+import { ModelModule } from '../../models';
 import { FlagStorageAnnotation } from './flag-broker-annotation';
 
 describe('Flag Module Test Suite', () => {
@@ -9,6 +11,8 @@ describe('Flag Module Test Suite', () => {
     beforeAll(() => {
         new EnvironmentModule().configure();
         new DatabaseModule().configure();
+        new DatabaseEntitiesModule().configure();
+        new ModelModule().configure();
         module.configure();
     });
 

@@ -1,6 +1,5 @@
 import { Injectable } from 'noose-injection';
 import { DataSource as PostgreSQLDataSource, Repository } from 'typeorm';
-import { Flag } from '../../models/flags/flag';
 import { ConnectionString } from '../connection-string/connection-string';
 import { PostgresConnectionStringAnnotation } from '../connection-string/connection-string-annotation';
 import { DataSource } from '../data-source';
@@ -10,6 +9,8 @@ import { Dialect } from '../dialect/dialect';
 import { DialectAnnotation } from '../dialect/dialect-annotations';
 import { DialectType } from '../dialect/dialect-type';
 import { PostgreSQLDataSourceAnnotation } from './typeorm-annotations';
+import { DatabaseEntitiesAnnotation } from '../entities/entities-annotations';
+import { DatabaseEntities } from '../entities/database-entities';
 
 @Injectable()
 export class TypeORMDataSource implements DataSource {
@@ -21,7 +22,9 @@ export class TypeORMDataSource implements DataSource {
         @DialectAnnotation.inject()
         private readonly dialect: Dialect,
         @DatabaseDebugInfoAnnotation.inject()
-        private readonly debugInfo: DatabaseDebugInfo
+        private readonly debugInfo: DatabaseDebugInfo,
+        @DatabaseEntitiesAnnotation.inject()
+        private readonly entities: DatabaseEntities
     ) {}
 
     async initialize(): Promise<boolean> {
@@ -42,7 +45,7 @@ export class TypeORMDataSource implements DataSource {
                     type: this.dialect as any,
                     ...connectionParameters.get(),
                     ...this.debugInfo.get(),
-                    entities: [Flag],
+                    entities: this.entities.getAll(),
                 })
                 .initialize();
             return true;
