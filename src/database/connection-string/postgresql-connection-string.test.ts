@@ -12,6 +12,7 @@ describe('PostgreSQL Connection String', () => {
     beforeEach(() => {
         reset(mockedDatabaseURL);
     });
+
     test('Should return an empty optional when there is no connection string', () => {
         const postgreSQLConnectionString = new PostgreSQLConnectionString(
             instance(mockedDatabaseURL)

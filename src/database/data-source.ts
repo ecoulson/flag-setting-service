@@ -1,3 +1,3 @@
 export interface DataSource {
-    initialize(): Promise<void>;
+    initialize(): Promise<boolean>;
 }

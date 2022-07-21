@@ -1,16 +1,23 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { Injectable } from 'noose-injection';
-import { Repository } from 'typeorm';
 import { Optional } from '../../common/optional/optional';
-import { FlagRepositoryAnnotation } from '../../database/typeorm/typeorm-annotations';
 import { StorageBroker } from '../storage-broker';
 import { Flag } from '../../models/flags/flag';
+import { FlagTypeORMRepositoryAnnotation } from '../../database/typeorm/repositories/repository-annotations';
+import { FlagTypeORMRepository } from '../../database/typeorm/repositories/flag-typeorm-repository';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class SQLFlagBroker implements StorageBroker<Flag> {
+    private readonly repository: Repository<Flag>;
+
     constructor(
-        @FlagRepositoryAnnotation.inject()
-        private readonly repository: Repository<Flag>
-    ) {}
+        @FlagTypeORMRepositoryAnnotation.inject()
+        repositoryContainer: FlagTypeORMRepository
+    ) {
+        this.repository = repositoryContainer.get();
+    }
 
     async create(flag: Flag): Promise<Optional<Flag>> {
         const existingFlag = await this.findById(flag.id);

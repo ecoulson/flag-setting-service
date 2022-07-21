@@ -1,17 +1,19 @@
 import { Module } from 'noose-injection';
-import { Flag } from '../../models/flags/flag';
 import { TypeORMDataSource } from './typeorm-data-source';
 import {
-    DataSourceAnnotation,
-    FlagRepositoryAnnotation,
+    TypeORMDataSourceAnnotation,
+    PostgreSQLDataSourceAnnotation,
 } from './typeorm-annotations';
+import { DataSource } from 'typeorm';
+import { TypeORMRepositoriesModule } from './repositories';
 
 export class TypeORMModule extends Module {
     configure(): void {
-        this.registerValue(DataSourceAnnotation, TypeORMDataSource);
         this.registerValue(
-            FlagRepositoryAnnotation,
-            TypeORMDataSource.getRepository(Flag)
+            PostgreSQLDataSourceAnnotation,
+            new DataSource({ type: 'postgres' })
         );
+        this.registerClass(TypeORMDataSourceAnnotation, TypeORMDataSource);
+        this.registerModule(new TypeORMRepositoriesModule());
     }
 }

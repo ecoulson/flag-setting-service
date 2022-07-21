@@ -4,13 +4,15 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "jest",
         "clean": "rm -rf ./dist",
-        "build": "tsc -p ."
+        "build": "tsc -p tsconfig.prod.json",
+        "start": "node ./dist/app.js",
+        "test": "jest"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "dotenv": "^16.0.1",
         "fastify": "^4.2.1",
         "noose-injection": "^1.0.6",
         "pg": "^8.7.3",

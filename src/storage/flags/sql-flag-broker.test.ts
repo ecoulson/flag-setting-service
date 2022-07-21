@@ -1,18 +1,23 @@
-import { anything, instance, mock, reset, verify, when } from "ts-mockito";
-import { Repository } from "typeorm";
-import { Flag } from "../../models/flags/flag";
-import { SQLFlagBroker } from "./sql-flag-broker";
+import { anything, instance, mock, reset, verify, when } from 'ts-mockito';
+import { Repository } from 'typeorm';
+import { FlagTypeORMRepository } from '../../database/typeorm/repositories/flag-typeorm-repository';
+import { Flag } from '../../models/flags/flag';
+import { SQLFlagBroker } from './sql-flag-broker';
 
 describe('SQL Flag Broker', () => {
     const mockedRepository = mock(Repository<Flag>);
-    const storage = new SQLFlagBroker(instance(mockedRepository));
+    const mockedRepositoryContainer = mock(FlagTypeORMRepository);
+    let storage = new SQLFlagBroker(instance(mockedRepositoryContainer));
     const id = 'ddeca993-11c6-4ff8-b0f4-ccd8d03e8e6e';
 
     beforeEach(() => {
         reset(mockedRepository);
-    })
+        reset(mockedRepositoryContainer);
+        when(mockedRepositoryContainer.get()).thenReturn(instance(mockedRepository));
+        storage = new SQLFlagBroker(instance(mockedRepositoryContainer));
+    });
 
-    test("Should find all flags", async () => {
+    test('Should find all flags', async () => {
         const expectedFlag = new Flag(id, 'flag', false);
         when(mockedRepository.find()).thenResolve([expectedFlag]);
 
@@ -22,9 +27,9 @@ describe('SQL Flag Broker', () => {
         const actualFlag = actualFlags[0];
         expect(actualFlag).toEqual(expectedFlag);
         verify(mockedRepository.find()).once();
-    })
+    });
 
-    test("Should find a flag by id", async () => {
+    test('Should find a flag by id', async () => {
         const expectedFlag = new Flag(id, 'flag', false);
         when(mockedRepository.findOne(anything())).thenResolve(expectedFlag);
 
@@ -32,9 +37,9 @@ describe('SQL Flag Broker', () => {
 
         expect(actualFlag.get()).toEqual(expectedFlag);
         verify(mockedRepository.findOne(anything())).once();
-    })
+    });
 
-    test("Should find an empty optional when id is not found", async () => {
+    test('Should find an empty optional when id is not found', async () => {
         const expectedFlag = new Flag(id, 'flag', false);
         when(mockedRepository.findOne(anything())).thenResolve(null);
 
@@ -42,21 +47,21 @@ describe('SQL Flag Broker', () => {
 
         expect(actualFlag.isEmpty()).toBeTruthy();
         verify(mockedRepository.findOne(anything())).once();
-    })
+    });
 
-    test("Should delete a flag by id", async () => {
+    test('Should delete a flag by id', async () => {
         const inputFlag = new Flag(id, 'flag', false);
-        const expectedFlag = inputFlag 
-        when(mockedRepository.findOne(anything())).thenResolve(expectedFlag)
-        when(mockedRepository.remove(inputFlag)).thenResolve(expectedFlag)
+        const expectedFlag = inputFlag;
+        when(mockedRepository.findOne(anything())).thenResolve(expectedFlag);
+        when(mockedRepository.remove(inputFlag)).thenResolve(expectedFlag);
 
         const deletedFlag = await storage.delete(inputFlag);
 
         expect(deletedFlag.get()).toEqual(expectedFlag);
         verify(mockedRepository.remove(inputFlag)).once();
-    })
+    });
 
-    test("Should give an empty optional when flag to be removed does not exist", async () => {
+    test('Should give an empty optional when flag to be removed does not exist', async () => {
         const inputFlag = new Flag(id, 'flag', false);
         when(mockedRepository.findOne(anything())).thenResolve(null);
 
@@ -65,9 +70,9 @@ describe('SQL Flag Broker', () => {
         expect(deletedFlag.isEmpty()).toBeTruthy();
         verify(mockedRepository.findOne(anything())).once();
         verify(mockedRepository.remove(inputFlag)).never();
-    })
+    });
 
-    test("Should create a flag", async () => {
+    test('Should create a flag', async () => {
         const inputFlag = new Flag(id, 'flag', false);
         const expectedFlag = inputFlag;
         when(mockedRepository.save(inputFlag)).thenResolve(expectedFlag);
@@ -76,9 +81,9 @@ describe('SQL Flag Broker', () => {
 
         expect(actualFlag.get()).toEqual(expectedFlag);
         verify(mockedRepository.save(inputFlag)).once();
-    })
+    });
 
-    test("Should give an empty optional when flag to be created does exist", async () => {
+    test('Should give an empty optional when flag to be created does exist', async () => {
         const inputFlag = new Flag(id, 'flag', false);
         when(mockedRepository.findOne(anything())).thenResolve(inputFlag);
 
@@ -87,9 +92,9 @@ describe('SQL Flag Broker', () => {
         expect(actualFlag.isEmpty()).toBeTruthy();
         verify(mockedRepository.findOne(anything())).once();
         verify(mockedRepository.save(inputFlag)).never();
-    })
+    });
 
-    test("Should update a flag", async () => {
+    test('Should update a flag', async () => {
         const inputFlag = new Flag(id, 'flag', false);
         const expectedFlag = inputFlag;
         when(mockedRepository.findOne(anything())).thenResolve(expectedFlag);
@@ -99,9 +104,9 @@ describe('SQL Flag Broker', () => {
 
         expect(actualFlag.get()).toEqual(expectedFlag);
         verify(mockedRepository.save(inputFlag)).once();
-    })
+    });
 
-    test("Should give an empty optional when flag to be created does exist", async () => {
+    test('Should give an empty optional when flag to be created does exist', async () => {
         const inputFlag = new Flag(id, 'flag', false);
         when(mockedRepository.findOne(anything())).thenResolve(null);
 
@@ -110,5 +115,5 @@ describe('SQL Flag Broker', () => {
         expect(actualFlag.isEmpty()).toBeTruthy();
         verify(mockedRepository.findOne(anything())).once();
         verify(mockedRepository.save(inputFlag)).never();
-    })
+    });
 });

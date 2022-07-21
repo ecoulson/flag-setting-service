@@ -1,4 +1,6 @@
 import { Annotation } from 'noose-injection';
 
-export const DataSourceAnnotation = new Annotation('DataSourceAnnotation');
-export const FlagRepositoryAnnotation = new Annotation('FlagRepository');
+export const TypeORMDataSourceAnnotation = new Annotation('TypeORMDataSource');
+export const PostgreSQLDataSourceAnnotation = new Annotation(
+    'PostgreSQLDataSource'
+);

@@ -1,11 +1,12 @@
 import { Injectable } from 'noose-injection';
 import { Optional } from '../../common/optional/optional';
 import { ConnectionParameters } from './connection-parameters';
+import { ConnectionString } from './connection-string';
 import { DatabaseURLAnnotation } from './connection-string-annotation';
 import { DatabaseURL } from './database-url';
 
 @Injectable()
-export class PostgreSQLConnectionString {
+export class PostgreSQLConnectionString implements ConnectionString {
     constructor(
         @DatabaseURLAnnotation.inject()
         private readonly databaseURL: DatabaseURL
