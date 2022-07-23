@@ -8,6 +8,9 @@ import { DatabaseDebugInfo } from './database-debug-info';
 
 @Injectable()
 export class SystemDatabaseDebugInfo implements DatabaseDebugInfo {
+    private static readonly SYNCHRONIZE_KEY = 'SYNCHRONIZE';
+    private static readonly DROP_SCHEMA_KEY = 'DROP_SCHEMA';
+
     constructor(
         @SystemEnvironmentAnnotation.inject()
         private readonly environment: Environment
@@ -22,10 +25,14 @@ export class SystemDatabaseDebugInfo implements DatabaseDebugInfo {
             )
         );
         const synchronize = Optional.of<boolean>(
-            this.environment.get('SYNCHRONIZE').getOrDefault('false') === 'true'
+            this.environment
+                .get(SystemDatabaseDebugInfo.SYNCHRONIZE_KEY)
+                .getOrDefault('false') === 'true'
         );
         const dropSchema = Optional.of<boolean>(
-            this.environment.get('DROP_SCHEMA').getOrDefault('false') === 'true'
+            this.environment
+                .get(SystemDatabaseDebugInfo.DROP_SCHEMA_KEY)
+                .getOrDefault('false') === 'true'
         );
         return {
             logging:

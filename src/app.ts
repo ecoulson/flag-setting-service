@@ -6,6 +6,8 @@ import { FastifyServerAnnotation } from './server/server-annotations';
 import { DataSource } from './database/data-source';
 import { LoggerAnnotation } from './logging/logging-annotations';
 import { Logger } from './logging/logger';
+import { FlagService } from './services/flags/flag-service';
+import { FlagServiceAnnotation } from './services/flags/flag-annotations';
 
 async function main() {
     const main = new MainModule();

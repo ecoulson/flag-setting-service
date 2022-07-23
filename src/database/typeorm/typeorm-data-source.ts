@@ -52,6 +52,7 @@ export class TypeORMDataSource implements DataSource {
                     entities: this.entities.getAll(),
                 })
                 .initialize();
+            this.logger.info('Successfully connected to the database.');
             return true;
         }
     }

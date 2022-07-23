@@ -4,6 +4,7 @@ import { EnvironmentModule } from './environment';
 import { LoggingModule } from './logging';
 import { ModelModule } from './models';
 import { ServerModule } from './server';
+import { ServiceModule } from './services';
 import { StorageModule } from './storage';
 
 export class MainModule extends Module {
@@ -13,6 +14,7 @@ export class MainModule extends Module {
         this.registerModule(new LoggingModule());
         this.registerModule(new ModelModule());
         this.registerModule(new ServerModule());
+        this.registerModule(new ServiceModule());
         this.registerModule(new StorageModule());
     }
 }

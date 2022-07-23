@@ -6,13 +6,15 @@ import { LogLevelType } from './log-level-type';
 
 @Injectable()
 export class LogLevel {
+    private static LOG_LEVEL_KEY = 'LOG_LEVEL';
+
     constructor(
         @SystemEnvironmentAnnotation.inject()
         private readonly environment: Environment
     ) {}
 
     level(): LogLevelType {
-        const level = this.environment.get('LOG_LEVEL');
+        const level = this.environment.get(LogLevel.LOG_LEVEL_KEY);
         if (level.isEmpty()) {
             return LogLevelType.INFO;
         }
