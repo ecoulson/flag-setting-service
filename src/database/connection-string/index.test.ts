@@ -20,10 +20,4 @@ describe('Connection String Module Test Suite', () => {
 
         expect(connectionString).not.toBeNull();
     });
-
-    test('Should resolve the database url class', () => {
-        const databaseURL = module.resolve(DatabaseURLAnnotation);
-
-        expect(databaseURL).not.toBeNull();
-    });
 });

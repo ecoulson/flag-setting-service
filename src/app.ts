@@ -6,22 +6,43 @@ import { FastifyServerAnnotation } from './server/server-annotations';
 import { DataSource } from './database/data-source';
 import { LoggerAnnotation } from './logging/logging-annotations';
 import { Logger } from './logging/logger';
-import { FlagService } from './services/flags/flag-service';
-import { FlagServiceAnnotation } from './services/flags/flag-annotations';
+import { DatabaseURLVariableAnnotation, MetricDatabaseURLVariableAnnotation } from './environment/variable/environment-variable-annotations';
+import { EnvironmentVariable } from './environment/variable/environment-variable';
 
 async function main() {
     const main = new MainModule();
     main.configure();
 
     const logger = main.resolve<Logger>(LoggerAnnotation);
-    const dataSource = main.resolve<DataSource>(TypeORMDataSourceAnnotation);
-    const initialized = await dataSource.initialize();
 
-    if (!initialized) {
+    const dataSource = main.resolve<DataSource>(TypeORMDataSourceAnnotation);
+    const databaseUrl = main.resolve<EnvironmentVariable>(
+        DatabaseURLVariableAnnotation
+    );
+    await connectToDatasource(dataSource, databaseUrl, logger);
+
+    const metricDataSource = main.resolve<DataSource>(
+        TypeORMDataSourceAnnotation
+    );
+    const metricDatabaseUrl = main.resolve<EnvironmentVariable>(
+        MetricDatabaseURLVariableAnnotation
+    );
+    await connectToDatasource(metricDataSource, metricDatabaseUrl, logger);
+
+    const server = main.resolve<Server>(FastifyServerAnnotation);
+    server.listen(8080);
+}
+
+async function connectToDatasource(
+    dataSource: DataSource,
+    databaseUrl: EnvironmentVariable,
+    logger: Logger
+) {
+    const dataSourceInitialized = await dataSource.initialize(databaseUrl);
+
+    if (!dataSourceInitialized) {
         logger.fatal('Failed to initialize connection with data source');
-    } else {
-        const server = main.resolve<Server>(FastifyServerAnnotation);
-        server.listen(8080);
+        return;
     }
 }
 

@@ -1,15 +1,20 @@
 import { instance, mock, when } from 'ts-mockito';
 import { Optional } from '../../common/optional/optional';
 import { Environment } from '../../environment/environment';
+import { EnvironmentVariable } from '../../environment/variable/environment-variable';
 import { LogLevel } from './log-level';
 import { LogLevelType } from './log-level-type';
 
 describe('Log Level Test Suite', () => {
     const mockedEnvironment = mock<Environment>();
-    const logLevel = new LogLevel(instance(mockedEnvironment));
+    const logLevelVariable = new EnvironmentVariable('LOG_LEVEL');
+    const logLevel = new LogLevel(
+        instance(mockedEnvironment),
+        logLevelVariable
+    );
 
     test('Should get fatal level from the environment', () => {
-        when(mockedEnvironment.get('LOG_LEVEL')).thenReturn(
+        when(mockedEnvironment.get(logLevelVariable)).thenReturn(
             Optional.of('fatal')
         );
 
@@ -19,7 +24,7 @@ describe('Log Level Test Suite', () => {
     });
 
     test('Should get error level from the environment', () => {
-        when(mockedEnvironment.get('LOG_LEVEL')).thenReturn(
+        when(mockedEnvironment.get(logLevelVariable)).thenReturn(
             Optional.of('error')
         );
 
@@ -29,7 +34,7 @@ describe('Log Level Test Suite', () => {
     });
 
     test('Should get warn level from the environment', () => {
-        when(mockedEnvironment.get('LOG_LEVEL')).thenReturn(
+        when(mockedEnvironment.get(logLevelVariable)).thenReturn(
             Optional.of('warn')
         );
 
@@ -39,7 +44,7 @@ describe('Log Level Test Suite', () => {
     });
 
     test('Should get info level from the environment', () => {
-        when(mockedEnvironment.get('LOG_LEVEL')).thenReturn(
+        when(mockedEnvironment.get(logLevelVariable)).thenReturn(
             Optional.of('info')
         );
 
@@ -49,7 +54,7 @@ describe('Log Level Test Suite', () => {
     });
 
     test('Should get debug level from the environment', () => {
-        when(mockedEnvironment.get('LOG_LEVEL')).thenReturn(
+        when(mockedEnvironment.get(logLevelVariable)).thenReturn(
             Optional.of('debug')
         );
 
@@ -59,7 +64,9 @@ describe('Log Level Test Suite', () => {
     });
 
     test('Should get info level from the environment when the log level is not an enum value', () => {
-        when(mockedEnvironment.get('LOG_LEVEL')).thenReturn(Optional.of('foo'));
+        when(mockedEnvironment.get(logLevelVariable)).thenReturn(
+            Optional.of('foo')
+        );
 
         const level = logLevel.level();
 
@@ -67,7 +74,9 @@ describe('Log Level Test Suite', () => {
     });
 
     test('Should get info level from the environment when the log level is not set', () => {
-        when(mockedEnvironment.get('LOG_LEVEL')).thenReturn(Optional.empty());
+        when(mockedEnvironment.get(logLevelVariable)).thenReturn(
+            Optional.empty()
+        );
 
         const level = logLevel.level();
 

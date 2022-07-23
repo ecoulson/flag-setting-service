@@ -1,5 +1,5 @@
 import { TypeORMModule } from '.';
-import { SystemEnvironmentModule } from '../../environment/system';
+import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { ConnectionStringModule } from '../connection-string';
@@ -15,7 +15,7 @@ describe('TypeORM Module Test Suite', () => {
     const module = new TypeORMModule();
 
     beforeAll(() => {
-        new SystemEnvironmentModule().configure();
+        new EnvironmentModule().configure();
         new ConnectionStringModule().configure();
         new DialectModule().configure();
         new DatabaseDebugModule().configure();

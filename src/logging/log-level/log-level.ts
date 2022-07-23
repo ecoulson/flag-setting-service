@@ -2,19 +2,21 @@ import { Injectable } from 'noose-injection';
 import { Optional } from '../../common/optional/optional';
 import { Environment } from '../../environment/environment';
 import { SystemEnvironmentAnnotation } from '../../environment/system/system-annotation';
+import { EnvironmentVariable } from '../../environment/variable/environment-variable';
+import { LogLevelVariableAnnotation } from '../../environment/variable/environment-variable-annotations';
 import { LogLevelType } from './log-level-type';
 
 @Injectable()
 export class LogLevel {
-    private static LOG_LEVEL_KEY = 'LOG_LEVEL';
-
     constructor(
         @SystemEnvironmentAnnotation.inject()
-        private readonly environment: Environment
+        private readonly environment: Environment,
+        @LogLevelVariableAnnotation.inject()
+        private readonly logLevel: EnvironmentVariable
     ) {}
 
     level(): LogLevelType {
-        const level = this.environment.get(LogLevel.LOG_LEVEL_KEY);
+        const level = this.environment.get(this.logLevel);
         if (level.isEmpty()) {
             return LogLevelType.INFO;
         }

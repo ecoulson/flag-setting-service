@@ -1,6 +1,6 @@
 import { TypeORMRepositoriesModule } from '.';
 import { TypeORMModule } from '..';
-import { SystemEnvironmentModule } from '../../../environment/system';
+import { EnvironmentModule } from '../../../environment';
 import { LoggingModule } from '../../../logging';
 import { ModelModule } from '../../../models';
 import { ConnectionStringModule } from '../../connection-string';
@@ -13,7 +13,7 @@ describe('TypeORM Repositores Test Suite', () => {
     const module = new TypeORMRepositoriesModule();
 
     beforeEach(() => {
-        new SystemEnvironmentModule().configure();
+        new EnvironmentModule().configure();
         new ConnectionStringModule().configure();
         new TypeORMModule().configure();
         new DialectModule().configure();

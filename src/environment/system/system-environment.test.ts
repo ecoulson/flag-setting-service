@@ -1,4 +1,5 @@
 import { instance, mock, when } from 'ts-mockito';
+import { EnvironmentVariable } from '../variable/environment-variable';
 import { SystemEnvironment } from './system-environment';
 
 describe('System Environment Test Suite', () => {
@@ -6,21 +7,21 @@ describe('System Environment Test Suite', () => {
     const systemEnvironment = new SystemEnvironment(
         instance(mockedProcessEnvironment)
     );
-    const variableName = 'DATABASE_URL';
+    const variable = new EnvironmentVariable('DATABASE_URL');
 
     test('Should get an empty optional when the variable does not exist in the environment', () => {
-        when(mockedProcessEnvironment[variableName]).thenReturn(undefined);
+        when(mockedProcessEnvironment[variable.name()]).thenReturn(undefined);
 
-        const variable = systemEnvironment.get(variableName);
+        const value = systemEnvironment.get(variable);
 
-        expect(variable.isEmpty());
+        expect(value.isEmpty());
     });
 
     test('Should get a variable value from the environment', () => {
-        when(mockedProcessEnvironment[variableName]).thenReturn('foo');
+        when(mockedProcessEnvironment[variable.name()]).thenReturn('foo');
 
-        const variable = systemEnvironment.get(variableName);
+        const value = systemEnvironment.get(variable);
 
-        expect(variable.get()).toEqual('foo');
+        expect(value.get()).toEqual('foo');
     });
 });

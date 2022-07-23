@@ -9,6 +9,7 @@ import {
 } from 'ts-mockito';
 import { DataSource, Repository } from 'typeorm';
 import { Optional } from '../../common/optional/optional';
+import { EnvironmentVariable } from '../../environment/variable/environment-variable';
 import { Logger } from '../../logging/logger';
 import { PostgreSQLConnectionString } from '../connection-string/postgresql-connection-string';
 import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
@@ -18,6 +19,7 @@ import { DatabaseEntities } from '../entities/database-entities';
 import { TypeORMDataSource } from './typeorm-data-source';
 
 describe('TypeORM Data Source Test Suite', () => {
+    const databaseURL = new EnvironmentVariable('DATABASE_URL');
     const mockedConnectionString = mock(PostgreSQLConnectionString);
     const mockedDataSource = mock(DataSource);
     const mockedRepository = mock(Repository);
@@ -50,7 +52,7 @@ describe('TypeORM Data Source Test Suite', () => {
         when(mockedDataSource.setOptions(anything())).thenReturn(
             instance(mockedDataSource)
         );
-        when(mockedConnectionString.parse()).thenReturn(
+        when(mockedConnectionString.parse(databaseURL)).thenReturn(
             Optional.of({
                 database: 'database',
                 host: 'host',
@@ -60,14 +62,14 @@ describe('TypeORM Data Source Test Suite', () => {
             })
         );
 
-        const result = await dataSource.initialize();
+        const result = await dataSource.initialize(databaseURL);
 
         expect(result).toBeTruthy();
         verify(mockedDataSource.setOptions(anything())).once();
         verify(mockedDataSource.initialize()).once();
-        verify(mockedConnectionString.parse()).once();
+        verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDebugInfo.get()).once();
-        verify(mockedDialect.type()).once();
+        verify(mockedDialect.type()).twice();
         verify(mockedDatabaseEntities.getAll()).once();
     });
 
@@ -77,12 +79,14 @@ describe('TypeORM Data Source Test Suite', () => {
         when(mockedDataSource.setOptions(anything())).thenReturn(
             instance(mockedDataSource)
         );
-        when(mockedConnectionString.parse()).thenReturn(Optional.empty());
+        when(mockedConnectionString.parse(databaseURL)).thenReturn(
+            Optional.empty()
+        );
 
-        const result = await dataSource.initialize();
+        const result = await dataSource.initialize(databaseURL);
 
         expect(result).toBeFalsy();
-        verify(mockedConnectionString.parse()).once();
+        verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
         verify(mockedDebugInfo.get()).never();
@@ -97,7 +101,7 @@ describe('TypeORM Data Source Test Suite', () => {
         when(mockedDataSource.setOptions(anything())).thenReturn(
             instance(mockedDataSource)
         );
-        when(mockedConnectionString.parse()).thenReturn(
+        when(mockedConnectionString.parse(databaseURL)).thenReturn(
             Optional.of({
                 database: 'database',
                 host: 'host',
@@ -107,10 +111,10 @@ describe('TypeORM Data Source Test Suite', () => {
             })
         );
 
-        const result = await dataSource.initialize();
+        const result = await dataSource.initialize(databaseURL);
 
         expect(result).toBeFalsy();
-        verify(mockedConnectionString.parse()).once();
+        verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
         verify(mockedDebugInfo.get()).never();
@@ -124,7 +128,7 @@ describe('TypeORM Data Source Test Suite', () => {
         when(mockedDataSource.setOptions(anything())).thenReturn(
             instance(mockedDataSource)
         );
-        when(mockedConnectionString.parse()).thenReturn(
+        when(mockedConnectionString.parse(databaseURL)).thenReturn(
             Optional.of({
                 database: 'database',
                 host: 'host',
@@ -134,10 +138,10 @@ describe('TypeORM Data Source Test Suite', () => {
             })
         );
 
-        const result = await dataSource.initialize();
+        const result = await dataSource.initialize(databaseURL);
 
         expect(result).toBeFalsy();
-        verify(mockedConnectionString.parse()).once();
+        verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
         verify(mockedDialect.type()).once();

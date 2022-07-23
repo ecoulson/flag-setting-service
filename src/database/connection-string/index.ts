@@ -1,9 +1,5 @@
 import { Module } from 'noose-injection';
-import {
-    DatabaseURLAnnotation,
-    PostgresConnectionStringAnnotation,
-} from './connection-string-annotation';
-import { DatabaseURL } from './database-url';
+import { PostgresConnectionStringAnnotation } from './connection-string-annotation';
 import { PostgreSQLConnectionString } from './postgresql-connection-string';
 
 export class ConnectionStringModule extends Module {
@@ -12,6 +8,5 @@ export class ConnectionStringModule extends Module {
             PostgresConnectionStringAnnotation,
             PostgreSQLConnectionString
         );
-        this.registerClass(DatabaseURLAnnotation, DatabaseURL);
     }
 }

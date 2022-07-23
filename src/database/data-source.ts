@@ -1,3 +1,5 @@
+import { EnvironmentVariable } from '../environment/variable/environment-variable';
+
 export interface DataSource {
-    initialize(): Promise<boolean>;
+    initialize(databaseURL: EnvironmentVariable): Promise<boolean>;
 }

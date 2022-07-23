@@ -13,6 +13,7 @@ import { DatabaseEntitiesAnnotation } from '../entities/entities-annotations';
 import { DatabaseEntities } from '../entities/database-entities';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
 import { Logger } from '../../logging/logger';
+import { EnvironmentVariable } from '../../environment/variable/environment-variable';
 
 @Injectable()
 export class TypeORMDataSource implements DataSource {
@@ -31,8 +32,8 @@ export class TypeORMDataSource implements DataSource {
         private readonly logger: Logger
     ) {}
 
-    async initialize(): Promise<boolean> {
-        const connectionParameters = this.connectionString.parse();
+    async initialize(databaseUrl: EnvironmentVariable): Promise<boolean> {
+        const connectionParameters = this.connectionString.parse(databaseUrl);
         if (!connectionParameters.isPresent()) {
             this.logger.error(
                 'No connection string is present in the environment. Please set one in your system variables.'
@@ -46,7 +47,7 @@ export class TypeORMDataSource implements DataSource {
         } else {
             await this.dataSource
                 .setOptions({
-                    type: this.dialect as any,
+                    type: this.dialect.type() as any, //todo: find better casting type
                     ...connectionParameters.get(),
                     ...this.debugInfo.get(),
                     entities: this.entities.getAll(),

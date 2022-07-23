@@ -1,25 +1,26 @@
 import { Injectable } from 'noose-injection';
 import { Optional } from '../../common/optional/optional';
+import { Environment } from '../../environment/environment';
+import { SystemEnvironmentAnnotation } from '../../environment/system/system-annotation';
+import { EnvironmentVariable } from '../../environment/variable/environment-variable';
 import { ConnectionParameters } from './connection-parameters';
 import { ConnectionString } from './connection-string';
-import { DatabaseURLAnnotation } from './connection-string-annotation';
-import { DatabaseURL } from './database-url';
 
 @Injectable()
 export class PostgreSQLConnectionString implements ConnectionString {
     constructor(
-        @DatabaseURLAnnotation.inject()
-        private readonly databaseURL: DatabaseURL
+        @SystemEnvironmentAnnotation.inject()
+        private readonly environment: Environment
     ) {}
 
-    parse(): Optional<ConnectionParameters> {
-        if (this.databaseURL.value().isEmpty()) {
+    parse(
+        databaseURLVariable: EnvironmentVariable
+    ): Optional<ConnectionParameters> {
+        const databaseURL = this.environment.get(databaseURLVariable);
+        if (databaseURL.isEmpty()) {
             return Optional.empty();
         }
-        let remainingURL = this.databaseURL
-            .value()
-            .get()
-            .replace('postgres://', '');
+        let remainingURL = databaseURL.get().replace('postgres://', '');
         const usernameEndIndex = remainingURL.indexOf(':');
         const username = remainingURL.substring(0, usernameEndIndex);
         remainingURL = remainingURL.substring(usernameEndIndex + 1);
