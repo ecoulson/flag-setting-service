@@ -16,19 +16,25 @@ import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
 import { Dialect } from '../dialect/dialect';
 import { DialectType } from '../dialect/dialect-type';
 import { DatabaseEntities } from '../entities/database-entities';
+import { DataSourceFactory } from './data-source-factory';
 import { TypeORMDataSource } from './typeorm-data-source';
 
 describe('TypeORM Data Source Test Suite', () => {
     const databaseURL = new EnvironmentVariable('DATABASE_URL');
     const mockedConnectionString = mock(PostgreSQLConnectionString);
+    const mockedDataSourceFactory = mock(DataSourceFactory);
     const mockedDataSource = mock(DataSource);
     const mockedRepository = mock(Repository);
     const mockedDialect = mock<Dialect>();
     const mockedDebugInfo = mock<DatabaseDebugInfo>();
     const mockedDatabaseEntities = mock<DatabaseEntities>();
     const mockedLogger = mock<Logger>();
+    const postgreSQLDataSource = instance(mockedDataSource);
+    when(mockedDataSourceFactory.buildPostgresDatabase()).thenReturn(
+        postgreSQLDataSource
+    );
     const dataSource = new TypeORMDataSource(
-        instance(mockedDataSource),
+        instance(mockedDataSourceFactory),
         instance(mockedConnectionString),
         instance(mockedDialect),
         instance(mockedDebugInfo),
@@ -50,7 +56,7 @@ describe('TypeORM Data Source Test Suite', () => {
         when(mockedDatabaseEntities.getAll()).thenReturn([]);
         when(mockedDialect.type()).thenReturn(DialectType.POSTGRESQL);
         when(mockedDataSource.setOptions(anything())).thenReturn(
-            instance(mockedDataSource)
+            postgreSQLDataSource
         );
         when(mockedConnectionString.parse(databaseURL)).thenReturn(
             Optional.of({
@@ -69,16 +75,11 @@ describe('TypeORM Data Source Test Suite', () => {
         verify(mockedDataSource.initialize()).once();
         verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDebugInfo.get()).once();
-        verify(mockedDialect.type()).twice();
+        verify(mockedDialect.type()).once();
         verify(mockedDatabaseEntities.getAll()).once();
     });
 
     test('Should not initialize the data source when the connection string parse is empty', async () => {
-        when(mockedDatabaseEntities.getAll()).thenReturn([]);
-        when(mockedDialect.type()).thenReturn(DialectType.POSTGRESQL);
-        when(mockedDataSource.setOptions(anything())).thenReturn(
-            instance(mockedDataSource)
-        );
         when(mockedConnectionString.parse(databaseURL)).thenReturn(
             Optional.empty()
         );
@@ -90,17 +91,13 @@ describe('TypeORM Data Source Test Suite', () => {
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
         verify(mockedDebugInfo.get()).never();
-        verify(mockedDialect.type()).never();
+        verify(mockedDialect.type()).once();
         verify(mockedDatabaseEntities.getAll()).never();
         verify(mockedLogger.error(anyString())).once();
     });
 
     test('Should not initialize the data source when no dialect is provided', async () => {
-        when(mockedDatabaseEntities.getAll()).thenReturn([]);
         when(mockedDialect.type()).thenReturn(DialectType.UNKNOWN);
-        when(mockedDataSource.setOptions(anything())).thenReturn(
-            instance(mockedDataSource)
-        );
         when(mockedConnectionString.parse(databaseURL)).thenReturn(
             Optional.of({
                 database: 'database',
@@ -123,11 +120,7 @@ describe('TypeORM Data Source Test Suite', () => {
     });
 
     test('Should not initialize the data source when no dialect is provided', async () => {
-        when(mockedDatabaseEntities.getAll()).thenReturn([]);
         when(mockedDialect.type()).thenReturn(DialectType.UNKNOWN);
-        when(mockedDataSource.setOptions(anything())).thenReturn(
-            instance(mockedDataSource)
-        );
         when(mockedConnectionString.parse(databaseURL)).thenReturn(
             Optional.of({
                 database: 'database',
@@ -150,12 +143,41 @@ describe('TypeORM Data Source Test Suite', () => {
         verify(mockedLogger.error(anyString())).once();
     });
 
-    test('Should get a repository for an entity', () => {
+    test('Should not initialize the data source when initialization throws an error.', async () => {
+        when(mockedDatabaseEntities.getAll()).thenReturn([]);
+        when(mockedDataSource.setOptions(anything())).thenReturn(
+            postgreSQLDataSource
+        );
+        when(mockedDialect.type()).thenReturn(DialectType.POSTGRESQL);
+        when(mockedDataSource.initialize()).thenThrow(new Error());
+        when(mockedConnectionString.parse(databaseURL)).thenReturn(
+            Optional.of({
+                database: 'database',
+                host: 'host',
+                password: 'password',
+                username: 'username',
+                port: 5432,
+            })
+        );
+
+        const result = await dataSource.initialize(databaseURL);
+
+        expect(result).toBeFalsy();
+        verify(mockedConnectionString.parse(databaseURL)).once();
+        verify(mockedDataSource.setOptions(anything())).once();
+        verify(mockedDataSource.initialize()).once();
+        verify(mockedDialect.type()).once();
+        verify(mockedDebugInfo.get()).once();
+        verify(mockedDatabaseEntities.getAll()).once();
+        verify(mockedLogger.error(anyString())).once();
+    });
+
+    test('Should get a repository for an entity', async () => {
         when(mockedDataSource.getRepository(anything())).thenReturn(
             instance(mockedRepository)
         );
 
-        const repository = dataSource.getRepository(Optional);
+        const repository = dataSource.getRepository(DataSource);
 
         expect(repository).not.toBeNull();
     });

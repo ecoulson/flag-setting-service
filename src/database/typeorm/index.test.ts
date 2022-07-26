@@ -8,7 +8,7 @@ import { DialectModule } from '../dialect';
 import { DatabaseEntitiesModule } from '../entities';
 import {
     TypeORMDataSourceAnnotation,
-    PostgreSQLDataSourceAnnotation,
+    DataSourceFactoryAnnotation,
 } from './typeorm-annotations';
 
 describe('TypeORM Module Test Suite', () => {
@@ -25,17 +25,15 @@ describe('TypeORM Module Test Suite', () => {
         module.configure();
     });
 
-    test('Should resolve the TypeORM data source factory annotation', () => {
-        const dataSourceFactory = module.resolve(
-            PostgreSQLDataSourceAnnotation
-        );
-
-        expect(dataSourceFactory).not.toBeNull();
-    });
-
     test('Should resolve a data source annotation', () => {
         const dataSource = module.resolve(TypeORMDataSourceAnnotation);
 
         expect(dataSource).not.toBeNull();
+    });
+
+    test('Should resolve the data source factory annotation', () => {
+        const dataSourceFactory = module.resolve(DataSourceFactoryAnnotation);
+
+        expect(dataSourceFactory).not.toBeNull();
     });
 });

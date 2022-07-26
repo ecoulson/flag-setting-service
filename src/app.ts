@@ -6,7 +6,10 @@ import { FastifyServerAnnotation } from './server/server-annotations';
 import { DataSource } from './database/data-source';
 import { LoggerAnnotation } from './logging/logging-annotations';
 import { Logger } from './logging/logger';
-import { DatabaseURLVariableAnnotation, MetricDatabaseURLVariableAnnotation } from './environment/variable/environment-variable-annotations';
+import {
+    DatabaseURLVariableAnnotation,
+    MetricDatabaseURLVariableAnnotation,
+} from './environment/variable/environment-variable-annotations';
 import { EnvironmentVariable } from './environment/variable/environment-variable';
 
 async function main() {
