@@ -17,6 +17,7 @@ import { EnvironmentVariable } from '../../environment/variable/environment-vari
 import { DataSourceFactory } from './data-source-factory';
 import { Optional } from '../../common/optional/optional';
 import { ConnectionParameters } from '/Users/evancoulson/Code/flag-setting/src/database/connection-string/connection-parameters';
+import { DebugStringBuilder } from '../../common/debug/debug-string-builder';
 
 @Injectable()
 export class TypeORMDataSource implements DataSource {
@@ -73,7 +74,11 @@ export class TypeORMDataSource implements DataSource {
                 entities: this.entities.getAll(),
             })
             .initialize();
-        this.logger.info('Successfully connected to the database.');
+        this.logger.info(
+            `Successfully connected to the database: ${
+                connectionParameters.get().database
+            }`
+        );
         return true;
     }
 
@@ -81,12 +86,11 @@ export class TypeORMDataSource implements DataSource {
         type: DialectType,
         connectionParameters: Optional<ConnectionParameters>
     ) {
+        const connectionParametersDebugString = new DebugStringBuilder()
+            .setObject(connectionParameters.get())
+            .build();
         this.logger.error(
-            `Failed to initialize connection for ${type} dialect for the connection parameters\n ${JSON.stringify(
-                connectionParameters.get(),
-                null,
-                4
-            )}`
+            `Failed to initialize connection for the connection parameters ${connectionParametersDebugString} with ${type} dialect`
         );
         return false;
     }
