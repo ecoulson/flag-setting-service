@@ -1,21 +1,27 @@
-import { Optional } from '../../common/optional/optional';
+import { Injectable } from 'noose-injection';
+import { Repository } from 'typeorm';
+import { MessageTypeORMRepositoryAnnotation } from '../../database/typeorm/repositories/repository-annotations';
 import { Message } from '../../models/messages/message';
-import { Storage } from '../storage';
+import { SQLStorage } from '../sql-storage';
+import { MessageStorage } from './message-storage';
 
-export class SQLMessageStorage implements Storage<Message> {
-    create(entity: Message<unknown>): Promise<Optional<Message<unknown>>> {
-        throw new Error('Method not implemented.');
+@Injectable()
+export class SQLMessageStorage
+    extends SQLStorage<Message>
+    implements MessageStorage
+{
+    constructor(
+        @MessageTypeORMRepositoryAnnotation.inject()
+        repository: Repository<Message>
+    ) {
+        super(repository);
     }
-    delete(entity: Message<unknown>): Promise<Optional<Message<unknown>>> {
-        throw new Error('Method not implemented.');
-    }
-    find(): Promise<Message<unknown>[]> {
-        throw new Error('Method not implemented.');
-    }
-    findById(id: string): Promise<Optional<Message<unknown>>> {
-        throw new Error('Method not implemented.');
-    }
-    update(entity: Message<unknown>): Promise<Optional<Message<unknown>>> {
-        throw new Error('Method not implemented.');
+
+    findByTopic(topic: string): Promise<Message[]> {
+        return this.repository.find({
+            where: {
+                topic,
+            },
+        });
     }
 }
