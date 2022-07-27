@@ -1,5 +1,5 @@
 import { ModelModule } from '.';
-import { FlagConstructorAnnotation } from './model-annotation';
+import { FlagConstructorAnnotation, MessageConstructorAnnotation } from './model-annotation';
 
 describe('Model Module Test Suite', () => {
     const module = new ModelModule();
@@ -10,6 +10,12 @@ describe('Model Module Test Suite', () => {
 
     test('Should resolve the flag constructor', () => {
         const flagConstructor = module.resolve(FlagConstructorAnnotation);
+
+        expect(flagConstructor).not.toBeNull();
+    });
+
+    test('Should resolve the message constructor', () => {
+        const flagConstructor = module.resolve(MessageConstructorAnnotation);
 
         expect(flagConstructor).not.toBeNull();
     });

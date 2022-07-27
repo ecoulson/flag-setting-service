@@ -57,7 +57,11 @@ export class TypeORMDataSource implements DataSource {
             try {
                 return await this.connect(type, connectionParameters);
             } catch (error) {
-                return this.handleConnectionFailure(type, connectionParameters);
+                return this.handleConnectionFailure(
+                    error as Error,
+                    type,
+                    connectionParameters
+                );
             }
         }
     }
@@ -83,12 +87,17 @@ export class TypeORMDataSource implements DataSource {
     }
 
     private handleConnectionFailure(
+        error: Error,
         type: DialectType,
         connectionParameters: Optional<ConnectionParameters>
     ) {
         const connectionParametersDebugString = new DebugStringBuilder()
             .setObject(connectionParameters.get())
             .build();
+        const errorDebugString = new DebugStringBuilder()
+            .setObject(error)
+            .build();
+        this.logger.error(errorDebugString);
         this.logger.error(
             `Failed to initialize connection for the connection parameters ${connectionParametersDebugString} with ${type} dialect`
         );

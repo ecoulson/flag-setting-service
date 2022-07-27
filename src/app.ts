@@ -24,7 +24,14 @@ async function main() {
     const databaseUrl = container.resolve<EnvironmentVariable>(
         DatabaseURLVariableAnnotation
     );
-    await connectToDatasource(dataSource, databaseUrl, logger);
+    const isConnectedToDatabase = await connectToDatasource(
+        dataSource,
+        databaseUrl,
+        logger
+    );
+    if (!isConnectedToDatabase) {
+        return;
+    }
 
     const metricDataSource = container.resolve<DataSource>(
         TypeORMDataSourceAnnotation
@@ -32,7 +39,14 @@ async function main() {
     const metricDatabaseUrl = container.resolve<EnvironmentVariable>(
         MetricDatabaseURLVariableAnnotation
     );
-    await connectToDatasource(metricDataSource, metricDatabaseUrl, logger);
+    const isConnectedToMetricDatabase = await connectToDatasource(
+        metricDataSource,
+        metricDatabaseUrl,
+        logger
+    );
+    if (!isConnectedToMetricDatabase) {
+        return;
+    }
 
     const server = container.resolve<Server>(FastifyServerAnnotation);
     server.listen(8080);
@@ -47,8 +61,9 @@ async function connectToDatasource(
 
     if (!dataSourceInitialized) {
         logger.fatal('Failed to initialize connection with data source');
-        return;
+        return false;
     }
+    return true;
 }
 
 main();

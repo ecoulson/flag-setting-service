@@ -169,7 +169,7 @@ describe('TypeORM Data Source Test Suite', () => {
         verify(mockedDialect.type()).once();
         verify(mockedDebugInfo.get()).once();
         verify(mockedDatabaseEntities.getAll()).once();
-        verify(mockedLogger.error(anyString())).once();
+        verify(mockedLogger.error(anyString())).twice();
     });
 
     test('Should get a repository for an entity', async () => {

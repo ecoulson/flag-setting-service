@@ -6,7 +6,9 @@ export class Message<T = unknown> {
     public id: string;
     @Column()
     public topic: string;
-    @Column()
+    @Column({
+        type: 'varchar',
+    })
     public data: T;
 
     constructor(id: string, topic: string, data: T) {

@@ -7,7 +7,10 @@ import { ConnectionStringModule } from '../../connection-string';
 import { DatabaseDebugModule } from '../../debug-info';
 import { DialectModule } from '../../dialect';
 import { DatabaseEntitiesModule } from '../../entities';
-import { FlagTypeORMRepositoryAnnotation } from './repository-annotations';
+import {
+    FlagTypeORMRepositoryAnnotation,
+    MessageTypeORMRepositoryAnnotation,
+} from './repository-annotations';
 
 describe('TypeORM Repositores Test Suite', () => {
     const module = new TypeORMRepositoriesModule();
@@ -28,5 +31,13 @@ describe('TypeORM Repositores Test Suite', () => {
         const flagRepository = module.resolve(FlagTypeORMRepositoryAnnotation);
 
         expect(flagRepository).not.toBeNull();
+    });
+
+    test('Should resolve the message repository', () => {
+        const messageRepository = module.resolve(
+            MessageTypeORMRepositoryAnnotation
+        );
+
+        expect(messageRepository).not.toBeNull();
     });
 });
