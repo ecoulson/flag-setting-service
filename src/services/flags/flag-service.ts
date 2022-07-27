@@ -3,14 +3,14 @@ import { Optional } from '../../common/optional/optional';
 import { Logger } from '../../logging/logger';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
 import { Flag } from '../../models/flags/flag';
-import { FlagStorageAnnotation } from '../../storage/flags/flag-broker-annotation';
-import { StorageBroker } from '../../storage/storage-broker';
+import { FlagStorageAnnotation } from '../../storage/flags/flag-storage-annotations';
+import { Storage } from '../../storage/storage';
 
 @Injectable()
 export class FlagService {
     constructor(
         @FlagStorageAnnotation.inject()
-        private readonly storage: StorageBroker<Flag>,
+        private readonly storage: Storage<Flag>,
         @LoggerAnnotation.inject()
         private readonly logger: Logger
     ) {}

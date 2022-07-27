@@ -2,14 +2,14 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { Injectable } from 'noose-injection';
 import { Optional } from '../../common/optional/optional';
-import { StorageBroker } from '../storage-broker';
+import { Storage } from '../storage';
 import { Flag } from '../../models/flags/flag';
 import { FlagTypeORMRepositoryAnnotation } from '../../database/typeorm/repositories/repository-annotations';
 import { FlagTypeORMRepository } from '../../database/typeorm/repositories/flag-typeorm-repository';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class SQLFlagBroker implements StorageBroker<Flag> {
+export class SQLFlagStorage implements Storage<Flag> {
     private readonly repository: Repository<Flag>;
 
     constructor(

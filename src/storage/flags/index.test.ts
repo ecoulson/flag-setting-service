@@ -4,7 +4,7 @@ import { DatabaseEntitiesModule } from '../../database/entities';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
-import { FlagStorageAnnotation } from './flag-broker-annotation';
+import { FlagStorageAnnotation } from './flag-storage-annotations';
 
 describe('Flag Module Test Suite', () => {
     const module = new FlagStorageModule();

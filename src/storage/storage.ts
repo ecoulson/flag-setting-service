@@ -1,6 +1,6 @@
 import { Optional } from '../common/optional/optional';
 
-export interface StorageBroker<T> {
+export interface Storage<T> {
     create(entity: T): Promise<Optional<T>>;
     delete(entity: T): Promise<Optional<T>>;
     find(): Promise<T[]>;

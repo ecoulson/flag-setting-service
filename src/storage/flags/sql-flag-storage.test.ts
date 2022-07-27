@@ -2,19 +2,19 @@ import { anything, instance, mock, reset, verify, when } from 'ts-mockito';
 import { Repository } from 'typeorm';
 import { FlagTypeORMRepository } from '../../database/typeorm/repositories/flag-typeorm-repository';
 import { Flag } from '../../models/flags/flag';
-import { SQLFlagBroker } from './sql-flag-broker';
+import { SQLFlagStorage } from './sql-flag-storage';
 
-describe('SQL Flag Broker', () => {
+describe('SQL Flag Storage Test Suite', () => {
     const mockedRepository = mock(Repository<Flag>);
     const mockedRepositoryContainer = mock(FlagTypeORMRepository);
-    let storage = new SQLFlagBroker(instance(mockedRepositoryContainer));
+    let storage = new SQLFlagStorage(instance(mockedRepositoryContainer));
     const id = 'ddeca993-11c6-4ff8-b0f4-ccd8d03e8e6e';
 
     beforeEach(() => {
         reset(mockedRepository);
         reset(mockedRepositoryContainer);
         when(mockedRepositoryContainer.get()).thenReturn(instance(mockedRepository));
-        storage = new SQLFlagBroker(instance(mockedRepositoryContainer));
+        storage = new SQLFlagStorage(instance(mockedRepositoryContainer));
     });
 
     test('Should find all flags', async () => {
