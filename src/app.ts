@@ -13,26 +13,28 @@ import {
 import { EnvironmentVariable } from './environment/variable/environment-variable';
 
 async function main() {
-    const main = new MainModule();
-    main.configure();
+    const container = new MainModule();
+    container.configure();
 
-    const logger = main.resolve<Logger>(LoggerAnnotation);
+    const logger = container.resolve<Logger>(LoggerAnnotation);
 
-    const dataSource = main.resolve<DataSource>(TypeORMDataSourceAnnotation);
-    const databaseUrl = main.resolve<EnvironmentVariable>(
+    const dataSource = container.resolve<DataSource>(
+        TypeORMDataSourceAnnotation
+    );
+    const databaseUrl = container.resolve<EnvironmentVariable>(
         DatabaseURLVariableAnnotation
     );
     await connectToDatasource(dataSource, databaseUrl, logger);
 
-    const metricDataSource = main.resolve<DataSource>(
+    const metricDataSource = container.resolve<DataSource>(
         TypeORMDataSourceAnnotation
     );
-    const metricDatabaseUrl = main.resolve<EnvironmentVariable>(
+    const metricDatabaseUrl = container.resolve<EnvironmentVariable>(
         MetricDatabaseURLVariableAnnotation
     );
     await connectToDatasource(metricDataSource, metricDatabaseUrl, logger);
 
-    const server = main.resolve<Server>(FastifyServerAnnotation);
+    const server = container.resolve<Server>(FastifyServerAnnotation);
     server.listen(8080);
 }
 
