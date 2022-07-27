@@ -1,11 +1,17 @@
+import { Column, Entity, PrimaryColumn } from 'typeorm';
+
+@Entity()
 export class Message<T = unknown> {
-    constructor(private readonly _topic: string, private readonly _data: T) {}
+    @PrimaryColumn()
+    public id: string;
+    @Column()
+    public topic: string;
+    @Column()
+    public data: T;
 
-    public topic(): string {
-        throw new Error();
-    }
-
-    public data(): T {
-        throw new Error();
+    constructor(id: string, topic: string, data: T) {
+        this.id = id;
+        this.topic = topic;
+        this.data = data;
     }
 }

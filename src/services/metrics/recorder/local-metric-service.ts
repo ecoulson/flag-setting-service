@@ -13,8 +13,8 @@ export class LocalMetricRecorderService implements MetricRecorderService {
     ) {}
 
     async record(metric: Metric): Promise<boolean> {
-        return await this.queueService.enqueue(
-            new Message(metric.tag(), metric)
+        return await this.queueService.publish(
+            new Message('', metric.tag, metric)
         );
     }
 }
