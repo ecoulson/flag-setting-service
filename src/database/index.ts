@@ -3,6 +3,7 @@ import { ConnectionStringModule } from './connection-string';
 import { DatabaseDebugModule } from './debug-info';
 import { DialectModule } from './dialect';
 import { DatabaseEntitiesModule } from './entities';
+import { MessageDatabaseModule } from './messages';
 import { TypeORMModule } from './typeorm';
 
 export class DatabaseModule extends Module {
@@ -12,5 +13,6 @@ export class DatabaseModule extends Module {
         this.registerModule(new DialectModule());
         this.registerModule(new DatabaseDebugModule());
         this.registerModule(new DatabaseEntitiesModule());
+        this.registerModule(new MessageDatabaseModule());
     }
 }

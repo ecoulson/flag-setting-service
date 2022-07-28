@@ -16,13 +16,13 @@ import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
 import { Dialect } from '../dialect/dialect';
 import { DialectType } from '../dialect/dialect-type';
 import { DatabaseEntities } from '../entities/database-entities';
-import { DataSourceFactory } from './data-source-factory';
+import { TypeORMDataSourceFactory } from './typeorm-data-source-factory';
 import { TypeORMDataSource } from './typeorm-data-source';
 
 describe('TypeORM Data Source Test Suite', () => {
     const databaseURL = new EnvironmentVariable('DATABASE_URL');
     const mockedConnectionString = mock(PostgreSQLConnectionString);
-    const mockedDataSourceFactory = mock(DataSourceFactory);
+    const mockedDataSourceFactory = mock(TypeORMDataSourceFactory);
     const mockedDataSource = mock(DataSource);
     const mockedRepository = mock(Repository);
     const mockedDialect = mock<Dialect>();

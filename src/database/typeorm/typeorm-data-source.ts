@@ -14,18 +14,18 @@ import { DatabaseEntities } from '../entities/database-entities';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
 import { Logger } from '../../logging/logger';
 import { EnvironmentVariable } from '../../environment/variable/environment-variable';
-import { DataSourceFactory } from './data-source-factory';
+import { TypeORMDataSourceFactory } from './typeorm-data-source-factory';
 import { Optional } from '../../common/optional/optional';
 import { ConnectionParameters } from '/Users/evancoulson/Code/flag-setting/src/database/connection-string/connection-parameters';
 import { DebugStringBuilder } from '../../common/debug/debug-string-builder';
 
 @Injectable()
 export class TypeORMDataSource implements DataSource {
-    private typeORMDataSource: TypeORMDataSouceInstance;
+    private readonly dataSource: TypeORMDataSouceInstance;
 
     constructor(
         @DataSourceFactoryAnnotation.inject()
-        dataSourceFactory: DataSourceFactory,
+        dataSourceFactory: TypeORMDataSourceFactory,
         @PostgresConnectionStringAnnotation.inject()
         private readonly connectionString: ConnectionString,
         @DialectAnnotation.inject()
@@ -37,7 +37,7 @@ export class TypeORMDataSource implements DataSource {
         @LoggerAnnotation.inject()
         private readonly logger: Logger
     ) {
-        this.typeORMDataSource = dataSourceFactory.buildPostgresDatabase();
+        this.dataSource = dataSourceFactory.buildPostgresDatabase();
     }
 
     async initialize(databaseUrl: EnvironmentVariable): Promise<boolean> {
@@ -70,7 +70,7 @@ export class TypeORMDataSource implements DataSource {
         type: DialectType,
         connectionParameters: Optional<ConnectionParameters>
     ) {
-        await this.typeORMDataSource
+        await this.dataSource
             .setOptions({
                 type: type as any,
                 ...connectionParameters.get(),
@@ -105,6 +105,6 @@ export class TypeORMDataSource implements DataSource {
     }
 
     getRepository<T>(entity: { new (...args: any[]): T }): Repository<T> {
-        return this.typeORMDataSource.getRepository(entity);
+        return this.dataSource.getRepository(entity);
     }
 }

@@ -5,11 +5,14 @@ import {
     DataSourceFactoryAnnotation,
 } from './typeorm-annotations';
 import { TypeORMRepositoriesModule } from './repositories';
-import { DataSourceFactory } from './data-source-factory';
+import { TypeORMDataSourceFactory } from './typeorm-data-source-factory';
 
 export class TypeORMModule extends Module {
     configure(): void {
-        this.registerClass(DataSourceFactoryAnnotation, DataSourceFactory);
+        this.registerClass(
+            DataSourceFactoryAnnotation,
+            TypeORMDataSourceFactory
+        );
         this.registerClass(TypeORMDataSourceAnnotation, TypeORMDataSource);
         this.registerModule(new TypeORMRepositoriesModule());
     }
