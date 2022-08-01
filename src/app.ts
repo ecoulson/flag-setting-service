@@ -14,6 +14,8 @@ import {
 import { EnvironmentVariable } from './environment/variable/environment-variable';
 import { FlagDatabaseAnnotation } from './database/flags/flag-database-annotations';
 import { MessageDatabaseAnnotation } from './database/messages/message-database-annotations';
+import { MessageStorage } from './storage/messages/message-storage';
+import { MessageStorageAnnotation } from './storage/messages/message-storage-annotations';
 
 async function main() {
     const container = new MainModule();
@@ -48,6 +50,10 @@ async function main() {
     if (!isConnectedToMetricDatabase) {
         return;
     }
+    const messageStorage = container.resolve<MessageStorage>(
+        MessageStorageAnnotation
+    );
+    console.log(messageStorage);
 
     const server = container.resolve<Server>(FastifyServerAnnotation);
     server.listen(8080);
