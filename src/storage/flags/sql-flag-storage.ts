@@ -11,6 +11,6 @@ export class SQLFlagStorage extends SQLStorage<Flag> implements Storage<Flag> {
         @FlagDatabaseAnnotation.inject()
         dataSource: FlagDataSource
     ) {
-        super(dataSource.getFlagBroker());
+        super(dataSource.getFlagBroker().get());
     }
 }

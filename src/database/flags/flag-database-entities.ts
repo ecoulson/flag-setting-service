@@ -14,4 +14,8 @@ export class FlagDatabaseEntities implements DatabaseEntities {
     getAll(): EntityConstructor[] {
         return [this.flag];
     }
+
+    hasEntity(entityConstructor: EntityConstructor): boolean {
+        return this.getAll().includes(entityConstructor);
+    }
 }

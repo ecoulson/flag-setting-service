@@ -173,6 +173,7 @@ describe('TypeORM Data Source Test Suite', () => {
     });
 
     test('Should get a repository for an entity', async () => {
+        when(mockedDatabaseEntities.hasEntity(anything())).thenReturn(true);
         when(mockedDataSource.getRepository(anything())).thenReturn(
             instance(mockedRepository)
         );
@@ -180,5 +181,13 @@ describe('TypeORM Data Source Test Suite', () => {
         const repository = dataSource.getRepository(DataSource);
 
         expect(repository).not.toBeNull();
+    });
+
+    test('Should get an empty repository for an entity that is not associated with the data source', () => {
+        when(mockedDatabaseEntities.hasEntity(anything())).thenReturn(false);
+
+        const repository = dataSource.getRepository(DataSource);
+
+        expect(repository.isEmpty()).toBeTruthy();
     });
 });

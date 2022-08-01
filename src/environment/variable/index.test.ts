@@ -2,13 +2,14 @@ import { EnvironmentVariableModule } from '.';
 import { SystemEnvironmentModule } from '../system';
 import { EnvironmentVariable } from './environment-variable';
 import {
-    DatabaseURLVariableAnnotation,
+    FlagDatabaseURLVariableAnnotation,
     DialectVariableAnnotation,
     DropSchemaVariableAnnotation,
     LogLevelVariableAnnotation,
     LogsDatabaseURLVariableAnnotation,
     MetricDatabaseURLVariableAnnotation,
     SynchronizeVariableAnnotation,
+    MessageQueueDatabaseURLVariableAnnotation,
 } from './environment-variable-annotations';
 
 describe('Environment Variable Module', () => {
@@ -19,12 +20,12 @@ describe('Environment Variable Module', () => {
         module.configure();
     });
 
-    test('Should resolve the database url variable', () => {
+    test('Should resolve the flag database url variable', () => {
         const variable = module.resolve<EnvironmentVariable>(
-            DatabaseURLVariableAnnotation
+            FlagDatabaseURLVariableAnnotation
         );
 
-        expect(variable.name()).toEqual('DATABASE_URL');
+        expect(variable.name()).toEqual('FLAG_DATABASE_URL');
     });
 
     test('Should resolve the log level variable', () => {
@@ -73,5 +74,13 @@ describe('Environment Variable Module', () => {
         );
 
         expect(variable.name()).toEqual('LOGS_DATABASE_URL');
+    });
+
+    test('Should resolve the message-queue database url variable', () => {
+        const variable = module.resolve<EnvironmentVariable>(
+            MessageQueueDatabaseURLVariableAnnotation
+        );
+
+        expect(variable.name()).toEqual('MESSAGE_QUEUE_DATABASE_URL');
     });
 });

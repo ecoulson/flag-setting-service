@@ -16,7 +16,7 @@ import { Broker } from '../broker/broker';
 import { TypeORMBroker } from './typeorm-broker';
 import { Identifiable } from '../../models/identifiable';
 
-export abstract class TypeORMDataSource implements DataSource {
+export class TypeORMDataSource implements DataSource {
     private readonly dataSource: TypeORMDataSouceInstance;
 
     constructor(
@@ -96,9 +96,14 @@ export abstract class TypeORMDataSource implements DataSource {
 
     getRepository<T extends Identifiable>(
         entity: EntityConstructor
-    ): Broker<T> {
-        return TypeORMBroker.fromRepository<T>(
-            this.dataSource.getRepository(entity)
+    ): Optional<Broker<T>> {
+        if (!this.entities.hasEntity(entity)) {
+            return Optional.empty();
+        }
+        return Optional.of(
+            TypeORMBroker.fromRepository<T>(
+                this.dataSource.getRepository(entity)
+            )
         );
     }
 }

@@ -1,7 +1,7 @@
 import { Annotation } from 'noose-injection';
 
-export const DatabaseURLVariableAnnotation = new Annotation(
-    'DatabaseURLVariable'
+export const FlagDatabaseURLVariableAnnotation = new Annotation(
+    'FlagsDatabaseURLVariable'
 );
 export const LogLevelVariableAnnotation = new Annotation('LogLevelVariable');
 export const DropSchemaVariableAnnotation = new Annotation(
@@ -16,4 +16,7 @@ export const MetricDatabaseURLVariableAnnotation = new Annotation(
 );
 export const LogsDatabaseURLVariableAnnotation = new Annotation(
     'LogsDatabaseURLVariable'
+);
+export const MessageQueueDatabaseURLVariableAnnotation = new Annotation(
+    'MessageQueueDatabaseURLVariable'
 );

@@ -14,4 +14,8 @@ export class MessageDatabaseEntities implements DatabaseEntities {
     getAll(): EntityConstructor[] {
         return [this.message];
     }
+
+    hasEntity(entityConstructor: EntityConstructor): boolean {
+        return this.getAll().includes(entityConstructor);
+    }
 }

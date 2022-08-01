@@ -1,4 +1,5 @@
 import { Injectable } from 'noose-injection';
+import { Optional } from '../../common/optional/optional';
 import { Logger } from '../../logging/logger';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
 import { Flag } from '../../models/flags/flag';
@@ -45,7 +46,7 @@ export class TypeORMFlagDataSource
         );
     }
 
-    getFlagBroker(): Broker<Flag> {
+    getFlagBroker(): Optional<Broker<Flag>> {
         return this.getRepository(Flag);
     }
 }

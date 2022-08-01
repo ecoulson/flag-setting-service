@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import 'reflect-metadata';
-import { TypeORMDataSourceAnnotation } from './database/typeorm/typeorm-annotations';
 import { MainModule } from './main';
 import { Server } from './server/server';
 import { FastifyServerAnnotation } from './server/server-annotations';
@@ -9,10 +8,12 @@ import { DataSource } from './database/data-source';
 import { LoggerAnnotation } from './logging/logging-annotations';
 import { Logger } from './logging/logger';
 import {
-    DatabaseURLVariableAnnotation,
-    MetricDatabaseURLVariableAnnotation,
+    FlagDatabaseURLVariableAnnotation,
+    MessageQueueDatabaseURLVariableAnnotation,
 } from './environment/variable/environment-variable-annotations';
 import { EnvironmentVariable } from './environment/variable/environment-variable';
+import { FlagDatabaseAnnotation } from './database/flags/flag-database-annotations';
+import { MessageDatabaseAnnotation } from './database/messages/message-database-annotations';
 
 async function main() {
     const container = new MainModule();
@@ -20,11 +21,9 @@ async function main() {
 
     const logger = container.resolve<Logger>(LoggerAnnotation);
 
-    const dataSource = container.resolve<DataSource>(
-        TypeORMDataSourceAnnotation
-    );
+    const dataSource = container.resolve<DataSource>(FlagDatabaseAnnotation);
     const databaseUrl = container.resolve<EnvironmentVariable>(
-        DatabaseURLVariableAnnotation
+        FlagDatabaseURLVariableAnnotation
     );
     const isConnectedToDatabase = await connectToDatasource(
         dataSource,
@@ -35,15 +34,15 @@ async function main() {
         return;
     }
 
-    const metricDataSource = container.resolve<DataSource>(
-        TypeORMDataSourceAnnotation
+    const messageDataSource = container.resolve<DataSource>(
+        MessageDatabaseAnnotation
     );
-    const metricDatabaseUrl = container.resolve<EnvironmentVariable>(
-        MetricDatabaseURLVariableAnnotation
+    const messageDatabaseUrl = container.resolve<EnvironmentVariable>(
+        MessageQueueDatabaseURLVariableAnnotation
     );
     const isConnectedToMetricDatabase = await connectToDatasource(
-        metricDataSource,
-        metricDatabaseUrl,
+        messageDataSource,
+        messageDatabaseUrl,
         logger
     );
     if (!isConnectedToMetricDatabase) {

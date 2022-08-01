@@ -1,4 +1,5 @@
 import { Injectable } from 'noose-injection';
+import { Optional } from '../../common/optional/optional';
 import { Logger } from '../../logging/logger';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
 import { Message } from '../../models/messages/message';
@@ -45,7 +46,7 @@ export class TypeORMMessageDataSource
         );
     }
 
-    getMessageBroker(): Broker<Message<unknown>> {
+    getMessageBroker(): Optional<Broker<Message>> {
         return this.getRepository(Message);
     }
 }

@@ -14,7 +14,7 @@ export class SQLMessageStorage
         @MessageDatabaseAnnotation.inject()
         dataSource: MessageDataSource
     ) {
-        super(dataSource.getMessageBroker());
+        super(dataSource.getMessageBroker().get());
     }
 
     findByTopic(topic: string): Promise<Message[]> {

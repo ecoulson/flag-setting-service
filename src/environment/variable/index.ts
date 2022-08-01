@@ -1,11 +1,12 @@
 import { Module } from 'noose-injection';
 import { EnvironmentVariable } from './environment-variable';
 import {
-    DatabaseURLVariableAnnotation,
+    FlagDatabaseURLVariableAnnotation,
     DialectVariableAnnotation,
     DropSchemaVariableAnnotation,
     LogLevelVariableAnnotation,
     LogsDatabaseURLVariableAnnotation,
+    MessageQueueDatabaseURLVariableAnnotation,
     MetricDatabaseURLVariableAnnotation,
     SynchronizeVariableAnnotation,
 } from './environment-variable-annotations';
@@ -13,8 +14,8 @@ import {
 export class EnvironmentVariableModule extends Module {
     configure(): void {
         this.registerValue(
-            DatabaseURLVariableAnnotation,
-            new EnvironmentVariable('DATABASE_URL')
+            FlagDatabaseURLVariableAnnotation,
+            new EnvironmentVariable('FLAG_DATABASE_URL')
         );
         this.registerValue(
             LogLevelVariableAnnotation,
@@ -39,6 +40,10 @@ export class EnvironmentVariableModule extends Module {
         this.registerValue(
             LogsDatabaseURLVariableAnnotation,
             new EnvironmentVariable('LOGS_DATABASE_URL')
+        );
+        this.registerValue(
+            MessageQueueDatabaseURLVariableAnnotation,
+            new EnvironmentVariable('MESSAGE_QUEUE_DATABASE_URL')
         );
     }
 }

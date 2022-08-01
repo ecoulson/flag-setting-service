@@ -1,4 +1,5 @@
 import { anything, instance, mock, reset, verify, when } from 'ts-mockito';
+import { Optional } from '../../common/optional/optional';
 import { Broker } from '../../database/broker/broker';
 import { FlagDataSource } from '../../database/flags/flag-data-source';
 import { Flag } from '../../models/flags/flag';
@@ -8,7 +9,7 @@ describe('SQL Flag Storage Test Suite', () => {
     const mockedFlagBroker = mock<Broker<Flag>>();
     const mockedFlagStorage = mock<FlagDataSource>();
     when(mockedFlagStorage.getFlagBroker()).thenReturn(
-        instance(mockedFlagBroker)
+        Optional.of(instance(mockedFlagBroker))
     );
     const storage = new SQLFlagStorage(instance(mockedFlagStorage));
     const id = 'ddeca993-11c6-4ff8-b0f4-ccd8d03e8e6e';
