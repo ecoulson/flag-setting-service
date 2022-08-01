@@ -1,17 +1,10 @@
-import { Injectable } from 'noose-injection';
 import { DataSource as TypeORMDataSouceInstance } from 'typeorm';
 import { ConnectionString } from '../connection-string/connection-string';
-import { PostgresConnectionStringAnnotation } from '../connection-string/connection-string-annotation';
 import { DataSource } from '../data-source';
-import { DatabaseDebugInfoAnnotation } from '../debug-info/debug-annotation';
 import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
 import { Dialect } from '../dialect/dialect';
-import { DialectAnnotation } from '../dialect/dialect-annotations';
 import { DialectType } from '../dialect/dialect-type';
-import { DataSourceFactoryAnnotation } from './typeorm-annotations';
-import { DatabaseEntitiesAnnotation } from '../entities/entities-annotations';
 import { DatabaseEntities } from '../entities/database-entities';
-import { LoggerAnnotation } from '../../logging/logging-annotations';
 import { Logger } from '../../logging/logger';
 import { EnvironmentVariable } from '../../environment/variable/environment-variable';
 import { TypeORMDataSourceFactory } from './typeorm-data-source-factory';
@@ -23,22 +16,15 @@ import { Broker } from '../broker/broker';
 import { TypeORMBroker } from './typeorm-broker';
 import { Identifiable } from '../../models/identifiable';
 
-@Injectable()
-export class TypeORMDataSource implements DataSource {
+export abstract class TypeORMDataSource implements DataSource {
     private readonly dataSource: TypeORMDataSouceInstance;
 
     constructor(
-        @DataSourceFactoryAnnotation.inject()
         dataSourceFactory: TypeORMDataSourceFactory,
-        @PostgresConnectionStringAnnotation.inject()
         private readonly connectionString: ConnectionString,
-        @DialectAnnotation.inject()
         private readonly dialect: Dialect,
-        @DatabaseDebugInfoAnnotation.inject()
         private readonly debugInfo: DatabaseDebugInfo,
-        @DatabaseEntitiesAnnotation.inject()
         private readonly entities: DatabaseEntities,
-        @LoggerAnnotation.inject()
         private readonly logger: Logger
     ) {
         this.dataSource = dataSourceFactory.buildPostgresDatabase();
