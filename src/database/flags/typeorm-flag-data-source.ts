@@ -1,7 +1,7 @@
 import { Injectable } from 'noose-injection';
 import { Logger } from '../../logging/logger';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
-import { Message } from '../../models/messages/message';
+import { Flag } from '../../models/flags/flag';
 import { Broker } from '../broker/broker';
 import { ConnectionString } from '../connection-string/connection-string';
 import { PostgresConnectionStringAnnotation } from '../connection-string/connection-string-annotation';
@@ -12,14 +12,14 @@ import { DialectAnnotation } from '../dialect/dialect-annotations';
 import { DataSourceFactoryAnnotation } from '../typeorm/typeorm-annotations';
 import { TypeORMDataSource } from '../typeorm/typeorm-data-source';
 import { TypeORMDataSourceFactory } from '../typeorm/typeorm-data-source-factory';
-import { MessageDataSource } from './message-data-source';
-import { MessageDatabaseEntitiesAnnotation } from './message-database-annotations';
-import { MessageDatabaseEntities } from './message-database-entities';
+import { FlagDataSource } from './flag-data-source';
+import { FlagDatabaseEntitiesAnnotation } from './flag-database-annotations';
+import { FlagDatabaseEntities } from './flag-database-entities';
 
 @Injectable()
-export class TypeORMMessageDataSource
+export class TypeORMFlagDataSource
     extends TypeORMDataSource
-    implements MessageDataSource
+    implements FlagDataSource
 {
     constructor(
         @DataSourceFactoryAnnotation.inject()
@@ -30,8 +30,8 @@ export class TypeORMMessageDataSource
         dialect: Dialect,
         @DatabaseDebugInfoAnnotation.inject()
         debugInfo: DatabaseDebugInfo,
-        @MessageDatabaseEntitiesAnnotation.inject()
-        entities: MessageDatabaseEntities,
+        @FlagDatabaseEntitiesAnnotation.inject()
+        entities: FlagDatabaseEntities,
         @LoggerAnnotation.inject()
         logger: Logger
     ) {
@@ -45,7 +45,7 @@ export class TypeORMMessageDataSource
         );
     }
 
-    getMessageBroker(): Broker<Message<unknown>> {
-        return this.getRepository(Message);
+    getFlagBroker(): Broker<Flag> {
+        return this.getRepository(Flag);
     }
 }

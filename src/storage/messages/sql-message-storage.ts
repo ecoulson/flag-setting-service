@@ -1,6 +1,6 @@
 import { Injectable } from 'noose-injection';
-import { Repository } from 'typeorm';
-import { MessageTypeORMRepositoryAnnotation } from '../../database/typeorm/repositories/repository-annotations';
+import { MessageDataSource } from '../../database/messages/message-data-source';
+import { MessageDatabaseAnnotation } from '../../database/messages/message-database-annotations';
 import { Message } from '../../models/messages/message';
 import { SQLStorage } from '../sql-storage';
 import { MessageStorage } from './message-storage';
@@ -11,17 +11,15 @@ export class SQLMessageStorage
     implements MessageStorage
 {
     constructor(
-        @MessageTypeORMRepositoryAnnotation.inject()
-        repository: Repository<Message>
+        @MessageDatabaseAnnotation.inject()
+        dataSource: MessageDataSource
     ) {
-        super(repository);
+        super(dataSource.getMessageBroker());
     }
 
     findByTopic(topic: string): Promise<Message[]> {
-        return this.repository.find({
-            where: {
-                topic,
-            },
+        return this.broker.findWhere({
+            topic,
         });
     }
 }

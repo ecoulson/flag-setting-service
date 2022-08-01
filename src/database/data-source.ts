@@ -1,5 +1,9 @@
 import { EnvironmentVariable } from '../environment/variable/environment-variable';
+import { EntityConstructor } from './entities/entity-constructor';
+import { Broker } from './broker/broker';
+import { Identifiable } from '../models/identifiable';
 
 export interface DataSource {
     initialize(databaseURL: EnvironmentVariable): Promise<boolean>;
+    getRepository<T extends Identifiable>(entity: EntityConstructor): Broker<T>;
 }

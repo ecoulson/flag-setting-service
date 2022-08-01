@@ -1,46 +1,29 @@
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { Optional } from '../common/optional/optional';
+import { Broker } from '../database/broker/broker';
 import { Identifiable } from '../models/identifiable';
 import { Storage } from './storage';
 
 export abstract class SQLStorage<T extends Identifiable> implements Storage<T> {
-    constructor(protected readonly repository: Repository<T>) {}
+    constructor(protected readonly broker: Broker<T>) {}
 
     async create(entity: T): Promise<Optional<T>> {
-        const existingEntity = await this.findById(entity.id);
-        if (existingEntity.isPresent()) {
-            return Optional.of();
-        }
-        return Optional.ofPromise(this.repository.save(entity));
+        return Optional.ofPromise(this.broker.create(entity));
     }
 
     async delete(entity: T): Promise<Optional<T>> {
-        const existingEntity = await this.findById(entity.id);
-        if (existingEntity.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.ofPromise(this.repository.remove(entity));
+        return Optional.ofPromise(this.broker.delete(entity));
     }
 
     find(): Promise<T[]> {
-        return this.repository.find();
+        return this.broker.find();
     }
 
     findById(id: string): Promise<Optional<T>> {
-        return Optional.ofPromise(
-            this.repository.findOne({
-                where: {
-                    id,
-                } as FindOptionsWhere<T>,
-            })
-        );
+        return Optional.ofPromise(this.broker.findById(id));
     }
 
     async update(entity: T): Promise<Optional<T>> {
-        const existingEntity = await this.findById(entity.id);
-        if (existingEntity.isEmpty()) {
-            return Optional.of();
-        }
-        return Optional.ofPromise(this.repository.save(entity));
+        return Optional.ofPromise(this.broker.update(entity));
     }
 }

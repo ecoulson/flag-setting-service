@@ -1,18 +1,16 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import { Injectable } from 'noose-injection';
 import { Storage } from '../storage';
 import { Flag } from '../../models/flags/flag';
-import { FlagTypeORMRepositoryAnnotation } from '../../database/typeorm/repositories/repository-annotations';
-import { FlagTypeORMRepository } from '../../database/typeorm/repositories/flag-typeorm-repository';
 import { SQLStorage } from '../sql-storage';
+import { FlagDatabaseAnnotation } from '../../database/flags/flag-database-annotations';
+import { FlagDataSource } from '../../database/flags/flag-data-source';
 
 @Injectable()
 export class SQLFlagStorage extends SQLStorage<Flag> implements Storage<Flag> {
     constructor(
-        @FlagTypeORMRepositoryAnnotation.inject()
-        repositoryContainer: FlagTypeORMRepository
+        @FlagDatabaseAnnotation.inject()
+        dataSource: FlagDataSource
     ) {
-        super(repositoryContainer.get());
+        super(dataSource.getFlagBroker());
     }
 }

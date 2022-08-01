@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import 'reflect-metadata';
 import { TypeORMDataSourceAnnotation } from './database/typeorm/typeorm-annotations';
 import { MainModule } from './main';

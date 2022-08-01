@@ -1,5 +1,5 @@
 import { Injectable } from 'noose-injection';
-import { DataSource as TypeORMDataSouceInstance, Repository } from 'typeorm';
+import { DataSource as TypeORMDataSouceInstance } from 'typeorm';
 import { ConnectionString } from '../connection-string/connection-string';
 import { PostgresConnectionStringAnnotation } from '../connection-string/connection-string-annotation';
 import { DataSource } from '../data-source';
@@ -18,6 +18,10 @@ import { TypeORMDataSourceFactory } from './typeorm-data-source-factory';
 import { Optional } from '../../common/optional/optional';
 import { ConnectionParameters } from '/Users/evancoulson/Code/flag-setting/src/database/connection-string/connection-parameters';
 import { DebugStringBuilder } from '../../common/debug/debug-string-builder';
+import { EntityConstructor } from '../entities/entity-constructor';
+import { Broker } from '../broker/broker';
+import { TypeORMBroker } from './typeorm-broker';
+import { Identifiable } from '../../models/identifiable';
 
 @Injectable()
 export class TypeORMDataSource implements DataSource {
@@ -104,7 +108,11 @@ export class TypeORMDataSource implements DataSource {
         return false;
     }
 
-    getRepository<T>(entity: { new (...args: any[]): T }): Repository<T> {
-        return this.dataSource.getRepository(entity);
+    getRepository<T extends Identifiable>(
+        entity: EntityConstructor
+    ): Broker<T> {
+        return TypeORMBroker.fromRepository<T>(
+            this.dataSource.getRepository(entity)
+        );
     }
 }
