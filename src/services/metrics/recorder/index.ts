@@ -1,12 +1,9 @@
 import { Module } from 'noose-injection';
-import { LocalMetricRecorderService } from './local-metric-service';
-import { LocalMetricRecorderServiceAnnotation } from './metric-recorder-service-annotations';
+import { LocalMetricRecorder } from './local/local-metric-recorder';
+import { LocalMetricRecorderAnnotation } from './metric-recorder-annotations';
 
-export class MetricRecorderServiceModule extends Module {
+export class MetricRecorderModule extends Module {
     configure(): void {
-        this.registerClass(
-            LocalMetricRecorderServiceAnnotation,
-            LocalMetricRecorderService
-        );
+        this.registerClass(LocalMetricRecorderAnnotation, LocalMetricRecorder);
     }
 }

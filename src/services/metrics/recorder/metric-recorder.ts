@@ -1,5 +1,5 @@
 import { Metric } from '../../../models/metrics/metric';
 
-export interface MetricRecorderService {
+export interface MetricRecorder {
     record(metric: Metric): Promise<boolean>;
 }

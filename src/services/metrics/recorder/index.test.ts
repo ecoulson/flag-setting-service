@@ -1,11 +1,11 @@
-import { MetricRecorderServiceModule } from '.';
+import { MetricRecorderModule } from '.';
 import { EventServiceModule } from '../../events';
 import IdentifierServiceModule from '../../identifier';
 import { LocalMessageQueueServiceModule } from '../../message-queues/local';
-import { LocalMetricRecorderServiceAnnotation } from './metric-recorder-service-annotations';
+import { LocalMetricRecorderAnnotation } from './metric-recorder-annotations';
 
-describe('Metric Recorder Service Module', () => {
-    const module = new MetricRecorderServiceModule();
+describe('Metric Recorder Module', () => {
+    const module = new MetricRecorderModule();
 
     beforeAll(() => {
         new EventServiceModule().configure();
@@ -14,8 +14,8 @@ describe('Metric Recorder Service Module', () => {
         module.configure();
     });
 
-    test('Should resolve the local metric service annotation', async () => {
-        const service = module.resolve(LocalMetricRecorderServiceAnnotation);
+    test('Should resolve the local metric annotation', async () => {
+        const service = module.resolve(LocalMetricRecorderAnnotation);
 
         expect(service).not.toBeNull();
     });
