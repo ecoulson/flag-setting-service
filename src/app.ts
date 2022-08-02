@@ -53,7 +53,6 @@ async function main() {
     const messageStorage = container.resolve<MessageStorage>(
         MessageStorageAnnotation
     );
-    console.log(messageStorage);
 
     const server = container.resolve<Server>(FastifyServerAnnotation);
     server.listen(8080);
