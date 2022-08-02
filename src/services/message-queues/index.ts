@@ -1,12 +1,8 @@
 import { Module } from 'noose-injection';
-import { LocalMessageQueueService } from './local-message-queue-service';
-import { LocalMessageQueueAnnotation } from './message-queue-annotations';
+import { LocalMessageQueueServiceModule } from './local';
 
 export class MessageQueueServiceModule extends Module {
     configure(): void {
-        this.registerClass(
-            LocalMessageQueueAnnotation,
-            LocalMessageQueueService
-        );
+        this.registerModule(new LocalMessageQueueServiceModule());
     }
 }

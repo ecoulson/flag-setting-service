@@ -1,6 +1,8 @@
+import { Injectable } from 'noose-injection';
 import { Event } from '../../../models/events/event';
 import { EventHandler } from './event-handler';
 
+@Injectable()
 export class EventEmitter {
     private readonly listenerMap: Map<string, EventHandler[]>;
 

@@ -1,7 +1,7 @@
 import { Injectable } from 'noose-injection';
 import { Message } from '../../../models/messages/message';
 import { Metric } from '../../../models/metrics/metric';
-import { LocalMessageQueueAnnotation } from '../../message-queues/message-queue-annotations';
+import { LocalMessageQueueAnnotation } from '../../message-queues/local/local-message-queue-annotations';
 import { MessageQueueService } from '../../message-queues/message-queue-service';
 import { MetricRecorderService } from './metric-recorder-service';
 
