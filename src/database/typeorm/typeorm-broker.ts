@@ -31,7 +31,9 @@ export class TypeORMBroker<T extends Identifiable> implements Broker<T> {
     }
 
     findOneWhere(where: WhereQuery<T>): Promise<T | null> {
-        throw new Error();
+        return this.repository.findOne({
+            where: where as FindOptionsWhere<T>,
+        });
     }
 
     async create(entity: T): Promise<T> {

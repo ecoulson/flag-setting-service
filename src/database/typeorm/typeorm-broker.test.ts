@@ -122,12 +122,12 @@ describe('TypeORM Broker Test Suite', () => {
         });
     });
 
-    test('Should return an entity where its values match the query', async () => {
+    test('Should return all entities whose values match the query', async () => {
         const expectedEntities = [new DummyModel()];
         when(mockedRepository.find(anything())).thenResolve(expectedEntities);
 
         const actualEntities = await broker.findWhere({
-            id: "id"
+            id: 'id',
         });
 
         expect(actualEntities).toEqual(expectedEntities);
@@ -135,14 +135,32 @@ describe('TypeORM Broker Test Suite', () => {
         const [query] = capture(mockedRepository.find).last();
         expect(query).toEqual({
             where: {
-                id: 'id'
-            }
-        })
-    })
+                id: 'id',
+            },
+        });
+    });
+
+    test('Should return an entity whose value matches the query', async () => {
+        const expectedEntity = new DummyModel();
+        when(mockedRepository.findOne(anything())).thenResolve(expectedEntity);
+
+        const actualEntity = await broker.findOneWhere({
+            id: 'id',
+        });
+
+        expect(actualEntity).toEqual(expectedEntity);
+        verify(mockedRepository.findOne(anything())).once();
+        const [query] = capture(mockedRepository.findOne).last();
+        expect(query).toEqual({
+            where: {
+                id: 'id',
+            },
+        });
+    });
 
     test('Should create a broker from a repository', () => {
         const broker = TypeORMBroker.fromRepository(instance(mockedRepository));
 
-        expect(broker).not.toBeNull();
+        expect(broker).toBeInstanceOf(TypeORMBroker);
     });
 });
