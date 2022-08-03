@@ -5,3 +5,6 @@ export const MessageConstructorAnnotation = new Annotation(
     'MessageConstructor'
 );
 export const ElapsedTimeMetricAnnotation = new Annotation('ElapsedTimeMetric');
+export const MessageIdempotencyMappingAnnotation = new Annotation(
+    'MessageIdempotencyMapping'
+);

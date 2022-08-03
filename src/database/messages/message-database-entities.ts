@@ -1,14 +1,20 @@
 import { Injectable } from 'noose-injection';
 import { Message } from '../../models/messages/message';
-import { MessageConstructorAnnotation } from '../../models/model-annotation';
+import { MessageIdempotencyMapping } from '../../models/messages/message-idempotency-mapping';
+import {
+    MessageConstructorAnnotation,
+    MessageIdempotencyMappingAnnotation,
+} from '../../models/model-annotation';
 import { BaseDatabaseEntities } from '../entities/base-database-entities';
 
 @Injectable()
 export class MessageDatabaseEntities extends BaseDatabaseEntities {
     constructor(
         @MessageConstructorAnnotation.inject()
-        message: typeof Message
+        message: typeof Message,
+        @MessageIdempotencyMappingAnnotation.inject()
+        messageIdempotencyMapping: typeof MessageIdempotencyMapping
     ) {
-        super(message);
+        super(message, messageIdempotencyMapping);
     }
 }
