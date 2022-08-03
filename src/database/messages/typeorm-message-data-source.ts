@@ -52,6 +52,6 @@ export class TypeORMMessageDataSource
     }
 
     getMessageIdempotencyBroker(): Optional<Broker<MessageIdempotencyMapping>> {
-        throw new Error();
+        return this.getBroker(MessageIdempotencyMapping);
     }
 }
