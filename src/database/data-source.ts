@@ -6,7 +6,7 @@ import { Optional } from '../common/optional/optional';
 
 export interface DataSource {
     initialize(databaseURL: EnvironmentVariable): Promise<boolean>;
-    getRepository<T extends Identifiable>(
+    getBroker<T extends Identifiable>(
         entity: EntityConstructor
     ): Optional<Broker<T>>;
 }

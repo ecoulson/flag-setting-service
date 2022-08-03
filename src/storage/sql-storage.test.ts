@@ -1,23 +1,33 @@
 import { anything, instance, mock, reset, verify, when } from 'ts-mockito';
+import { Optional } from '../common/optional/optional';
 import { Broker } from '../database/broker/broker';
+import { Logger } from '../logging/logger';
 import { SQLStorage } from './sql-storage';
 
-class DummyModel {
-    public id: string = 'id';
-}
-
-class DummySQLStorage extends SQLStorage<DummyModel> {
-    constructor(broker: Broker<DummyModel>) {
-        super(broker);
-    }
-}
-
 describe('SQL Storage Test Suite', () => {
+    class DummyModel {
+        public id: string = 'id';
+    }
+
+    class DummySQLStorage extends SQLStorage<DummyModel> {
+        constructor(broker: Broker<DummyModel>) {
+            super(Optional.of(broker), instance(mockedLogger));
+        }
+    }
+
+    class MissingBrokerSQLStorage extends SQLStorage<DummyModel> {
+        constructor() {
+            super(Optional.empty(), instance(mockedLogger));
+        }
+    }
+
+    const mockedLogger = mock<Logger>();
     const mockedBroker = mock<Broker<DummyModel>>();
     const storage = new DummySQLStorage(instance(mockedBroker));
 
     beforeEach(() => {
         reset(mockedBroker);
+        reset(mockedLogger);
     });
 
     test('Should find all models', async () => {
@@ -112,5 +122,14 @@ describe('SQL Storage Test Suite', () => {
 
         expect(actualModel.isEmpty()).toBeTruthy();
         verify(mockedBroker.update(inputModel)).once();
+    });
+
+    test('Should use a dummy broker when there is no broker provided', async () => {
+        const storage = new MissingBrokerSQLStorage();
+
+        const models = await storage.find();
+
+        expect(models).toEqual([]);
+        verify(mockedLogger.fatal(anything())).twice();
     });
 });

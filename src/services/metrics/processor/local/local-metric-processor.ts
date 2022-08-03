@@ -6,7 +6,7 @@ import { MetricProcessor } from '../metric-processor';
 
 @Injectable()
 export class LocalMetricProcessor<T = unknown> implements MetricProcessor<T> {
-    constructor(private readonly storage: MetricStorage<T>) {}
+    constructor(private readonly storage: MetricStorage) {}
 
     async process(message: Message<Metric<T>>): Promise<boolean> {
         await this.storage.create(message.data);

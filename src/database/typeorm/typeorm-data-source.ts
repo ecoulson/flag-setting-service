@@ -94,7 +94,7 @@ export class TypeORMDataSource implements DataSource {
         return false;
     }
 
-    getRepository<T extends Identifiable>(
+    getBroker<T extends Identifiable>(
         entity: EntityConstructor
     ): Optional<Broker<T>> {
         if (!this.entities.hasEntity(entity)) {

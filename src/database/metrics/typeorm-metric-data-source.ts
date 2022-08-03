@@ -2,7 +2,7 @@ import { Injectable } from 'noose-injection';
 import { Optional } from '../../common/optional/optional';
 import { Logger } from '../../logging/logger';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
-import { Flag } from '../../models/flags/flag';
+import { ElapsedTimeMetric } from '../../models/metrics/elasped-time-metric';
 import { Broker } from '../broker/broker';
 import { ConnectionString } from '../connection-string/connection-string';
 import { PostgresConnectionStringAnnotation } from '../connection-string/connection-string-annotation';
@@ -13,14 +13,14 @@ import { DialectAnnotation } from '../dialect/dialect-annotations';
 import { DataSourceFactoryAnnotation } from '../typeorm/typeorm-annotations';
 import { TypeORMDataSource } from '../typeorm/typeorm-data-source';
 import { TypeORMDataSourceFactory } from '../typeorm/typeorm-data-source-factory';
-import { FlagDataSource } from './flag-data-source';
-import { FlagDatabaseEntitiesAnnotation } from './flag-database-annotations';
-import { FlagDatabaseEntities } from './flag-database-entities';
+import { MetricDataSource } from './metric-data-source';
+import { MetricDatabaseEntitiesAnnotation } from './metric-database-annotations';
+import { MetricDatabaseEntities } from './metric-database-entities';
 
 @Injectable()
-export class TypeORMFlagDataSource
+export class TypeORMMetricDataSource
     extends TypeORMDataSource
-    implements FlagDataSource
+    implements MetricDataSource
 {
     constructor(
         @DataSourceFactoryAnnotation.inject()
@@ -31,8 +31,8 @@ export class TypeORMFlagDataSource
         dialect: Dialect,
         @DatabaseDebugInfoAnnotation.inject()
         debugInfo: DatabaseDebugInfo,
-        @FlagDatabaseEntitiesAnnotation.inject()
-        entities: FlagDatabaseEntities,
+        @MetricDatabaseEntitiesAnnotation.inject()
+        entities: MetricDatabaseEntities,
         @LoggerAnnotation.inject()
         logger: Logger
     ) {
@@ -46,7 +46,7 @@ export class TypeORMFlagDataSource
         );
     }
 
-    getFlagBroker(): Optional<Broker<Flag>> {
-        return this.getBroker(Flag);
+    getElapsedTimeMetricBroker(): Optional<Broker<ElapsedTimeMetric>> {
+        return this.getBroker(ElapsedTimeMetric);
     }
 }

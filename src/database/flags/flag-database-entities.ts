@@ -1,21 +1,14 @@
 import { Injectable } from 'noose-injection';
 import { Flag } from '../../models/flags/flag';
 import { FlagConstructorAnnotation } from '../../models/model-annotation';
-import { DatabaseEntities } from '../entities/database-entities';
-import { EntityConstructor } from '../entities/entity-constructor';
+import { BaseDatabaseEntities } from '../entities/base-database-entities';
 
 @Injectable()
-export class FlagDatabaseEntities implements DatabaseEntities {
+export class FlagDatabaseEntities extends BaseDatabaseEntities {
     constructor(
         @FlagConstructorAnnotation.inject()
-        private readonly flag: typeof Flag
-    ) {}
-
-    getAll(): EntityConstructor[] {
-        return [this.flag];
-    }
-
-    hasEntity(entityConstructor: EntityConstructor): boolean {
-        return this.getAll().includes(entityConstructor);
+        flag: typeof Flag
+    ) {
+        super(flag);
     }
 }

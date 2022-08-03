@@ -47,6 +47,6 @@ export class TypeORMMessageDataSource
     }
 
     getMessageBroker(): Optional<Broker<Message>> {
-        return this.getRepository(Message);
+        return this.getBroker(Message);
     }
 }

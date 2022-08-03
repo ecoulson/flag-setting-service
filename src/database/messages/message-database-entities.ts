@@ -1,21 +1,14 @@
 import { Injectable } from 'noose-injection';
 import { Message } from '../../models/messages/message';
 import { MessageConstructorAnnotation } from '../../models/model-annotation';
-import { DatabaseEntities } from '../entities/database-entities';
-import { EntityConstructor } from '../entities/entity-constructor';
+import { BaseDatabaseEntities } from '../entities/base-database-entities';
 
 @Injectable()
-export class MessageDatabaseEntities implements DatabaseEntities {
+export class MessageDatabaseEntities extends BaseDatabaseEntities {
     constructor(
         @MessageConstructorAnnotation.inject()
-        private readonly message: typeof Message
-    ) {}
-
-    getAll(): EntityConstructor[] {
-        return [this.message];
-    }
-
-    hasEntity(entityConstructor: EntityConstructor): boolean {
-        return this.getAll().includes(entityConstructor);
+        message: typeof Message
+    ) {
+        super(message);
     }
 }

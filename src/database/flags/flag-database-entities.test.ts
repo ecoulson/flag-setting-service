@@ -12,16 +12,4 @@ describe('Flag Database Entities Test Suite', () => {
 
         expect(actualEntities).toEqual(expectedEntities);
     });
-
-    test('Should be true when testing that the flag is an entity', () => {
-        const result = databaseEntities.hasEntity(Flag);
-
-        expect(result).toBeTruthy();
-    });
-
-    test('Should be true when testing that the flag is an entity', () => {
-        const result = databaseEntities.hasEntity(Message);
-
-        expect(result).toBeFalsy();
-    });
 });
