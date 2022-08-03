@@ -3,12 +3,12 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity()
 export class MessageIdempotencyMapping {
     @PrimaryColumn()
-    public eventId: string;
+    public id: string; // coresponds to event id
     @Column()
-    public messageId: string;
+    public idempotentId: string;
 
-    constructor(eventId: string, messageId: string) {
-        this.eventId = eventId;
-        this.messageId = messageId;
+    constructor(id: string, idempotentId: string) {
+        this.id = id;
+        this.idempotentId = idempotentId;
     }
 }

@@ -21,6 +21,11 @@ export class MissingBroker<T extends Identifiable> implements Broker<T> {
         return [];
     }
 
+    async findOneWhere(where: WhereQuery<T>): Promise<T | null> {
+        this.logger.fatal('This broker is missing an implementation');
+        return null;
+    }
+
     async create(entity: T): Promise<T | null> {
         this.logger.fatal('This broker is missing an implementation');
         return null;

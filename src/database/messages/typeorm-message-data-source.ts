@@ -3,6 +3,7 @@ import { Optional } from '../../common/optional/optional';
 import { Logger } from '../../logging/logger';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
 import { Message } from '../../models/messages/message';
+import { MessageIdempotencyMapping } from '../../models/messages/message-idempotency-mapping';
 import { Broker } from '../broker/broker';
 import { ConnectionString } from '../connection-string/connection-string';
 import { PostgresConnectionStringAnnotation } from '../connection-string/connection-string-annotation';
@@ -48,5 +49,9 @@ export class TypeORMMessageDataSource
 
     getMessageBroker(): Optional<Broker<Message>> {
         return this.getBroker(Message);
+    }
+
+    getMessageIdempotencyBroker(): Optional<Broker<MessageIdempotencyMapping>> {
+        throw new Error();
     }
 }

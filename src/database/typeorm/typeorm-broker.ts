@@ -30,6 +30,10 @@ export class TypeORMBroker<T extends Identifiable> implements Broker<T> {
         });
     }
 
+    findOneWhere(where: WhereQuery<T>): Promise<T | null> {
+        throw new Error();
+    }
+
     async create(entity: T): Promise<T> {
         const result = await this.repository.insert(entity as any);
         return result.generatedMaps[0] as T;
