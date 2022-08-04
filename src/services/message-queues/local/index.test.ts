@@ -1,14 +1,26 @@
 import { LocalMessageQueueServiceModule } from '.';
+import { DatabaseModule } from '../../../database';
+import { EnvironmentModule } from '../../../environment';
+import { LoggingModule } from '../../../logging';
+import { ModelModule } from '../../../models';
+import { StorageModule } from '../../../storage';
 import { EventServiceModule } from '../../events';
 import IdentifierServiceModule from '../../identifier';
+import { MessageIdempotencyServiceModule } from '../idempotency';
 import { LocalMessageQueueAnnotation } from './local-message-queue-annotations';
 
 describe('Local Message Queue Module Test Suite', () => {
     const module = new LocalMessageQueueServiceModule();
 
     beforeAll(() => {
+        new StorageModule().configure();
         new EventServiceModule().configure();
+        new MessageIdempotencyServiceModule().configure();
         new IdentifierServiceModule().configure();
+        new DatabaseModule().configure();
+        new EnvironmentModule().configure();
+        new ModelModule().configure();
+        new LoggingModule().configure();
         module.configure();
     });
 

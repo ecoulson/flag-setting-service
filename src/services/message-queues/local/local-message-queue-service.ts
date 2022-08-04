@@ -5,6 +5,8 @@ import { EventEmitter } from '../../events/emitter/event-emitter';
 import { EventEmitterAnnotation } from '../../events/emitter/event-emitter-annotations';
 import { UUIDIdentifierServiceAnnotation } from '../../identifier/identifier-annotations';
 import { IdentifierService } from '../../identifier/identifier-service';
+import { MessageIdempotencyService } from '../idempotency/message-idempotency-service';
+import { MessageIdempotencyServiceAnnotation } from '../idempotency/message-idempotency-service-annotations';
 import { MessageHandler } from '../message-handler';
 import { MessageQueueService } from '../message-queue-service';
 
@@ -14,19 +16,22 @@ export class LocalMessageQueueService implements MessageQueueService {
         @EventEmitterAnnotation.inject()
         private readonly eventEmitter: EventEmitter,
         @UUIDIdentifierServiceAnnotation.inject()
-        private readonly identifierService: IdentifierService
+        private readonly identifierService: IdentifierService,
+        @MessageIdempotencyServiceAnnotation.inject()
+        private readonly idempotencyService: MessageIdempotencyService
     ) {}
 
     async subscribe(topic: string, handler: MessageHandler): Promise<boolean> {
-        return this.eventEmitter.addListener(topic, (event) =>
+        return this.eventEmitter.addListener(topic, async (event) => {
+            console.log(event);
             handler(
                 new Message(
-                    this.identifierService.generateId(),
+                    await this.idempotencyService.getIdempotentId(event.id),
                     event.type,
                     event.data
                 )
-            )
-        );
+            );
+        });
     }
 
     async publish(message: Message): Promise<boolean> {
