@@ -1,4 +1,6 @@
 import { TimestampModule } from '.';
+import { ISO8601TimestampFormatter } from './iso8601-timestamp-formatter';
+import { NativeTimestampGenerator } from './native-timestamp-generator';
 import {
     TimestampFormatterAnnotation,
     TimestampGeneratorAnnotation,
@@ -14,12 +16,12 @@ describe('Timestamp Module Test Suite', () => {
     test('Should resolve the timestamp generator', () => {
         const generator = module.resolve(TimestampGeneratorAnnotation);
 
-        expect(generator).not.toBeNull();
+        expect(generator).toBeInstanceOf(NativeTimestampGenerator);
     });
 
     test('Should resolve the timestamp formatter', () => {
         const generator = module.resolve(TimestampFormatterAnnotation);
 
-        expect(generator).not.toBeNull();
+        expect(generator).toBeInstanceOf(ISO8601TimestampFormatter);
     });
 });

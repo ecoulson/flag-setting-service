@@ -14,7 +14,7 @@ import { Optional } from '../../common/optional/optional';
 import { Chalk } from 'chalk';
 import { TimestampGenerator } from '../timestamp/timestamp-generator';
 import { TimestampFormatter } from '../timestamp/timestamp-formatter';
-import { UTCDatetime } from '../timestamp/utc-datetime';
+import { UTCDatetime } from '../../models/timestamp/utc-datetime';
 
 describe('Console Logger Test Suite', () => {
     const mockedLogLevel = mock(LogLevel);

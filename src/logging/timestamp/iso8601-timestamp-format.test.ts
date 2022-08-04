@@ -1,5 +1,5 @@
+import { UTCDatetime } from '../../models/timestamp/utc-datetime';
 import { ISO8601TimestampFormatter } from './iso8601-timestamp-formatter';
-import { UTCDatetime } from './utc-datetime';
 
 describe('ISO 8601 Timestamp Formatter Test Suite', () => {
     const formatter = new ISO8601TimestampFormatter();

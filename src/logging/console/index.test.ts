@@ -1,7 +1,9 @@
+import chalk from 'chalk';
 import { ConsoleLoggerModule } from '.';
 import { EnvironmentModule } from '../../environment';
 import { LogLevelModule } from '../log-level';
 import { TimestampModule } from '../timestamp';
+import { ConsoleLogger } from './console-logger';
 import {
     ChalkAnnotation,
     ConsoleLoggerAnnotation,
@@ -20,12 +22,12 @@ describe('Console Logger Module Test Suite', () => {
     test('Should resolve the console logger', () => {
         const logger = module.resolve(ConsoleLoggerAnnotation);
 
-        expect(logger).not.toBeNull();
+        expect(logger).toBeInstanceOf(ConsoleLogger);
     });
 
     test('Should resolve chalk annotation', () => {
-        const chalk = module.resolve(ChalkAnnotation);
+        const chalkInstance = module.resolve(ChalkAnnotation);
 
-        expect(chalk).not.toBeNull();
+        expect(chalkInstance).toEqual(chalk);
     });
 });

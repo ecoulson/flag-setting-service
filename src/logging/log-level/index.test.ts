@@ -1,5 +1,6 @@
 import { LogLevelModule } from '.';
 import { EnvironmentModule } from '../../environment';
+import { LogLevel } from './log-level';
 import { LogLevelAnnotation } from './log-level-annotations';
 
 describe('Log Level Module Test Suite', () => {
@@ -13,6 +14,6 @@ describe('Log Level Module Test Suite', () => {
     test('Should resolve the log level from the module', () => {
         const logLevel = module.resolve(LogLevelAnnotation);
 
-        expect(logLevel).not.toBeNull();
+        expect(logLevel).toBeInstanceOf(LogLevel);
     });
 });
