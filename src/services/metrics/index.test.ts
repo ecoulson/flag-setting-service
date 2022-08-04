@@ -1,14 +1,16 @@
-import { MetricServiceModule } from "."
-import { MetricRecorderModule } from "./recorder";
+import { MetricServiceModule } from '.';
+import { MetricProcessorModule } from './processor';
+import { MetricRecorderModule } from './recorder';
 
-describe("Metric Service Module Test Suite", () => {
+describe('Metric Service Module Test Suite', () => {
     const module = new MetricServiceModule();
-    
+
     beforeAll(() => {
         module.configure();
-    })
+    });
 
-    test("Should register expected modules", () => {
-        expect(module.isRegistered(MetricRecorderModule)).toBeTruthy()
-    })
-})
+    test('Should register expected modules', () => {
+        expect(module.isRegistered(MetricRecorderModule)).toBeTruthy();
+        expect(module.isRegistered(MetricProcessorModule)).toBeTruthy();
+    });
+});
