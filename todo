@@ -1,2 +1,4 @@
--   Store messages after implementing idempotency because then we have a record of all messages
+-   Update all module tests to check for more specific checks than not null
+-   Add module tests to check that modules are registered
+-   Register dependent modules in appropriate modules (Database module in storage)
 -   Create a metric root storage which stores the information needed to lookup a metric given its type
