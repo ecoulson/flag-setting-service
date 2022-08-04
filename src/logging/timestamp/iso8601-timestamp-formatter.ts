@@ -1,6 +1,6 @@
 import { Injectable } from 'noose-injection';
+import { UTCDatetime } from '../../models/timestamp/utc-datetime';
 import { TimestampFormatter } from './timestamp-formatter';
-import { UTCDatetime } from './utc-datetime';
 
 @Injectable()
 export class ISO8601TimestampFormatter implements TimestampFormatter {
