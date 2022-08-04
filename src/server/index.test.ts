@@ -1,4 +1,5 @@
 import { ServerModule } from '.';
+import { FastifyServer } from './fastify-server';
 import {
     FastifyInstanceAnnotation,
     FastifyServerAnnotation,
@@ -11,7 +12,7 @@ describe('Server Module Test Suite', () => {
     test('Should have a fastify server', () => {
         const server = module.resolve(FastifyServerAnnotation);
 
-        expect(server).not.toBeNull();
+        expect(server).toBeInstanceOf(FastifyServer);
     });
 
     test('Should have a fastify server instace', () => {
