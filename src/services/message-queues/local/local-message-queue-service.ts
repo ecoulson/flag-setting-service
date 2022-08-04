@@ -23,7 +23,6 @@ export class LocalMessageQueueService implements MessageQueueService {
 
     async subscribe(topic: string, handler: MessageHandler): Promise<boolean> {
         return this.eventEmitter.addListener(topic, async (event) => {
-            console.log(event);
             handler(
                 new Message(
                     await this.idempotencyService.getIdempotentId(event.id),
