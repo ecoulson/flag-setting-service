@@ -10,17 +10,22 @@ import {
 import { Optional } from '../../common/optional/optional';
 import { Broker } from '../../database/broker/broker';
 import { MetricDataSource } from '../../database/metrics/metric-data-source';
+import { Logger } from '../../logging/logger';
 import { ElapsedTimeMetric } from '../../models/metrics/elasped-time-metric';
-import { SQLMetricStorage } from './sql-metric-storage';
+import { SQLElapsedTimeMetricStorage } from './sql-elapsed-time-metric-storage';
 
 describe('SQL Metric Storage Test Suite', () => {
     const id = 'bd32ed0f-428d-4f1d-946b-3482c1b8664c';
+    const mockedLogger = mock<Logger>();
     const mockedBroker = mock<Broker<ElapsedTimeMetric>>();
     const mockedDataSource = mock<MetricDataSource>();
     when(mockedDataSource.getElapsedTimeMetricBroker()).thenReturn(
         Optional.of(instance(mockedBroker))
     );
-    const storage = new SQLMetricStorage(instance(mockedDataSource));
+    const storage = new SQLElapsedTimeMetricStorage(
+        instance(mockedDataSource),
+        instance(mockedLogger)
+    );
 
     beforeEach(() => {
         reset(mockedBroker);

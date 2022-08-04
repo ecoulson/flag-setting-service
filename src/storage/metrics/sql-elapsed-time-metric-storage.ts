@@ -3,14 +3,14 @@ import { MetricDataSource } from '../../database/metrics/metric-data-source';
 import { MetricDataSourceAnnotation } from '../../database/metrics/metric-data-source-annotations';
 import { Logger } from '../../logging/logger';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
-import { Metric } from '../../models/metrics/metric';
+import { ElapsedTimeMetric } from '../../models/metrics/elasped-time-metric';
 import { SQLStorage } from '../sql-storage';
 import { MetricStorage } from './metric-storage';
 
 @Injectable()
-export class SQLMetricStorage
-    extends SQLStorage<Metric>
-    implements MetricStorage
+export class SQLElapsedTimeMetricStorage
+    extends SQLStorage<ElapsedTimeMetric>
+    implements MetricStorage<ElapsedTimeMetric>
 {
     constructor(
         @MetricDataSourceAnnotation.inject()
@@ -21,7 +21,7 @@ export class SQLMetricStorage
         super(dataSource.getElapsedTimeMetricBroker(), logger);
     }
 
-    findByTag(tag: string): Promise<Metric[]> {
+    findByTag(tag: string): Promise<ElapsedTimeMetric[]> {
         return this.broker.findWhere({
             tag,
         });

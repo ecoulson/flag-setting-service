@@ -3,8 +3,8 @@ import { DatabaseModule } from '../../database';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
-import { MetricStorageAnnotation } from './metric-storage-annotations';
-import { SQLMetricStorage } from './sql-metric-storage';
+import { ElapsedTimeMetricStorageAnnotation } from './metric-storage-annotations';
+import { SQLElapsedTimeMetricStorage } from './sql-elapsed-time-metric-storage';
 
 describe('Metric Storage Module Test Suite', () => {
     const module = new MetricStorageModule();
@@ -17,9 +17,9 @@ describe('Metric Storage Module Test Suite', () => {
         module.configure();
     });
 
-    test('Should resolve the sql metric storage', () => {
-        const storage = module.resolve(MetricStorageAnnotation);
+    test('Should resolve the sql elapsed time metric storage annotation', () => {
+        const storage = module.resolve(ElapsedTimeMetricStorageAnnotation);
 
-        expect(storage).toBeInstanceOf(SQLMetricStorage)
+        expect(storage).toBeInstanceOf(SQLElapsedTimeMetricStorage);
     });
 });

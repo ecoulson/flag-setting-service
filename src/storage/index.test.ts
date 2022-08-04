@@ -1,4 +1,5 @@
 import { StorageModule } from '.';
+import { DatabaseModule } from '../database';
 import { FlagStorageModule } from './flags';
 import { MessageStorageModule } from './messages';
 import { MetricStorageModule } from './metrics';

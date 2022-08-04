@@ -1,3 +1,5 @@
 import { Annotation } from 'noose-injection';
 
-export const MetricStorageAnnotation = new Annotation('MetricStorage');
+export const ElapsedTimeMetricStorageAnnotation = new Annotation(
+    'ElapsedTimeMetricStorage'
+);

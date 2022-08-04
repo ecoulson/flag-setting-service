@@ -1,9 +1,12 @@
 import { Module } from 'noose-injection';
-import { MetricStorageAnnotation } from './metric-storage-annotations';
-import { SQLMetricStorage } from './sql-metric-storage';
+import { ElapsedTimeMetricStorageAnnotation } from './metric-storage-annotations';
+import { SQLElapsedTimeMetricStorage } from './sql-elapsed-time-metric-storage';
 
 export class MetricStorageModule extends Module {
     configure(): void {
-        this.registerClass(MetricStorageAnnotation, SQLMetricStorage);
+        this.registerClass(
+            ElapsedTimeMetricStorageAnnotation,
+            SQLElapsedTimeMetricStorage
+        );
     }
 }

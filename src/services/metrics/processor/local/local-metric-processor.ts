@@ -1,19 +1,22 @@
 import { Injectable } from 'noose-injection';
 import { Message } from '../../../../models/messages/message';
+import { ElapsedTimeMetric } from '../../../../models/metrics/elasped-time-metric';
 import { Metric } from '../../../../models/metrics/metric';
 import { MetricStorage } from '../../../../storage/metrics/metric-storage';
-import { MetricStorageAnnotation } from '../../../../storage/metrics/metric-storage-annotations';
+import { ElapsedTimeMetricStorageAnnotation } from '../../../../storage/metrics/metric-storage-annotations';
 import { MetricProcessor } from '../metric-processor';
 
 @Injectable()
-export class LocalMetricProcessor<T = unknown> implements MetricProcessor<T> {
+export class LocalMetricProcessor implements MetricProcessor {
     constructor(
-        @MetricStorageAnnotation.inject()
-        private readonly storage: MetricStorage
+        @ElapsedTimeMetricStorageAnnotation.inject()
+        private readonly elapsedTimeMetricStorage: MetricStorage<ElapsedTimeMetric>
     ) {}
 
-    async process(message: Message<Metric<T>>): Promise<boolean> {
-        await this.storage.create(message.data);
+    async process(message: Message<Metric>): Promise<boolean> {
+        await this.elapsedTimeMetricStorage.create(
+            message.data as ElapsedTimeMetric
+        );
         return true;
     }
 }
