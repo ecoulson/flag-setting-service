@@ -1,9 +1,7 @@
 import { ConnectionStringModule } from '.';
 import { SystemEnvironmentModule } from '../../environment/system';
-import {
-    DatabaseURLAnnotation,
-    PostgresConnectionStringAnnotation,
-} from './connection-string-annotation';
+import { PostgresConnectionStringAnnotation } from './connection-string-annotation';
+import { PostgreSQLConnectionString } from './postgresql-connection-string';
 
 describe('Connection String Module Test Suite', () => {
     const module = new ConnectionStringModule();
@@ -18,6 +16,6 @@ describe('Connection String Module Test Suite', () => {
             PostgresConnectionStringAnnotation
         );
 
-        expect(connectionString).not.toBeNull();
+        expect(connectionString).toBeInstanceOf(PostgreSQLConnectionString);
     });
 });

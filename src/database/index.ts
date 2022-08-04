@@ -4,7 +4,7 @@ import { DatabaseDebugModule } from './debug-info';
 import { DialectModule } from './dialect';
 import { FlagDatabaseModule } from './flags';
 import { MessageDatabaseModule } from './messages';
-import { MetricDataSourceModule } from './metrics';
+import { MetricDatabaseModule } from './metrics';
 import { TypeORMModule } from './typeorm';
 
 export class DatabaseModule extends Module {
@@ -15,6 +15,6 @@ export class DatabaseModule extends Module {
         this.registerModule(new DatabaseDebugModule());
         this.registerModule(new MessageDatabaseModule());
         this.registerModule(new FlagDatabaseModule());
-        this.registerModule(new MetricDataSourceModule());
+        this.registerModule(new MetricDatabaseModule());
     }
 }

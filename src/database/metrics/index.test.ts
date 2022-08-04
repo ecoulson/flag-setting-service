@@ -1,4 +1,4 @@
-import { MetricDataSourceModule } from '.';
+import { MetricDatabaseModule } from '.';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
@@ -11,8 +11,8 @@ import { MetricDatabaseEntitiesAnnotation } from './metric-database-annotations'
 import { MetricDatabaseEntities } from './metric-database-entities';
 import { TypeORMMetricDataSource } from './typeorm-metric-data-source';
 
-describe('Metric Data Source Module Test Suite', () => {
-    const module = new MetricDataSourceModule();
+describe('Metric Database Module Test Suite', () => {
+    const module = new MetricDatabaseModule();
 
     beforeAll(() => {
         new DialectModule().configure();

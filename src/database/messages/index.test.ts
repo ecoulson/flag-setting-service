@@ -10,6 +10,8 @@ import {
     MessageDatabaseAnnotation,
     MessageDatabaseEntitiesAnnotation,
 } from './message-database-annotations';
+import { MessageDatabaseEntities } from './message-database-entities';
+import { TypeORMMessageDataSource } from './typeorm-message-data-source';
 
 describe('Messages Database Module Test Suite', () => {
     const module = new MessageDatabaseModule();
@@ -28,12 +30,12 @@ describe('Messages Database Module Test Suite', () => {
     test('Should resolve the messages database entities annotation', () => {
         const entities = module.resolve(MessageDatabaseEntitiesAnnotation);
 
-        expect(entities).not.toBeNull();
+        expect(entities).toBeInstanceOf(MessageDatabaseEntities);
     });
 
     test('Should resolve the messages data source annotation', () => {
         const datasource = module.resolve(MessageDatabaseAnnotation);
 
-        expect(datasource).not.toBeNull();
+        expect(datasource).toBeInstanceOf(TypeORMMessageDataSource);
     });
 });

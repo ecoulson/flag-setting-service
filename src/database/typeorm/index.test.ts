@@ -6,6 +6,7 @@ import { ConnectionStringModule } from '../connection-string';
 import { DatabaseDebugModule } from '../debug-info';
 import { DialectModule } from '../dialect';
 import { DataSourceFactoryAnnotation } from './typeorm-annotations';
+import { TypeORMDataSourceFactory } from './typeorm-data-source-factory';
 
 describe('TypeORM Module Test Suite', () => {
     const module = new TypeORMModule();
@@ -23,6 +24,6 @@ describe('TypeORM Module Test Suite', () => {
     test('Should resolve the data source factory annotation', () => {
         const dataSourceFactory = module.resolve(DataSourceFactoryAnnotation);
 
-        expect(dataSourceFactory).not.toBeNull();
+        expect(dataSourceFactory).toBeInstanceOf(TypeORMDataSourceFactory);
     });
 });

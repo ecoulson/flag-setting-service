@@ -10,6 +10,8 @@ import {
     FlagDatabaseAnnotation,
     FlagDatabaseEntitiesAnnotation,
 } from './flag-database-annotations';
+import { FlagDatabaseEntities } from './flag-database-entities';
+import { TypeORMFlagDataSource } from './typeorm-flag-data-source';
 
 describe('Flag Database Module Test Suite', () => {
     const module = new FlagDatabaseModule();
@@ -28,12 +30,12 @@ describe('Flag Database Module Test Suite', () => {
     test('Should resolve the flag database entities annotation', () => {
         const entities = module.resolve(FlagDatabaseEntitiesAnnotation);
 
-        expect(entities).not.toBeNull();
+        expect(entities).toBeInstanceOf(FlagDatabaseEntities);
     });
 
     test('Should resolve the flag database annotation', () => {
         const database = module.resolve(FlagDatabaseAnnotation);
 
-        expect(database).not.toBeNull();
+        expect(database).toBeInstanceOf(TypeORMFlagDataSource);
     });
 });
