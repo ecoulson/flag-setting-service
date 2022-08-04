@@ -8,7 +8,9 @@ import {
     FlagConstructorAnnotation,
     MessageConstructorAnnotation,
     MessageIdempotencyMappingAnnotation,
+    UTCDatetimeAnnotation,
 } from './model-annotation';
+import { UTCDatetime } from './timestamp/utc-datetime';
 
 describe('Model Module Test Suite', () => {
     const module = new ModelModule();
@@ -41,5 +43,11 @@ describe('Model Module Test Suite', () => {
         );
 
         expect(elapsedTimeMetric).toEqual(MessageIdempotencyMapping);
+    });
+
+    test('Should resolve the utc datetime constructor', () => {
+        const utcDatetime = module.resolve(UTCDatetimeAnnotation);
+
+        expect(utcDatetime).toEqual(UTCDatetime);
     });
 });

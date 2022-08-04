@@ -8,7 +8,9 @@ import {
     FlagConstructorAnnotation,
     MessageConstructorAnnotation,
     MessageIdempotencyMappingAnnotation,
+    UTCDatetimeAnnotation,
 } from './model-annotation';
+import { UTCDatetime } from './timestamp/utc-datetime';
 
 export class ModelModule extends Module {
     configure(): void {
@@ -19,5 +21,6 @@ export class ModelModule extends Module {
             MessageIdempotencyMappingAnnotation,
             MessageIdempotencyMapping
         );
+        this.registerValue(UTCDatetimeAnnotation, UTCDatetime);
     }
 }

@@ -8,3 +8,4 @@ export const ElapsedTimeMetricAnnotation = new Annotation('ElapsedTimeMetric');
 export const MessageIdempotencyMappingAnnotation = new Annotation(
     'MessageIdempotencyMapping'
 );
+export const UTCDatetimeAnnotation = new Annotation('UTCDatetime');
