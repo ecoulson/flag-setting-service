@@ -8,6 +8,7 @@ import { EventServiceModule } from '../../events';
 import IdentifierServiceModule from '../../identifier';
 import { MessageIdempotencyServiceModule } from '../idempotency';
 import { LocalMessageQueueAnnotation } from './local-message-queue-annotations';
+import { LocalMessageQueueService } from './local-message-queue-service';
 
 describe('Local Message Queue Module Test Suite', () => {
     const module = new LocalMessageQueueServiceModule();
@@ -27,6 +28,6 @@ describe('Local Message Queue Module Test Suite', () => {
     test('Should resolve the local message queue service annotation', () => {
         const service = module.resolve(LocalMessageQueueAnnotation);
 
-        expect(service).not.toBeNull();
+        expect(service).toBeInstanceOf(LocalMessageQueueService);
     });
 });

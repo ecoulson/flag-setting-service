@@ -10,6 +10,7 @@ import { EventServiceModule } from '../../events';
 import IdentifierServiceModule from '../../identifier';
 import { MessageIdempotencyServiceModule } from '../../message-queues/idempotency';
 import { LocalMessageQueueServiceModule } from '../../message-queues/local';
+import { LocalMetricRecorder } from './local/local-metric-recorder';
 import { LocalMetricRecorderAnnotation } from './metric-recorder-annotations';
 
 describe('Metric Recorder Module', () => {
@@ -31,6 +32,6 @@ describe('Metric Recorder Module', () => {
     test('Should resolve the local metric annotation', async () => {
         const service = module.resolve(LocalMetricRecorderAnnotation);
 
-        expect(service).not.toBeNull();
+        expect(service).toBeInstanceOf(LocalMetricRecorder);
     });
 });

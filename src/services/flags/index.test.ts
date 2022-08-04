@@ -5,6 +5,7 @@ import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { StorageModule } from '../../storage';
 import { FlagServiceAnnotation } from './flag-annotations';
+import { FlagService } from './flag-service';
 
 describe('Flag Service Module Test Suite', () => {
     const module = new FlagServiceModule();
@@ -21,6 +22,6 @@ describe('Flag Service Module Test Suite', () => {
     test('Should resolve the flag service', () => {
         const service = module.resolve(FlagServiceAnnotation);
 
-        expect(service).not.toBeNull();
+        expect(service).toBeInstanceOf(FlagService);
     });
 });
