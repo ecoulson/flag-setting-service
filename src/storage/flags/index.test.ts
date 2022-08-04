@@ -4,6 +4,7 @@ import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { FlagStorageAnnotation } from './flag-storage-annotations';
+import { SQLFlagStorage } from './sql-flag-storage';
 
 describe('Flag Module Test Suite', () => {
     const module = new FlagStorageModule();
@@ -19,6 +20,6 @@ describe('Flag Module Test Suite', () => {
     test('Should resolve the flag storage', () => {
         const storage = module.resolve(FlagStorageAnnotation);
 
-        expect(storage).not.toBeNull();
+        expect(storage).toBeInstanceOf(SQLFlagStorage);
     });
 });

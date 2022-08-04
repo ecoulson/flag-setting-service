@@ -4,6 +4,7 @@ import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { MetricStorageAnnotation } from './metric-storage-annotations';
+import { SQLMetricStorage } from './sql-metric-storage';
 
 describe('Metric Storage Module Test Suite', () => {
     const module = new MetricStorageModule();
@@ -19,6 +20,6 @@ describe('Metric Storage Module Test Suite', () => {
     test('Should resolve the sql metric storage', () => {
         const storage = module.resolve(MetricStorageAnnotation);
 
-        expect(storage).not.toBeNull();
+        expect(storage).toBeInstanceOf(SQLMetricStorage)
     });
 });

@@ -3,7 +3,9 @@ import { DatabaseModule } from '../../database';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
+import { MessageIdempotencyStorageModule } from './idempotency';
 import { MessageStorageAnnotation } from './message-storage-annotations';
+import { SQLMessageStorage } from './sql-message-storage';
 
 describe('Message Storage Module Test Suite', () => {
     const module = new MessageStorageModule();
@@ -19,6 +21,12 @@ describe('Message Storage Module Test Suite', () => {
     test('Should resolve sql message storage annotation', () => {
         const storage = module.resolve(MessageStorageAnnotation);
 
-        expect(storage).not.toBeNull();
+        expect(storage).toBeInstanceOf(SQLMessageStorage);
+    });
+
+    test('Should register expected modules', () => {
+        expect(
+            module.isRegistered(MessageIdempotencyStorageModule)
+        ).toBeTruthy();
     });
 });
