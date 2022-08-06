@@ -1,14 +1,17 @@
+import { LocalMessageQueueAnnotation } from '../local/local-message-queue-annotations';
+import { MessageQueue } from '../message-queue';
 import { MessageQueueConnectionStrategy } from './message-queue-connection-strategy';
 
-export abstract class LocalMessageQueueConnectionStrategy
+export abstract class LocalMessageQueueConnectionStrategy<T>
     implements MessageQueueConnectionStrategy
 {
-    constructor(@MessageQueue) {
+    constructor(
+        @LocalMessageQueueAnnotation.inject()
+        protected readonly messageQueue: MessageQueue<T>
+    ) {}
 
-    }
-
-    initialize(): Promise<void> {
-        throw new Error('Method not implemented.');
+    async initialize(): Promise<void> {
+        this.registerSubscribers();
     }
 
     protected abstract registerSubscribers(): Promise<void>;

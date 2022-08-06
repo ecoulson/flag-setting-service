@@ -18,7 +18,7 @@ export class LocalMetricRecorder implements MetricRecorder {
 
     async record(metric: Metric): Promise<boolean> {
         return await this.queueService.publish(
-            new Message(this.identifierService.generateId(), metric.tag, metric)
+            new Message(this.identifierService.generateId(), 'metric', metric)
         );
     }
 }

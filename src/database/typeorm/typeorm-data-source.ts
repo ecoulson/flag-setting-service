@@ -98,6 +98,7 @@ export class TypeORMDataSource implements DataSource {
         entity: EntityConstructor
     ): Optional<Broker<T>> {
         if (!this.entities.hasEntity(entity)) {
+            // TODO: Decide if this should throw because its strange the application can boot when missing a data provider
             this.logger.error(
                 `${entity.name} is not registered in the current data source`
             );
