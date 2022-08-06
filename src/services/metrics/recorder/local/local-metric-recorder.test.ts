@@ -10,14 +10,14 @@ import {
 } from 'ts-mockito';
 import { Message } from '../../../../models/messages/message';
 import { Metric } from '../../../../models/metrics/metric';
-import { IdentifierService } from '../../../identifier/identifier-service';
+import { IdentifierGenerator } from '../../../../identifiers/identifier-generator';
 import { MessageQueue } from '../../../../message-queues/message-queue';
 import { LocalMetricRecorder } from './local-metric-recorder';
 import { ElapsedTimeMetric } from '../../../../models/metrics/elasped-time-metric';
 
 describe('Local Metric Service Test Suite', () => {
     const id = '8a8b0354-b29c-47a8-a332-ef601e198346';
-    const mockedIdentifierService = mock<IdentifierService>();
+    const mockedIdentifierService = mock<IdentifierGenerator>();
     const mockedQueueService = mock<MessageQueue<Metric>>();
     const recorder = new LocalMetricRecorder(
         instance(mockedQueueService),
@@ -31,13 +31,13 @@ describe('Local Metric Service Test Suite', () => {
 
     test('Should call the metrics service and enqueue a new message', async () => {
         when(mockedQueueService.publish(anyOfClass(Message))).thenResolve(true);
-        when(mockedIdentifierService.generateId()).thenReturn(id);
+        when(mockedIdentifierService.generate()).thenReturn(id);
         const metric = new ElapsedTimeMetric(id, 'time', 100);
 
         const result = await recorder.record(metric);
 
         expect(result).toBeTruthy();
-        verify(mockedIdentifierService.generateId()).once();
+        verify(mockedIdentifierService.generate()).once();
         verify(mockedQueueService.publish(anyOfClass(Message))).once();
         const [actualMessage] = capture(mockedQueueService.publish).last();
         expect(actualMessage.data).toBe(metric);
@@ -50,7 +50,7 @@ describe('Local Metric Service Test Suite', () => {
         when(mockedQueueService.publish(anyOfClass(Message))).thenResolve(
             false
         );
-        when(mockedIdentifierService.generateId()).thenReturn(id);
+        when(mockedIdentifierService.generate()).thenReturn(id);
 
         const result = await recorder.record(metric);
 

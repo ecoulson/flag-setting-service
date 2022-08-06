@@ -5,8 +5,8 @@ import { MessageStorage } from '../../storage/messages/message-storage';
 import { MessageStorageAnnotation } from '../../storage/messages/message-storage-annotations';
 import { EventEmitter } from '../../events/emitter/event-emitter';
 import { EventEmitterAnnotation } from '../../events/emitter/event-emitter-annotations';
-import { UUIDIdentifierServiceAnnotation } from '../../services/identifier/identifier-annotations';
-import { IdentifierService } from '../../services/identifier/identifier-service';
+import { UUIDIdentifierGeneratorAnnotation } from '../../identifiers/identifier-annotations';
+import { IdentifierGenerator } from '../../identifiers/identifier-generator';
 import { MessageQueueIdempotency } from '../idempotency/message-queue-idempotency';
 import { MessageQueueIdempotencyAnnotation } from '../idempotency/message-queue-idempotency-annotations';
 import { MessageQueueSubscriber } from '../message-queue-subscriber';
@@ -17,8 +17,8 @@ export class LocalMessageQueue implements MessageQueue {
     constructor(
         @EventEmitterAnnotation.inject()
         private readonly eventEmitter: EventEmitter,
-        @UUIDIdentifierServiceAnnotation.inject()
-        private readonly identifierService: IdentifierService,
+        @UUIDIdentifierGeneratorAnnotation.inject()
+        private readonly identifierService: IdentifierGenerator,
         @MessageQueueIdempotencyAnnotation.inject()
         private readonly idempotencyService: MessageQueueIdempotency,
         @MessageStorageAnnotation.inject()
@@ -49,7 +49,7 @@ export class LocalMessageQueue implements MessageQueue {
     }
 
     async publish(message: Message): Promise<boolean> {
-        const eventId = this.identifierService.generateId();
+        const eventId = this.identifierService.generate();
         this.eventEmitter.emit(new Event(eventId, message.topic, message.data));
         return true;
     }

@@ -4,7 +4,7 @@ import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { EventModule } from '../../events';
-import IdentifierServiceModule from '../../services/identifier';
+import IdentifierModule from '../../identifiers';
 import { MetricServiceModule } from '../../services/metrics';
 import { StorageModule } from '../../storage';
 import { MessageQueueIdempotencyModule } from '../idempotency';
@@ -20,7 +20,7 @@ describe('Metric Message Queue Connection Strategy Test Suite', () => {
         new StorageModule().configure();
         new EventModule().configure();
         new MessageQueueIdempotencyModule().configure();
-        new IdentifierServiceModule().configure();
+        new IdentifierModule().configure();
         new DatabaseModule().configure();
         new EnvironmentModule().configure();
         new ModelModule().configure();

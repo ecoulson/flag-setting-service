@@ -5,7 +5,7 @@ import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { StorageModule } from '../../storage';
 import { EventModule } from '../../events';
-import IdentifierServiceModule from '../../services/identifier';
+import IdentifierModule from '../../identifiers';
 import { MessageQueueIdempotencyModule } from '../idempotency';
 import { LocalMessageQueueAnnotation } from './local-message-queue-annotations';
 import { LocalMessageQueue } from './local-message-queue-service';
@@ -17,7 +17,7 @@ describe('Local Message Queue Module Test Suite', () => {
         new StorageModule().configure();
         new EventModule().configure();
         new MessageQueueIdempotencyModule().configure();
-        new IdentifierServiceModule().configure();
+        new IdentifierModule().configure();
         new DatabaseModule().configure();
         new EnvironmentModule().configure();
         new ModelModule().configure();

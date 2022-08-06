@@ -4,7 +4,7 @@ import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { StorageModule } from '../../storage';
-import IdentifierServiceModule from '../../services/identifier';
+import IdentifierModule from '../../identifiers';
 import { MessageQueueIdempotencyAnnotation } from './message-queue-idempotency-annotations';
 import { LocalMessageQueueIdempotencyService } from './local-message-idempotency-service';
 
@@ -17,7 +17,7 @@ describe('Message Queue Idempotency Module Test Suite', () => {
         new EnvironmentModule().configure();
         new ModelModule().configure();
         new LoggingModule().configure();
-        new IdentifierServiceModule().configure();
+        new IdentifierModule().configure();
         module.configure();
     });
 

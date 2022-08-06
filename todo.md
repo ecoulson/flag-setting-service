@@ -1,4 +1,3 @@
--   Move Identifier service outside the service module
 -   Remove error handling from optional object
 -   Add a status object which contains an error and if an error occured, otherwise it is in an ok state and has a value
     (Good for network) requests because code can operate off the error or if the object is just missing.

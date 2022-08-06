@@ -7,7 +7,7 @@ import { ModelModule } from '../../../models';
 import { StorageModule } from '../../../storage';
 import { MessageIdempotencyStorageModule } from '../../../storage/messages/idempotency';
 import { EventModule } from '../../../events';
-import IdentifierServiceModule from '../../identifier';
+import IdentifierModule from '../../../identifiers';
 import { MessageQueueIdempotencyModule } from '../../../message-queues/idempotency';
 import { LocalMessageQueueModule } from '../../../message-queues/local';
 import { LocalMetricRecorder } from './local/local-metric-recorder';
@@ -18,7 +18,7 @@ describe('Metric Recorder Module', () => {
 
     beforeAll(() => {
         new EventModule().configure();
-        new IdentifierServiceModule().configure();
+        new IdentifierModule().configure();
         new LocalMessageQueueModule().configure();
         new MessageQueueIdempotencyModule().configure();
         new StorageModule().configure();
