@@ -1,8 +1,8 @@
-import { EventServiceModule } from '.';
+import { EventModule } from '.';
 import { EventEmitterModule } from './emitter';
 
 describe('Event Module Test Suite', () => {
-    const module = new EventServiceModule();
+    const module = new EventModule();
 
     beforeAll(() => {
         module.configure();

@@ -1,5 +1,5 @@
 import { Injectable } from 'noose-injection';
-import { Event } from '../../../models/events/event';
+import { Event } from '../../models/events/event';
 import { EventHandler } from './event-handler';
 
 @Injectable()

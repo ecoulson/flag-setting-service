@@ -3,7 +3,7 @@ import { DatabaseModule } from '../../database';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
-import { EventServiceModule } from '../../services/events';
+import { EventModule } from '../../events';
 import IdentifierServiceModule from '../../services/identifier';
 import { MetricServiceModule } from '../../services/metrics';
 import { StorageModule } from '../../storage';
@@ -18,7 +18,7 @@ describe('Metric Message Queue Connection Strategy Test Suite', () => {
     beforeAll(() => {
         new LocalMessageQueueModule().configure();
         new StorageModule().configure();
-        new EventServiceModule().configure();
+        new EventModule().configure();
         new MessageQueueIdempotencyModule().configure();
         new IdentifierServiceModule().configure();
         new DatabaseModule().configure();

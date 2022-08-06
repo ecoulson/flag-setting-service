@@ -1,7 +1,5 @@
-import { instance, mock, verify } from 'ts-mockito';
-import { Event } from '../../../models/events/event';
+import { Event } from '../../models/events/event';
 import { EventEmitter } from './event-emitter';
-import { EventHandler } from './event-handler';
 
 describe('Event Emitter Test Suite', () => {
     const eventEmitter = new EventEmitter();

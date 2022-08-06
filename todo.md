@@ -1,5 +1,3 @@
--   Add local metric connection strategy
--   Move Events service outside the service module
 -   Move Identifier service outside the service module
 -   Remove error handling from optional object
 -   Add a status object which contains an error and if an error occured, otherwise it is in an ok state and has a value

@@ -2,7 +2,7 @@ import { anyOfClass, instance, mock, reset, verify, when } from 'ts-mockito';
 import { Optional } from '../../common/optional/optional';
 import { Message } from '../../models/messages/message';
 import { MessageStorage } from '../../storage/messages/message-storage';
-import { EventEmitter } from '../../services/events/emitter/event-emitter';
+import { EventEmitter } from '../../events/emitter/event-emitter';
 import { IdentifierService } from '../../services/identifier/identifier-service';
 import { MessageQueueIdempotency } from '../idempotency/message-queue-idempotency';
 import { LocalMessageQueue } from './local-message-queue-service';
