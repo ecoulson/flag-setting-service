@@ -1,6 +1,3 @@
--   Remove error handling from optional object
--   Add a status object which contains an error and if an error occured, otherwise it is in an ok state and has a value
-    (Good for network) requests because code can operate off the error or if the object is just missing.
 -   Move the creation of the message being saved to the emit function and instead load the message when sending it to subscribers
 -   Add retry strategies for message queue (Linear n attempts)
 -   Add id's for subscribers
