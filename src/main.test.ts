@@ -2,6 +2,7 @@ import { DatabaseModule } from './database';
 import { EnvironmentModule } from './environment';
 import { LoggingModule } from './logging';
 import { MainModule } from './main';
+import { MessageQueueModule } from './message-queues';
 import { ModelModule } from './models';
 import { ServerModule } from './server';
 import { ServiceModule } from './services';
@@ -22,5 +23,6 @@ describe('Main Module Test Suite', () => {
         expect(module.isRegistered(ServerModule)).toBeTruthy();
         expect(module.isRegistered(ServiceModule)).toBeTruthy();
         expect(module.isRegistered(StorageModule)).toBeTruthy();
+        expect(module.isRegistered(MessageQueueModule)).toBeTruthy();
     });
 });

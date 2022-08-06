@@ -1,3 +1,3 @@
-export interface MessageIdempotencyService {
+export interface MessageQueueIdempotency {
     getIdempotentId(eventId: string): Promise<string>;
 }

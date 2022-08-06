@@ -11,14 +11,14 @@ import {
 import { Message } from '../../../../models/messages/message';
 import { Metric } from '../../../../models/metrics/metric';
 import { IdentifierService } from '../../../identifier/identifier-service';
-import { MessageQueueService } from '../../../message-queues/message-queue-service';
+import { MessageQueue } from '../../../../message-queues/message-queue';
 import { LocalMetricRecorder } from './local-metric-recorder';
 
 describe('Local Metric Service Test Suite', () => {
     const id = '8a8b0354-b29c-47a8-a332-ef601e198346';
     const mockedIdentifierService = mock<IdentifierService>();
     const mockedMetric = mock<Metric>();
-    const mockedQueueService = mock<MessageQueueService<Metric>>();
+    const mockedQueueService = mock<MessageQueue<Metric>>();
     const service = new LocalMetricRecorder(
         instance(mockedQueueService),
         instance(mockedIdentifierService)

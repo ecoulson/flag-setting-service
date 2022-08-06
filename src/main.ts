@@ -2,6 +2,7 @@ import { Module } from 'noose-injection';
 import { DatabaseModule } from './database';
 import { EnvironmentModule } from './environment';
 import { LoggingModule } from './logging';
+import { MessageQueueModule } from './message-queues';
 import { ModelModule } from './models';
 import { ServerModule } from './server';
 import { ServiceModule } from './services';
@@ -16,5 +17,6 @@ export class MainModule extends Module {
         this.registerModule(new ServerModule());
         this.registerModule(new ServiceModule());
         this.registerModule(new StorageModule());
+        this.registerModule(new MessageQueueModule());
     }
 }

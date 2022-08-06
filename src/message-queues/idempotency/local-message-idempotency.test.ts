@@ -7,18 +7,18 @@ import {
     verify,
     when,
 } from 'ts-mockito';
-import { Optional } from '../../../common/optional/optional';
-import { MessageIdempotencyMapping } from '../../../models/messages/message-idempotency-mapping';
-import { MessageIdempotencyStorage } from '../../../storage/messages/idempotency/message-idempotency-storage';
-import { IdentifierService } from '../../identifier/identifier-service';
-import { StoredMessageIdempotencyService } from './stored-message-idempotency-service';
+import { Optional } from '../../common/optional/optional';
+import { MessageIdempotencyMapping } from '../../models/messages/message-idempotency-mapping';
+import { MessageIdempotencyStorage } from '../../storage/messages/idempotency/message-idempotency-storage';
+import { IdentifierService } from '../../services/identifier/identifier-service';
+import { LocalMessageQueueIdempotencyService } from './local-message-idempotency-service';
 
-describe('Stored Message Idempotency Service Test Suite', () => {
+describe('Local Message Idempotency Test Suite', () => {
     const eventId = '07873314-86e5-46c1-92ca-41643e7ae2da';
     const idempotentId = 'bd32ed0f-428d-4f1d-946b-3482c1b8664c';
     const mockedIdentifierService = mock<IdentifierService>();
     const mockedStorage = mock<MessageIdempotencyStorage>();
-    const service = new StoredMessageIdempotencyService(
+    const service = new LocalMessageQueueIdempotencyService(
         instance(mockedStorage),
         instance(mockedIdentifierService)
     );

@@ -1,28 +1,28 @@
 import { anyOfClass, instance, mock, reset, verify, when } from 'ts-mockito';
-import { Optional } from '../../../common/optional/optional';
-import { Message } from '../../../models/messages/message';
-import { MessageStorage } from '../../../storage/messages/message-storage';
-import { EventEmitter } from '../../events/emitter/event-emitter';
-import { IdentifierService } from '../../identifier/identifier-service';
-import { MessageIdempotencyService } from '../idempotency/message-idempotency-service';
-import { LocalMessageQueueService } from './local-message-queue-service';
+import { Optional } from '../../common/optional/optional';
+import { Message } from '../../models/messages/message';
+import { MessageStorage } from '../../storage/messages/message-storage';
+import { EventEmitter } from '../../services/events/emitter/event-emitter';
+import { IdentifierService } from '../../services/identifier/identifier-service';
+import { MessageQueueIdempotency } from '../idempotency/message-queue-idempotency';
+import { LocalMessageQueue } from './local-message-queue-service';
 
-describe('Local Message Queue Service Test Suite', () => {
-    const mockedIdempotencyService = mock<MessageIdempotencyService>();
+describe('Local Message Queue Test Suite', () => {
+    const mockedIdempotency = mock<MessageQueueIdempotency>();
     const mockedIdentifierService = mock<IdentifierService>();
     const mockedMessageStorage = mock<MessageStorage>();
     const id = '4f158c46-3951-48ab-81d8-1cc7699a366f';
     const eventId = 'ea5e861a-0c1b-4aed-978a-52c47830b632';
-    const messageQueue = new LocalMessageQueueService(
+    const messageQueue = new LocalMessageQueue(
         new EventEmitter(),
         instance(mockedIdentifierService),
-        instance(mockedIdempotencyService),
+        instance(mockedIdempotency),
         instance(mockedMessageStorage)
     );
 
     beforeEach(() => {
         reset(mockedIdentifierService);
-        reset(mockedIdempotencyService);
+        reset(mockedIdempotency);
         reset(mockedMessageStorage);
     });
 
@@ -47,7 +47,7 @@ describe('Local Message Queue Service Test Suite', () => {
     test('Should provide the same message id to all handlers', async () => {
         const handler = jest.fn();
         const message = new Message(id, 'topic', {});
-        when(mockedIdempotencyService.getIdempotentId(eventId)).thenResolve(id);
+        when(mockedIdempotency.getIdempotentId(eventId)).thenResolve(id);
         when(mockedIdentifierService.generateId()).thenReturn(eventId);
         when(mockedMessageStorage.create(anyOfClass(Message))).thenResolve(
             Optional.of(message)
