@@ -30,27 +30,24 @@ export class LocalMessageQueue implements MessageQueue {
         subscriber: MessageQueueSubscriber
     ): Promise<boolean> {
         return this.eventEmitter.addListener(topic, async (event) => {
-            subscriber(await this.ensureMessageExists(event));
+            subscriber(await this.retrieveMessage(event));
         });
     }
 
-    private async ensureMessageExists(event: Event): Promise<Message> {
+    private async retrieveMessage(event: Event): Promise<Message> {
+        console.log('here');
         const messageId = await this.idempotencyService.getIdempotentId(
             event.id
         );
         const message = await this.messageStorage.findById(messageId);
-        if (!message.isEmpty()) {
-            return message.get();
-        }
-        const createdMessage = await this.messageStorage.create(
-            new Message(messageId, event.type, event.data)
-        );
-        return createdMessage.get();
+        return message.get();
     }
 
     async publish(message: Message): Promise<boolean> {
         const eventId = this.identifierService.generate();
+        message.id = await this.idempotencyService.getIdempotentId(eventId);
         this.eventEmitter.emit(new Event(eventId, message.topic, message.data));
+        await this.messageStorage.create(message);
         return true;
     }
 }

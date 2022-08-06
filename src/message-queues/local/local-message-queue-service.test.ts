@@ -13,8 +13,9 @@ describe('Local Message Queue Test Suite', () => {
     const mockedMessageStorage = mock<MessageStorage>();
     const id = '4f158c46-3951-48ab-81d8-1cc7699a366f';
     const eventId = 'ea5e861a-0c1b-4aed-978a-52c47830b632';
+    const eventEmitter = new EventEmitter();
     const messageQueue = new LocalMessageQueue(
-        new EventEmitter(),
+        eventEmitter,
         instance(mockedIdentifierService),
         instance(mockedIdempotency),
         instance(mockedMessageStorage)
@@ -24,16 +25,23 @@ describe('Local Message Queue Test Suite', () => {
         reset(mockedIdentifierService);
         reset(mockedIdempotency);
         reset(mockedMessageStorage);
+        eventEmitter.removeAllListeners();
     });
 
     test('Should publish an event', async () => {
         const inputMessage = new Message(id, 'test', {});
         when(mockedIdentifierService.generate()).thenReturn(eventId);
+        when(mockedIdempotency.getIdempotentId(eventId)).thenResolve(id);
+        when(mockedMessageStorage.create(inputMessage)).thenResolve(
+            Optional.of(inputMessage)
+        );
 
         const result = await messageQueue.publish(inputMessage);
 
         expect(result).toBeTruthy();
         verify(mockedIdentifierService.generate()).once();
+        verify(mockedMessageStorage.create(inputMessage)).once();
+        verify(mockedIdempotency.getIdempotentId(eventId)).once();
     });
 
     test('Should subscribe to a topic', async () => {
@@ -47,22 +55,17 @@ describe('Local Message Queue Test Suite', () => {
     test('Should provide the same message id to all handlers', async () => {
         const handler = jest.fn();
         const message = new Message(id, 'topic', {});
-        when(mockedIdempotency.getIdempotentId(eventId)).thenResolve(id);
         when(mockedIdentifierService.generate()).thenReturn(eventId);
-        when(mockedMessageStorage.create(anyOfClass(Message))).thenResolve(
-            Optional.of(message)
-        );
+        when(mockedIdempotency.getIdempotentId(eventId)).thenResolve(id);
         when(mockedMessageStorage.findById(message.id)).thenResolve(
             Optional.of(message)
         );
-        await Promise.all([
-            messageQueue.subscribe('topic', handler),
-            messageQueue.subscribe('topic', handler),
-        ]);
+        await messageQueue.subscribe('topic', handler);
+        await messageQueue.subscribe('topic', handler);
 
         await messageQueue.publish(new Message(id, 'topic', {}));
-        await new Promise(process.nextTick);
 
+        await new Promise(process.nextTick);
         expect(handler).toBeCalledTimes(2);
         expect(handler).toHaveBeenNthCalledWith(
             1,
@@ -72,5 +75,7 @@ describe('Local Message Queue Test Suite', () => {
             2,
             new Message(id, 'topic', {})
         );
+        verify(mockedIdempotency.getIdempotentId(eventId)).thrice();
+        verify(mockedMessageStorage.findById(message.id)).twice();
     });
 });

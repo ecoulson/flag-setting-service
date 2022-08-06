@@ -25,11 +25,24 @@ describe('Event Emitter Test Suite', () => {
         expect(listener).toBeCalledTimes(2);
     });
 
-    test('Should remove a listener from the event listener', () => {
+    test('Should remove a listener from the event emitter', () => {
         const listener = jest.fn();
 
         eventEmitter.addListener('event', listener);
         const result = eventEmitter.removeListener('event', listener);
+        eventEmitter.emit(new Event('id', 'event', {}));
+
+        expect(result).toBeTruthy();
+        expect(listener).not.toBeCalled();
+    });
+
+    test('Should remove all listeners from the event emitter', () => {
+        const listener = jest.fn();
+
+        eventEmitter.addListener('event', listener);
+        eventEmitter.addListener('event', listener);
+        eventEmitter.addListener('event', listener);
+        const result = eventEmitter.removeAllListeners();
         eventEmitter.emit(new Event('id', 'event', {}));
 
         expect(result).toBeTruthy();

@@ -1,4 +1,3 @@
--   Move the creation of the message being saved to the emit function and instead load the message when sending it to subscribers
 -   Add retry strategies for message queue (Linear n attempts)
 -   Add id's for subscribers
 -   Put messages in dead letter queue for subscriber when retry strategy fails

@@ -39,4 +39,9 @@ export class EventEmitter {
         }
         return false;
     }
+
+    removeAllListeners(): boolean {
+        this.listenerMap.clear();
+        return true;
+    }
 }
