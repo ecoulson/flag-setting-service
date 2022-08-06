@@ -1,6 +1,8 @@
 import { Injectable } from 'noose-injection';
 import { Event } from '../../../models/events/event';
 import { Message } from '../../../models/messages/message';
+import { MessageStorage } from '../../../storage/messages/message-storage';
+import { MessageStorageAnnotation } from '../../../storage/messages/message-storage-annotations';
 import { EventEmitter } from '../../events/emitter/event-emitter';
 import { EventEmitterAnnotation } from '../../events/emitter/event-emitter-annotations';
 import { UUIDIdentifierServiceAnnotation } from '../../identifier/identifier-annotations';
@@ -18,19 +20,29 @@ export class LocalMessageQueueService implements MessageQueueService {
         @UUIDIdentifierServiceAnnotation.inject()
         private readonly identifierService: IdentifierService,
         @MessageIdempotencyServiceAnnotation.inject()
-        private readonly idempotencyService: MessageIdempotencyService
+        private readonly idempotencyService: MessageIdempotencyService,
+        @MessageStorageAnnotation.inject()
+        private readonly messageStorage: MessageStorage
     ) {}
 
     async subscribe(topic: string, handler: MessageHandler): Promise<boolean> {
         return this.eventEmitter.addListener(topic, async (event) => {
-            handler(
-                new Message(
-                    await this.idempotencyService.getIdempotentId(event.id),
-                    event.type,
-                    event.data
-                )
-            );
+            handler(await this.ensureMessageExists(event));
         });
+    }
+
+    private async ensureMessageExists(event: Event): Promise<Message> {
+        const messageId = await this.idempotencyService.getIdempotentId(
+            event.id
+        );
+        const message = await this.messageStorage.findById(messageId);
+        if (!message.isEmpty()) {
+            return message.get();
+        }
+        const createdMessage = await this.messageStorage.create(
+            new Message(messageId, event.type, event.data)
+        );
+        return createdMessage.get();
     }
 
     async publish(message: Message): Promise<boolean> {
