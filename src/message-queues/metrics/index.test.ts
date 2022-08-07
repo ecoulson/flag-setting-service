@@ -4,13 +4,14 @@ import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { EventModule } from '../../events';
-import IdentifierModule from '../../identifiers';
+import { IdentifierModule } from '../../identifiers';
 import { MetricServiceModule } from '../../services/metrics';
 import { StorageModule } from '../../storage';
 import { MessageQueueIdempotencyModule } from '../idempotency';
 import { LocalMessageQueueModule } from '../local';
 import { MetricLocalMessageQueueConnectionStrategyAnnotation } from './connection-strategy-annotation';
 import { MetricsLocalConnectionStrategy } from './metrics-local-connection-strategy';
+import { RetryStrategyModule } from '../retry-strategy';
 
 describe('Metric Message Queue Connection Strategy Test Suite', () => {
     const module = new MetricMessageQueueConnectionStrategyModule();
@@ -26,6 +27,7 @@ describe('Metric Message Queue Connection Strategy Test Suite', () => {
         new ModelModule().configure();
         new LoggingModule().configure();
         new MetricServiceModule().configure();
+        new RetryStrategyModule().configure();
         module.configure();
     });
 

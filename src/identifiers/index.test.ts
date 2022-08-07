@@ -1,4 +1,4 @@
-import IdentifierModule from '.';
+import { IdentifierModule } from '.';
 import { UUIDIdentifierGeneratorAnnotation } from './identifier-annotations';
 import { UUIDIdentifierGenerator } from './uuid-identifier-generator';
 

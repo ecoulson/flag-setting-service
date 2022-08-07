@@ -4,7 +4,7 @@ import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
 import { StorageModule } from '../../storage';
-import IdentifierModule from '../../identifiers';
+import { IdentifierModule } from '../../identifiers';
 import { MessageQueueIdempotencyAnnotation } from './message-queue-idempotency-annotations';
 import { LocalMessageQueueIdempotencyService } from './local-message-idempotency-service';
 

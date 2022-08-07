@@ -1,7 +1,7 @@
 import { DatabaseModule } from './database';
 import { EnvironmentModule } from './environment';
 import { EventModule } from './events';
-import IdentifierModule from './identifiers';
+import { IdentifierModule } from './identifiers';
 import { LoggingModule } from './logging';
 import { MainModule } from './main';
 import { MessageQueueModule } from './message-queues';

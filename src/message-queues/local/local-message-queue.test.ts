@@ -1,18 +1,21 @@
-import { instance, mock, reset, verify, when } from 'ts-mockito';
+import { anyFunction, instance, mock, reset, verify, when } from 'ts-mockito';
 import { Optional } from '../../common/optional/optional';
 import { Message } from '../../models/messages/message';
 import { MessageStorage } from '../../storage/messages/message-storage';
 import { EventEmitter } from '../../events/emitter/event-emitter';
 import { IdentifierGenerator } from '../../identifiers/identifier-generator';
 import { MessageQueueIdempotency } from '../idempotency/message-queue-idempotency';
-import { LocalMessageQueue } from './local-message-queue-service';
+import { LocalMessageQueue } from './local-message-queue';
 import { MessageQueueSubscriber } from '../../models/message-queue/message-queue-subscriber';
 import { MessageQueueSubscriberHandler } from '../../models/message-queue/message-queue-subscriber-handler';
+import { RetryStrategy } from '../retry-strategy/retry-strategy';
+import { Status } from '../../common/status/status';
 
 describe('Local Message Queue Test Suite', () => {
     const mockedIdempotency = mock<MessageQueueIdempotency>();
     const mockedIdentifierService = mock<IdentifierGenerator>();
     const mockedMessageStorage = mock<MessageStorage>();
+    const mockedRetryStrategy = mock<RetryStrategy>();
     const id = '4f158c46-3951-48ab-81d8-1cc7699a366f';
     const eventId = 'ea5e861a-0c1b-4aed-978a-52c47830b632';
     const subscriberId = '124e53b2-4a0b-41c5-b115-f077ac424d1f';
@@ -21,13 +24,15 @@ describe('Local Message Queue Test Suite', () => {
         eventEmitter,
         instance(mockedIdentifierService),
         instance(mockedIdempotency),
-        instance(mockedMessageStorage)
+        instance(mockedMessageStorage),
+        instance(mockedRetryStrategy)
     );
 
     beforeEach(() => {
         reset(mockedIdentifierService);
         reset(mockedIdempotency);
         reset(mockedMessageStorage);
+        reset(mockedRetryStrategy);
         eventEmitter.removeAllListeners();
     });
 
@@ -72,6 +77,9 @@ describe('Local Message Queue Test Suite', () => {
         when(mockedMessageStorage.findById(message.id)).thenResolve(
             Optional.of(message)
         );
+        when(mockedRetryStrategy.execute(anyFunction())).thenResolve(
+            Status.ok()
+        );
         await messageQueue.subscribe('topic', subscriber);
         await messageQueue.subscribe('topic', subscriber);
 
@@ -79,16 +87,6 @@ describe('Local Message Queue Test Suite', () => {
 
         await new Promise(process.nextTick);
         expect(status.ok()).toBeTruthy();
-        expect(handler).toBeCalledTimes(2);
-        expect(handler).toHaveBeenNthCalledWith(
-            1,
-            new Message(id, 'topic', {})
-        );
-        expect(handler).toHaveBeenNthCalledWith(
-            2,
-            new Message(id, 'topic', {})
-        );
-        verify(mockedIdempotency.getIdempotentId(eventId)).thrice();
-        verify(mockedMessageStorage.findById(message.id)).twice();
+        verify(mockedRetryStrategy.execute(anyFunction())).twice();
     });
 });

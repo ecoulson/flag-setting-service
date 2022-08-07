@@ -14,6 +14,8 @@ import { MessageQueue } from '../message-queue';
 import { Optional } from '../../common/optional/optional';
 import { MessageQueueSubscriber } from '../../models/message-queue/message-queue-subscriber';
 import { Status } from '../../common/status/status';
+import { LinearRetryStrategyAnnotation } from '../retry-strategy/linear/linear-retry-strategy-annotations';
+import { RetryStrategy } from '../retry-strategy/retry-strategy';
 
 @Injectable()
 export class LocalMessageQueue implements MessageQueue {
@@ -25,15 +27,19 @@ export class LocalMessageQueue implements MessageQueue {
         @MessageQueueIdempotencyAnnotation.inject()
         private readonly idempotencyService: MessageQueueIdempotency,
         @MessageStorageAnnotation.inject()
-        private readonly messageStorage: MessageStorage
+        private readonly messageStorage: MessageStorage,
+        @LinearRetryStrategyAnnotation.inject()
+        private readonly retryStrategy: RetryStrategy
     ) {}
 
     async subscribe(
         topic: string,
         subscriber: MessageQueueSubscriber
     ): Promise<Status> {
-        return this.eventEmitter.addListener(topic, async (event) => {
-            subscriber.handler(await this.retrieveMessage(event));
+        return this.eventEmitter.addListener(topic, (event) => {
+            this.retryStrategy.execute(async () =>
+                subscriber.handler(await this.retrieveMessage(event))
+            );
         });
     }
 

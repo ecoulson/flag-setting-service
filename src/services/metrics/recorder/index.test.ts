@@ -7,11 +7,12 @@ import { ModelModule } from '../../../models';
 import { StorageModule } from '../../../storage';
 import { MessageIdempotencyStorageModule } from '../../../storage/messages/idempotency';
 import { EventModule } from '../../../events';
-import IdentifierModule from '../../../identifiers';
+import { IdentifierModule } from '../../../identifiers';
 import { MessageQueueIdempotencyModule } from '../../../message-queues/idempotency';
 import { LocalMessageQueueModule } from '../../../message-queues/local';
 import { LocalMetricRecorder } from './local/local-metric-recorder';
 import { LocalMetricRecorderAnnotation } from './metric-recorder-annotations';
+import { RetryStrategyModule } from '../../../message-queues/retry-strategy';
 
 describe('Metric Recorder Module', () => {
     const module = new MetricRecorderModule();
@@ -26,6 +27,7 @@ describe('Metric Recorder Module', () => {
         new EnvironmentModule().configure();
         new ModelModule().configure();
         new LoggingModule().configure();
+        new RetryStrategyModule().configure();
         module.configure();
     });
 

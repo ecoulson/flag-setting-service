@@ -1,5 +1,5 @@
 import { Module } from 'noose-injection';
-import { LocalMessageQueue } from './local-message-queue-service';
+import { LocalMessageQueue } from './local-message-queue';
 import { LocalMessageQueueAnnotation } from './local-message-queue-annotations';
 
 export class LocalMessageQueueModule extends Module {

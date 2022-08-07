@@ -2,7 +2,7 @@ import { Module } from 'noose-injection';
 import { DatabaseModule } from './database';
 import { EnvironmentModule } from './environment';
 import { EventModule } from './events';
-import IdentifierModule from './identifiers';
+import { IdentifierModule } from './identifiers';
 import { LoggingModule } from './logging';
 import { MessageQueueModule } from './message-queues';
 import { ModelModule } from './models';

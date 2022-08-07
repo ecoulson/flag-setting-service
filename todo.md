@@ -1,8 +1,10 @@
--   Put messages in dead letter queue for subscriber id when retry strategy fails
+-   Add retry strategies for message queue (Linear n attempts)
+-   Put messages in dead letter queue for subscriber when retry strategy fails
 -   Record elapsed time metric in flag service
+-   Add connection strategies for database
 -   Run a live test to see if the metric is recorded in the database
 
-Features To Implement
+Features
 
 -   Logging
     -   Write to file in S3
