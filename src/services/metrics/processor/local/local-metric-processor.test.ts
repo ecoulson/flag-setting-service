@@ -32,7 +32,7 @@ describe('Local Metric Processor Test Suite', () => {
 
         const result = await processor.process(message);
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         verify(mockedElapsedTimeMetricStorage.create(metric)).once();
     });
 });

@@ -6,6 +6,7 @@ import { IdentifierGenerator } from '../../../../identifiers/identifier-generato
 import { LocalMessageQueueAnnotation } from '../../../../message-queues/local/local-message-queue-annotations';
 import { MessageQueue } from '../../../../message-queues/message-queue';
 import { MetricRecorder } from '../metric-recorder';
+import { Status } from '../../../../common/status/status';
 
 @Injectable()
 export class LocalMetricRecorder implements MetricRecorder {
@@ -16,7 +17,7 @@ export class LocalMetricRecorder implements MetricRecorder {
         private readonly identifierService: IdentifierGenerator
     ) {}
 
-    async record(metric: Metric): Promise<boolean> {
+    async record(metric: Metric): Promise<Status> {
         return await this.queueService.publish(
             new Message(this.identifierService.generate(), 'metric', metric)
         );

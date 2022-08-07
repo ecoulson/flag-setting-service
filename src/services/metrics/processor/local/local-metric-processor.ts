@@ -1,4 +1,5 @@
 import { Injectable } from 'noose-injection';
+import { Status } from '../../../../common/status/status';
 import { Message } from '../../../../models/messages/message';
 import { Metric } from '../../../../models/metrics/metric';
 import { MetricStorageRetriever } from '../../storage-retriever/metric-storage-retriever';
@@ -12,10 +13,10 @@ export class LocalMetricProcessor implements MetricProcessor {
         private readonly storageRetriever: MetricStorageRetriever
     ) {}
 
-    async process(message: Message<Metric>): Promise<boolean> {
+    async process(message: Message<Metric>): Promise<Status> {
         const metric = message.data;
         const storage = this.storageRetriever.retrieve(metric.type);
         await storage.create(metric);
-        return true;
+        return Status.ok();
     }
 }

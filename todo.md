@@ -1,5 +1,3 @@
--   Use the status object instead of boolean for more descriptive statuses in the metric processor
--   Use the status object instead of boolean for more descriptive statuses in the metric recorder
 -   Put messages in dead letter queue for subscriber id when retry strategy fails
 -   Record elapsed time metric in flag service
 -   Run a live test to see if the metric is recorded in the database
