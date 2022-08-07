@@ -10,12 +10,14 @@ import { MessageQueueSubscriber } from '../../models/message-queue/message-queue
 import { MessageQueueSubscriberHandler } from '../../models/message-queue/message-queue-subscriber-handler';
 import { RetryStrategy } from '../retry-strategy/retry-strategy';
 import { Status } from '../../common/status/status';
+import { NotificationStrategy } from '../notification-strategy/notification-strategy';
 
 describe('Local Message Queue Test Suite', () => {
     const mockedIdempotency = mock<MessageQueueIdempotency>();
     const mockedIdentifierService = mock<IdentifierGenerator>();
     const mockedMessageStorage = mock<MessageStorage>();
     const mockedRetryStrategy = mock<RetryStrategy>();
+    const mockedNotificationStrategy = mock<NotificationStrategy>();
     const id = '4f158c46-3951-48ab-81d8-1cc7699a366f';
     const eventId = 'ea5e861a-0c1b-4aed-978a-52c47830b632';
     const subscriberId = '124e53b2-4a0b-41c5-b115-f077ac424d1f';
@@ -25,7 +27,8 @@ describe('Local Message Queue Test Suite', () => {
         instance(mockedIdentifierService),
         instance(mockedIdempotency),
         instance(mockedMessageStorage),
-        instance(mockedRetryStrategy)
+        instance(mockedRetryStrategy),
+        instance(mockedNotificationStrategy)
     );
 
     beforeEach(() => {
@@ -33,6 +36,7 @@ describe('Local Message Queue Test Suite', () => {
         reset(mockedIdempotency);
         reset(mockedMessageStorage);
         reset(mockedRetryStrategy);
+        reset(mockedNotificationStrategy);
         eventEmitter.removeAllListeners();
     });
 

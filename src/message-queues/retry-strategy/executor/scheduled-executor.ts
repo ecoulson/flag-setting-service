@@ -7,10 +7,10 @@ import { Executor } from './executor';
 export class ScheduledExecutor {
     executeAfter(handler: Executor, delay: Time): Promise<Status> {
         return new Promise((resolve) => {
-            setTimeout(() => {
+            setTimeout(async () => {
                 try {
-                    handler();
-                    resolve(Status.ok());
+                    const status = await handler();
+                    resolve(status);
                 } catch (error) {
                     resolve(Status.error(error as Error));
                 }
