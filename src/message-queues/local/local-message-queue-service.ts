@@ -32,10 +32,9 @@ export class LocalMessageQueue implements MessageQueue {
         topic: string,
         subscriber: MessageQueueSubscriber
     ): Promise<Status> {
-        this.eventEmitter.addListener(topic, async (event) => {
+        return this.eventEmitter.addListener(topic, async (event) => {
             subscriber.handler(await this.retrieveMessage(event));
         });
-        return Status.ok();
     }
 
     private async retrieveMessage(event: Event): Promise<Message> {

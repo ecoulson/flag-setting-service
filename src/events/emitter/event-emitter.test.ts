@@ -8,9 +8,9 @@ describe('Event Emitter Test Suite', () => {
         const listener = jest.fn();
 
         const result = eventEmitter.addListener('event', listener);
-        eventEmitter.emit(new Event('id', 'event', {}));
+        const emitStatus = eventEmitter.emit(new Event('id', 'event', {}));
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         expect(listener).toBeCalled();
     });
 
@@ -21,7 +21,7 @@ describe('Event Emitter Test Suite', () => {
         const result = eventEmitter.addListener('event', listener);
         eventEmitter.emit(new Event('id', 'event', {}));
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         expect(listener).toBeCalledTimes(2);
     });
 
@@ -32,7 +32,7 @@ describe('Event Emitter Test Suite', () => {
         const result = eventEmitter.removeListener('event', listener);
         eventEmitter.emit(new Event('id', 'event', {}));
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         expect(listener).not.toBeCalled();
     });
 
@@ -42,10 +42,11 @@ describe('Event Emitter Test Suite', () => {
         eventEmitter.addListener('event', listener);
         eventEmitter.addListener('event', listener);
         eventEmitter.addListener('event', listener);
+
         const result = eventEmitter.removeAllListeners();
         eventEmitter.emit(new Event('id', 'event', {}));
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         expect(listener).not.toBeCalled();
     });
 
@@ -55,7 +56,7 @@ describe('Event Emitter Test Suite', () => {
         const result = eventEmitter.addListener('event', listener);
         eventEmitter.emit(new Event('id', 'event', {}));
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         expect(listener).toBeCalled();
     });
 });

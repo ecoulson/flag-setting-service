@@ -1,4 +1,5 @@
 import { Injectable } from 'noose-injection';
+import { Status } from '../../common/status/status';
 import { Event } from '../../models/events/event';
 import { EventHandler } from './event-handler';
 
@@ -10,23 +11,24 @@ export class EventEmitter {
         this.listenerMap = new Map<string, EventHandler[]>();
     }
 
-    emit(event: Event): void {
+    emit(event: Event): Status {
         const listeners = this.listenerMap.get(event.type);
         listeners?.forEach((listener) => {
             listener(event);
         });
+        return Status.ok();
     }
 
-    addListener(type: string, listener: EventHandler): boolean {
+    addListener(type: string, listener: EventHandler): Status {
         if (this.listenerMap.has(type)) {
             this.listenerMap.get(type)?.push(listener);
         } else {
             this.listenerMap.set(type, [listener]);
         }
-        return true;
+        return Status.ok();
     }
 
-    removeListener(type: string, listener: EventHandler): boolean {
+    removeListener(type: string, listener: EventHandler): Status {
         const listeners = this.listenerMap.get(type);
         if (listeners) {
             this.listenerMap.set(
@@ -35,13 +37,13 @@ export class EventEmitter {
                     return existingListener !== listener;
                 })
             );
-            return true;
+            return Status.ok();
         }
-        return false;
+        return Status.error();
     }
 
-    removeAllListeners(): boolean {
+    removeAllListeners(): Status {
         this.listenerMap.clear();
-        return true;
+        return Status.ok();
     }
 }
