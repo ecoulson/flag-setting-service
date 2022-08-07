@@ -2,7 +2,14 @@ import { Status } from './status';
 import { StatusType } from './status-type';
 
 describe('Status Test Suite', () => {
-    test('Should create an ok status', () => {
+    test('Should create an ok status with no value', () => {
+        const status = Status.ok();
+
+        expect(status.type()).toEqual(StatusType.OK);
+        expect(status.ok()).toBeTruthy();
+    });
+
+    test('Should create an ok status with a value', () => {
         const status = Status.ok(100);
 
         expect(status.type()).toEqual(StatusType.OK);
@@ -10,7 +17,14 @@ describe('Status Test Suite', () => {
         expect(status.value()).toEqual(100);
     });
 
-    test('Should create an error status', () => {
+    test('Should create an error status with no exception', () => {
+        const status = Status.error();
+
+        expect(status.type()).toEqual(StatusType.ERROR);
+        expect(status.ok()).toBeFalsy();
+    });
+
+    test('Should create an error status with an exception', () => {
         const inputError = new Error();
         const expectedError = inputError;
 

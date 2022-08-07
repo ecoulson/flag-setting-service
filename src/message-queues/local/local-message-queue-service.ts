@@ -13,6 +13,7 @@ import { MessageQueueSubscriberHandler } from '../../models/message-queue/messag
 import { MessageQueue } from '../message-queue';
 import { Optional } from '../../common/optional/optional';
 import { MessageQueueSubscriber } from '../../models/message-queue/message-queue-subscriber';
+import { Status } from '../../common/status/status';
 
 @Injectable()
 export class LocalMessageQueue implements MessageQueue {
@@ -30,10 +31,11 @@ export class LocalMessageQueue implements MessageQueue {
     async subscribe(
         topic: string,
         subscriber: MessageQueueSubscriber
-    ): Promise<boolean> {
-        return this.eventEmitter.addListener(topic, async (event) => {
+    ): Promise<Status> {
+        this.eventEmitter.addListener(topic, async (event) => {
             subscriber.handler(await this.retrieveMessage(event));
         });
+        return Status.ok();
     }
 
     private async retrieveMessage(event: Event): Promise<Message> {
@@ -44,11 +46,11 @@ export class LocalMessageQueue implements MessageQueue {
         return message.get();
     }
 
-    async publish(message: Message): Promise<boolean> {
+    async publish(message: Message): Promise<Status> {
         const eventId = this.identifierService.generate();
         message.id = await this.idempotencyService.getIdempotentId(eventId);
         this.eventEmitter.emit(new Event(eventId, message.topic, message.data));
         await this.messageStorage.create(message);
-        return true;
+        return Status.ok();
     }
 }

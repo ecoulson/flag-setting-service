@@ -1,4 +1,6 @@
 import { Injectable } from 'noose-injection';
+import { Optional } from '../../common/optional/optional';
+import { MessageQueueSubscriber } from '../../models/message-queue/message-queue-subscriber';
 import { Metric } from '../../models/metrics/metric';
 import { MetricProcessor } from '../../services/metrics/processor/metric-processor';
 import { MetricProcessorAnnotation } from '../../services/metrics/processor/metric-processor-annotations';
@@ -18,6 +20,13 @@ export class MetricsLocalConnectionStrategy extends LocalMessageQueueConnectionS
     }
 
     protected async registerSubscribers(): Promise<void> {
-        this.messageQueue.subscribe('metric', this.metricProcess.process);
+        this.messageQueue.subscribe(
+            'metric',
+            new MessageQueueSubscriber(
+                '',
+                this.metricProcess.process,
+                Optional.empty()
+            )
+        );
     }
 }

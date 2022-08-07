@@ -1,4 +1,4 @@
-import { instance, mock, reset, spy, verify } from 'ts-mockito';
+import { instance, mock, reset } from 'ts-mockito';
 import { MessageQueue } from '../message-queue';
 import { LocalMessageQueueConnectionStrategy } from './local-message-queue-connection-strategy';
 
@@ -29,8 +29,9 @@ describe('Local Message Queue Connection Strategy Test Suite', () => {
     });
 
     test('Should call registerSubscribers on initialization', async () => {
-        await strategy.initialize();
+        const status = await strategy.initialize();
 
+        expect(status.ok()).toBeTruthy();
         expect(subscriber).toBeCalled();
     });
 });

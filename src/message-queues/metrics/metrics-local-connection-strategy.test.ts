@@ -1,4 +1,5 @@
-import { anyFunction, instance, mock, verify } from 'ts-mockito';
+import { anyFunction, anyOfClass, instance, mock, verify } from 'ts-mockito';
+import { MessageQueueSubscriber } from '../../models/message-queue/message-queue-subscriber';
 import { Metric } from '../../models/metrics/metric';
 import { LocalMetricProcessor } from '../../services/metrics/processor/local/local-metric-processor';
 import { MessageQueue } from '../message-queue';
@@ -15,6 +16,11 @@ describe('Metrics Local Connection Strategy Test Suite', () => {
     test('Should the metric processor should subscribe to the metric channel', async () => {
         await strategy.initialize();
 
-        verify(mockedMessageQueue.subscribe('metric', anyFunction())).once();
+        verify(
+            mockedMessageQueue.subscribe(
+                'metric',
+                anyOfClass(MessageQueueSubscriber)
+            )
+        ).once();
     });
 });

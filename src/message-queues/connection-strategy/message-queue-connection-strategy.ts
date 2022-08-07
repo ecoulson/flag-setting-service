@@ -1,3 +1,5 @@
+import { Status } from '../../common/status/status';
+
 export interface MessageQueueConnectionStrategy {
-    initialize(): Promise<void>;
+    initialize(): Promise<Status>;
 }

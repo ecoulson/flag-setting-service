@@ -1,8 +1,9 @@
+import { Status } from '../../common/status/status';
 import { LocalMessageQueueAnnotation } from '../local/local-message-queue-annotations';
 import { MessageQueue } from '../message-queue';
 import { MessageQueueConnectionStrategy } from './message-queue-connection-strategy';
 
-export abstract class LocalMessageQueueConnectionStrategy<T>
+export abstract class LocalMessageQueueConnectionStrategy<T = unknown>
     implements MessageQueueConnectionStrategy
 {
     constructor(
@@ -10,8 +11,9 @@ export abstract class LocalMessageQueueConnectionStrategy<T>
         protected readonly messageQueue: MessageQueue<T>
     ) {}
 
-    async initialize(): Promise<void> {
+    async initialize(): Promise<Status> {
         this.registerSubscribers();
+        return Status.ok();
     }
 
     protected abstract registerSubscribers(): Promise<void>;

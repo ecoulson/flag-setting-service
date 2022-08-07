@@ -1,4 +1,4 @@
-import { anyOfClass, instance, mock, reset, verify, when } from 'ts-mockito';
+import { instance, mock, reset, verify, when } from 'ts-mockito';
 import { Optional } from '../../common/optional/optional';
 import { Message } from '../../models/messages/message';
 import { MessageStorage } from '../../storage/messages/message-storage';
@@ -41,7 +41,7 @@ describe('Local Message Queue Test Suite', () => {
 
         const result = await messageQueue.publish(inputMessage);
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         verify(mockedIdentifierService.generate()).once();
         verify(mockedMessageStorage.create(inputMessage)).once();
         verify(mockedIdempotency.getIdempotentId(eventId)).once();
@@ -56,7 +56,7 @@ describe('Local Message Queue Test Suite', () => {
 
         const result = await messageQueue.subscribe('topic', subscriber);
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
     });
 
     test('Should provide the same message id to all handlers', async () => {
@@ -75,9 +75,10 @@ describe('Local Message Queue Test Suite', () => {
         await messageQueue.subscribe('topic', subscriber);
         await messageQueue.subscribe('topic', subscriber);
 
-        await messageQueue.publish(new Message(id, 'topic', {}));
+        const status = await messageQueue.publish(new Message(id, 'topic', {}));
 
         await new Promise(process.nextTick);
+        expect(status.ok()).toBeTruthy();
         expect(handler).toBeCalledTimes(2);
         expect(handler).toHaveBeenNthCalledWith(
             1,

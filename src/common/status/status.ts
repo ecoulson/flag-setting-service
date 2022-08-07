@@ -1,14 +1,14 @@
 import { Optional } from '../optional/optional';
 import { StatusType } from './status-type';
 
-export class Status<T> {
+export class Status<T = unknown> {
     constructor(
         private readonly type_: StatusType,
         private readonly value_: Optional<T>,
         private readonly exception_: Optional<Error>
     ) {}
 
-    public static ok<T>(value: T): Status<T> {
+    public static ok<T>(value?: T): Status<T> {
         return new Status<T>(
             StatusType.OK,
             Optional.of(value),
@@ -16,7 +16,7 @@ export class Status<T> {
         );
     }
 
-    public static error<T>(error: Error): Status<T> {
+    public static error<T>(error?: Error): Status<T> {
         return new Status<T>(
             StatusType.ERROR,
             Optional.empty(),
