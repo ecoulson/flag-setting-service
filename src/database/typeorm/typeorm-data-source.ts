@@ -15,6 +15,7 @@ import { EntityConstructor } from '../entities/entity-constructor';
 import { Broker } from '../broker/broker';
 import { TypeORMBroker } from './typeorm-broker';
 import { Identifiable } from '../../models/identifiable';
+import { Status } from '../../common/status/status';
 
 export class TypeORMDataSource implements DataSource {
     private readonly dataSource: TypeORMDataSouceInstance;
@@ -30,19 +31,19 @@ export class TypeORMDataSource implements DataSource {
         this.dataSource = dataSourceFactory.buildPostgresDatabase();
     }
 
-    async initialize(databaseUrl: EnvironmentVariable): Promise<boolean> {
+    async initialize(databaseUrl: EnvironmentVariable): Promise<Status> {
         const connectionParameters = this.connectionString.parse(databaseUrl);
         const type = this.dialect.type();
         if (!connectionParameters.isPresent()) {
             this.logger.error(
                 'No connection string is present in the environment. Please set one in your system variables.'
             );
-            return false;
+            return Status.error();
         } else if (type === DialectType.UNKNOWN) {
             this.logger.error(
                 'No database dialect has been selected. Please set one in your system environment'
             );
-            return false;
+            return Status.error();
         } else {
             try {
                 return await this.connect(type, connectionParameters);
@@ -73,7 +74,7 @@ export class TypeORMDataSource implements DataSource {
                 connectionParameters.get().database
             }`
         );
-        return true;
+        return Status.ok();
     }
 
     private handleConnectionFailure(
@@ -91,7 +92,7 @@ export class TypeORMDataSource implements DataSource {
         this.logger.error(
             `Failed to initialize connection for the connection parameters ${connectionParametersDebugString} with ${type} dialect`
         );
-        return false;
+        return Status.error();
     }
 
     getBroker<T extends Identifiable>(

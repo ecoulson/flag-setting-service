@@ -70,7 +70,7 @@ describe('TypeORM Data Source Test Suite', () => {
 
         const result = await dataSource.initialize(databaseURL);
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         verify(mockedDataSource.setOptions(anything())).once();
         verify(mockedDataSource.initialize()).once();
         verify(mockedConnectionString.parse(databaseURL)).once();
@@ -86,7 +86,7 @@ describe('TypeORM Data Source Test Suite', () => {
 
         const result = await dataSource.initialize(databaseURL);
 
-        expect(result).toBeFalsy();
+        expect(result.ok()).toBeFalsy();
         verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
@@ -110,7 +110,7 @@ describe('TypeORM Data Source Test Suite', () => {
 
         const result = await dataSource.initialize(databaseURL);
 
-        expect(result).toBeFalsy();
+        expect(result.ok()).toBeFalsy();
         verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
@@ -133,7 +133,7 @@ describe('TypeORM Data Source Test Suite', () => {
 
         const result = await dataSource.initialize(databaseURL);
 
-        expect(result).toBeFalsy();
+        expect(result.ok()).toBeFalsy();
         verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDataSource.setOptions(anything())).never();
         verify(mockedDataSource.initialize()).never();
@@ -162,7 +162,7 @@ describe('TypeORM Data Source Test Suite', () => {
 
         const result = await dataSource.initialize(databaseURL);
 
-        expect(result).toBeFalsy();
+        expect(result.ok()).toBeFalsy();
         verify(mockedConnectionString.parse(databaseURL)).once();
         verify(mockedDataSource.setOptions(anything())).once();
         verify(mockedDataSource.initialize()).once();
