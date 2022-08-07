@@ -1,5 +1,5 @@
 import { Message } from '../models/messages/message';
-import { MessageQueueSubscriber } from './message-queue-subscriber';
+import { MessageQueueSubscriber } from '../models/message-queue/message-queue-subscriber';
 
 export interface MessageQueue<T = unknown> {
     publish(message: Message<T>): Promise<boolean>;

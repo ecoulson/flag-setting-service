@@ -9,8 +9,10 @@ import { UUIDIdentifierGeneratorAnnotation } from '../../identifiers/identifier-
 import { IdentifierGenerator } from '../../identifiers/identifier-generator';
 import { MessageQueueIdempotency } from '../idempotency/message-queue-idempotency';
 import { MessageQueueIdempotencyAnnotation } from '../idempotency/message-queue-idempotency-annotations';
-import { MessageQueueSubscriber } from '../message-queue-subscriber';
+import { MessageQueueSubscriberHandler } from '../../models/message-queue/message-queue-subscriber-handler';
 import { MessageQueue } from '../message-queue';
+import { Optional } from '../../common/optional/optional';
+import { MessageQueueSubscriber } from '../../models/message-queue/message-queue-subscriber';
 
 @Injectable()
 export class LocalMessageQueue implements MessageQueue {
@@ -30,12 +32,11 @@ export class LocalMessageQueue implements MessageQueue {
         subscriber: MessageQueueSubscriber
     ): Promise<boolean> {
         return this.eventEmitter.addListener(topic, async (event) => {
-            subscriber(await this.retrieveMessage(event));
+            subscriber.handler(await this.retrieveMessage(event));
         });
     }
 
     private async retrieveMessage(event: Event): Promise<Message> {
-        console.log('here');
         const messageId = await this.idempotencyService.getIdempotentId(
             event.id
         );

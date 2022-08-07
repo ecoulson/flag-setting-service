@@ -1,10 +1,14 @@
--   Add retry strategies for message queue (Linear n attempts)
--   Add id's for subscribers
--   Put messages in dead letter queue for subscriber when retry strategy fails
+-   Use the status object instead of boolean for more descriptive statuses in the message queue
+-   Use the status object instead of boolean for more descriptive statuses in the event emitter
+-   Use the status object instead of boolean for more descriptive statuses in the logger
+-   Use the status object instead of boolean for more descriptive statuses in the data source
+-   Use the status object instead of boolean for more descriptive statuses in the metric processor
+-   Use the status object instead of boolean for more descriptive statuses in the metric recorder
+-   Put messages in dead letter queue for subscriber id when retry strategy fails
 -   Record elapsed time metric in flag service
 -   Run a live test to see if the metric is recorded in the database
 
-Features
+Features To Implement
 
 -   Logging
     -   Write to file in S3
