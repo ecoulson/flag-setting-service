@@ -53,7 +53,7 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.fatal('message');
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         verify(mockedLogLevel.level()).once();
         verify(mockedLogLevel.getDisplayString(LogLevelType.FATAL)).once();
         verify(mockedChalk.black(anyString())).once();
@@ -79,7 +79,7 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.error('message');
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         verify(mockedLogLevel.level()).once();
         verify(mockedLogLevel.getDisplayString(LogLevelType.ERROR)).once();
         verify(mockedChalk.red(anyString())).once();
@@ -92,9 +92,9 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.error('message');
 
-        expect(result).toBeFalsy();
-        verify(mockedLogLevel.level()).once();
-        verify(mockedLogLevel.getDisplayString(LogLevelType.ERROR)).never();
+        expect(result.ok()).toBeFalsy();
+        verify(mockedLogLevel.level()).twice();
+        verify(mockedLogLevel.getDisplayString(LogLevelType.ERROR)).once();
         verify(mockedChalk.red(anyString())).never();
         verify(mockedTimestampGenerator.generateCurrentTimestamp()).never();
         verify(
@@ -120,7 +120,7 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.warn('message');
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         verify(mockedLogLevel.level()).once();
         verify(mockedLogLevel.getDisplayString(LogLevelType.WARN)).once();
         verify(mockedChalk.yellow(anyString())).once();
@@ -133,9 +133,9 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.warn('message');
 
-        expect(result).toBeFalsy();
-        verify(mockedLogLevel.level()).once();
-        verify(mockedLogLevel.getDisplayString(LogLevelType.WARN)).never();
+        expect(result.ok()).toBeFalsy();
+        verify(mockedLogLevel.level()).twice();
+        verify(mockedLogLevel.getDisplayString(LogLevelType.WARN)).once();
         verify(mockedChalk.yellow(anyString())).never();
         verify(mockedTimestampGenerator.generateCurrentTimestamp()).never();
         verify(
@@ -161,7 +161,7 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.info('message');
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         verify(mockedLogLevel.level()).once();
         verify(mockedLogLevel.getDisplayString(LogLevelType.INFO)).once();
         verify(mockedChalk.white(anyString())).once();
@@ -174,9 +174,9 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.info('message');
 
-        expect(result).toBeFalsy();
-        verify(mockedLogLevel.level()).once();
-        verify(mockedLogLevel.getDisplayString(LogLevelType.INFO)).never();
+        expect(result.ok()).toBeFalsy();
+        verify(mockedLogLevel.level()).twice();
+        verify(mockedLogLevel.getDisplayString(LogLevelType.INFO)).once();
         verify(mockedChalk.white(anyString())).never();
         verify(mockedTimestampGenerator.generateCurrentTimestamp()).never();
         verify(
@@ -202,7 +202,7 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.debug('message');
 
-        expect(result).toBeTruthy();
+        expect(result.ok()).toBeTruthy();
         verify(mockedLogLevel.level()).once();
         verify(mockedLogLevel.getDisplayString(LogLevelType.DEBUG)).once();
         verify(mockedChalk.green(anyString())).once();
@@ -215,9 +215,9 @@ describe('Console Logger Test Suite', () => {
 
         const result = await logger.debug('message');
 
-        expect(result).toBeFalsy();
-        verify(mockedLogLevel.level()).once();
-        verify(mockedLogLevel.getDisplayString(LogLevelType.DEBUG)).never();
+        expect(result.ok()).toBeFalsy();
+        verify(mockedLogLevel.level()).twice();
+        verify(mockedLogLevel.getDisplayString(LogLevelType.DEBUG)).once();
         verify(mockedChalk.green(anyString())).never();
         verify(mockedTimestampGenerator.generateCurrentTimestamp()).never();
         verify(

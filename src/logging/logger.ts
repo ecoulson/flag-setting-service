@@ -1,7 +1,9 @@
+import { Status } from '../common/status/status';
+
 export interface Logger {
-    fatal(message: string): Promise<boolean>;
-    error(message: string): Promise<boolean>;
-    warn(message: string): Promise<boolean>;
-    info(message: string): Promise<boolean>;
-    debug(message: string): Promise<boolean>;
+    fatal(message: string): Promise<Status>;
+    error(message: string): Promise<Status>;
+    warn(message: string): Promise<Status>;
+    info(message: string): Promise<Status>;
+    debug(message: string): Promise<Status>;
 }

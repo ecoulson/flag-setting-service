@@ -1,4 +1,3 @@
--   Use the status object instead of boolean for more descriptive statuses in the logger
 -   Use the status object instead of boolean for more descriptive statuses in the data source
 -   Use the status object instead of boolean for more descriptive statuses in the metric processor
 -   Use the status object instead of boolean for more descriptive statuses in the metric recorder

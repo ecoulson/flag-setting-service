@@ -11,12 +11,13 @@ import {
 } from '../timestamp/timestamp-annotations';
 import { TimestampGenerator } from '../timestamp/timestamp-generator';
 import { TimestampFormatter } from '../timestamp/timestamp-formatter';
+import { Status } from '../../common/status/status';
 
 @Injectable()
 export class ConsoleLogger implements Logger {
     constructor(
         @LogLevelAnnotation.inject()
-        private readonly logLevel: LogLevel,
+        private readonly systemLogLevel: LogLevel,
         @ChalkAnnotation.inject()
         private readonly chalk: Chalk,
         @TimestampGeneratorAnnotation.inject()
@@ -25,32 +26,40 @@ export class ConsoleLogger implements Logger {
         private readonly timestampFormatter: TimestampFormatter
     ) {}
 
-    fatal(message: string): Promise<boolean> {
+    fatal(message: string): Promise<Status> {
         return this.log(LogLevelType.FATAL, message);
     }
 
-    error(message: string): Promise<boolean> {
+    error(message: string): Promise<Status> {
         return this.log(LogLevelType.ERROR, message);
     }
 
-    warn(message: string): Promise<boolean> {
+    warn(message: string): Promise<Status> {
         return this.log(LogLevelType.WARN, message);
     }
 
-    info(message: string): Promise<boolean> {
+    info(message: string): Promise<Status> {
         return this.log(LogLevelType.INFO, message);
     }
 
-    debug(message: string): Promise<boolean> {
+    debug(message: string): Promise<Status> {
         return this.log(LogLevelType.DEBUG, message);
     }
 
-    private async log(level: LogLevelType, message: string): Promise<boolean> {
-        if (level < this.logLevel.level()) {
-            return false;
+    private async log(level: LogLevelType, message: string): Promise<Status> {
+        if (level < this.systemLogLevel.level()) {
+            return Status.error(
+                new Error(
+                    `${this.systemLogLevel.getDisplayString(
+                        level
+                    )} is less than the current system level ${this.systemLogLevel.getDisplayString(
+                        this.systemLogLevel.level()
+                    )}`
+                )
+            );
         }
         console.log(this.getFormattedLogMessage(level, message));
-        return true;
+        return Status.ok();
     }
 
     private getFormattedLogMessage(level: LogLevelType, message: string) {
@@ -68,7 +77,7 @@ export class ConsoleLogger implements Logger {
     }
 
     private colorLogLevelDisplayString(level: LogLevelType): string {
-        const displayString = this.logLevel.getDisplayString(level);
+        const displayString = this.systemLogLevel.getDisplayString(level);
         switch (level) {
             case LogLevelType.FATAL:
                 return this.chalk.black(displayString.get());
