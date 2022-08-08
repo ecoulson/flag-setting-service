@@ -3,6 +3,7 @@ import { DatabaseModule } from '../../database';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
+import { DroppedMessageStorageModule } from './dropped-messages';
 import { MessageIdempotencyStorageModule } from './idempotency';
 import { MessageStorageAnnotation } from './message-storage-annotations';
 import { SQLMessageStorage } from './sql-message-storage';
@@ -28,5 +29,6 @@ describe('Message Storage Module Test Suite', () => {
         expect(
             module.isRegistered(MessageIdempotencyStorageModule)
         ).toBeTruthy();
+        expect(module.isRegistered(DroppedMessageStorageModule)).toBeTruthy();
     });
 });

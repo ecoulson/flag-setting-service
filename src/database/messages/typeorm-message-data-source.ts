@@ -2,6 +2,7 @@ import { Injectable } from 'noose-injection';
 import { Optional } from '../../common/optional/optional';
 import { Logger } from '../../logging/logger';
 import { LoggerAnnotation } from '../../logging/logging-annotations';
+import { DroppedMessage } from '../../models/messages/dropped-message';
 import { Message } from '../../models/messages/message';
 import { MessageIdempotencyMapping } from '../../models/messages/message-idempotency-mapping';
 import { Broker } from '../broker/broker';
@@ -53,5 +54,9 @@ export class TypeORMMessageDataSource
 
     getMessageIdempotencyBroker(): Optional<Broker<MessageIdempotencyMapping>> {
         return this.getBroker(MessageIdempotencyMapping);
+    }
+
+    getDroppedMessageBroker(): Optional<Broker<DroppedMessage<unknown>>> {
+        return this.getBroker(DroppedMessage);
     }
 }

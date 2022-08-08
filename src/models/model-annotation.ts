@@ -9,3 +9,4 @@ export const MessageIdempotencyMappingAnnotation = new Annotation(
     'MessageIdempotencyMapping'
 );
 export const UTCDatetimeAnnotation = new Annotation('UTCDatetime');
+export const DroppedMessageAnnotation = new Annotation('DroppedMessage');

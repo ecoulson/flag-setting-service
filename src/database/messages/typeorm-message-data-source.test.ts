@@ -10,6 +10,7 @@ import { DataSource as TypeORMDataSource, Repository } from 'typeorm';
 import { Message } from '../../models/messages/message';
 import { MessageIdempotencyMapping } from '../../models/messages/message-idempotency-mapping';
 import { TypeORMBroker } from '../typeorm/typeorm-broker';
+import { DroppedMessage } from '../../models/messages/dropped-message';
 
 describe('TypeORM Message Data Source Test Suite', () => {
     const mockedDataSourceFactory = mock<TypeORMDataSourceFactory>();
@@ -22,6 +23,7 @@ describe('TypeORM Message Data Source Test Suite', () => {
     const mockedMessageRepository = mock<Repository<Message>>();
     const mockedMessageIdempotencyRepository =
         mock<Repository<MessageIdempotencyMapping>>();
+    const mockedDroppedMessageRepository = mock<Repository<DroppedMessage>>();
     when(mockedDataSourceFactory.buildPostgresDatabase()).thenReturn(
         instance(mockedDataSource)
     );
@@ -74,5 +76,17 @@ describe('TypeORM Message Data Source Test Suite', () => {
         verify(
             mockedDataSource.getRepository(MessageIdempotencyMapping)
         ).once();
+    });
+
+    test('Should get the dropped message broker', () => {
+        when(mockedDataSource.getRepository(DroppedMessage)).thenReturn(
+            instance(mockedDroppedMessageRepository)
+        );
+        when(mockedDatabaseEntities.hasEntity(DroppedMessage)).thenReturn(true);
+
+        const broker = dataSource.getDroppedMessageBroker();
+
+        expect(broker.get()).toBeInstanceOf(TypeORMBroker);
+        verify(mockedDataSource.getRepository(DroppedMessage)).once();
     });
 });

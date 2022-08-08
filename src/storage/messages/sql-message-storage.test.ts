@@ -12,15 +12,20 @@ import { Message } from '../../models/messages/message';
 import { SQLMessageStorage } from './sql-message-storage';
 import { Broker } from '../../database/broker/broker';
 import { Optional } from '../../common/optional/optional';
+import { Logger } from '../../logging/logger';
 
 describe('SQL Message Storage Test Suite', () => {
     const id = '8a8b0354-b29c-47a8-a332-ef601e198346';
     const mockedDataSource = mock<MessageDataSource>();
     const mockedBroker = mock<Broker<Message>>();
+    const mockedLogger = mock<Logger>();
     when(mockedDataSource.getMessageBroker()).thenReturn(
         Optional.of(instance(mockedBroker))
     );
-    const storage = new SQLMessageStorage(instance(mockedDataSource));
+    const storage = new SQLMessageStorage(
+        instance(mockedDataSource),
+        instance(mockedLogger)
+    );
 
     beforeEach(() => {
         reset(mockedBroker);

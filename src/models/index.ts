@@ -1,9 +1,11 @@
 import { Module } from 'noose-injection';
 import { Flag } from './flags/flag';
+import { DroppedMessage } from './messages/dropped-message';
 import { Message } from './messages/message';
 import { MessageIdempotencyMapping } from './messages/message-idempotency-mapping';
 import { ElapsedTimeMetric } from './metrics/elasped-time-metric';
 import {
+    DroppedMessageAnnotation,
     ElapsedTimeMetricAnnotation,
     FlagConstructorAnnotation,
     MessageConstructorAnnotation,
@@ -22,5 +24,6 @@ export class ModelModule extends Module {
             MessageIdempotencyMapping
         );
         this.registerValue(UTCDatetimeAnnotation, UTCDatetime);
+        this.registerValue(DroppedMessageAnnotation, DroppedMessage);
     }
 }

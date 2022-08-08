@@ -1,9 +1,11 @@
 import { ModelModule } from '.';
 import { Flag } from './flags/flag';
+import { DroppedMessage } from './messages/dropped-message';
 import { Message } from './messages/message';
 import { MessageIdempotencyMapping } from './messages/message-idempotency-mapping';
 import { ElapsedTimeMetric } from './metrics/elasped-time-metric';
 import {
+    DroppedMessageAnnotation,
     ElapsedTimeMetricAnnotation,
     FlagConstructorAnnotation,
     MessageConstructorAnnotation,
@@ -49,5 +51,11 @@ describe('Model Module Test Suite', () => {
         const utcDatetime = module.resolve(UTCDatetimeAnnotation);
 
         expect(utcDatetime).toEqual(UTCDatetime);
+    });
+
+    test('Should resolve the dropped message constructor', () => {
+        const droppedMessage = module.resolve(DroppedMessageAnnotation);
+
+        expect(droppedMessage).toEqual(DroppedMessage);
     });
 });
