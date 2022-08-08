@@ -1,7 +1,9 @@
 import { Module } from 'noose-injection';
+import { DeadLetterQueueAnnotation } from './dead-letter-queue-annotation';
+import { LocalDeadLetterQueue } from './local-dead-letter-queue';
 
 export class DeadLetterQueueModule extends Module {
     configure(): void {
-        throw new Error('Method not implemented.');
+        this.registerClass(DeadLetterQueueAnnotation, LocalDeadLetterQueue);
     }
 }

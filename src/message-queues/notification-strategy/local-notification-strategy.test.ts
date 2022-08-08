@@ -55,7 +55,6 @@ describe('Local Notification Strategy Test Suite', () => {
             Optional.empty<MessageQueueSubscriberHandler>()
         );
         const event = new Event(eventId, 'type', {});
-        const message = new Message(messageId, 'topic', {});
         when(mockedIdempotency.getIdempotentId(eventId)).thenResolve(messageId);
         when(mockedStorage.findById(messageId)).thenResolve(Optional.empty());
 

@@ -1,7 +1,5 @@
 import { Injectable } from 'noose-injection';
 import { Status } from '../../../common/status/status';
-import { Event } from '../../../models/events/event';
-import { MessageQueueSubscriber } from '../../../models/message-queue/message-queue-subscriber';
 import { Time } from '../../../models/time/time';
 import { Executor } from '../executor/executor';
 import { ScheduledExecutorAnnotation } from '../executor/executor-annotation';

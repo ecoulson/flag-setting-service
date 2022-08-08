@@ -40,19 +40,11 @@ export class LocalMessageQueue implements MessageQueue {
         topic: string,
         subscriber: MessageQueueSubscriber
     ): Promise<Status> {
-        return this.eventEmitter.addListener(topic, (event) => {
-            this.retryStrategy.execute(() =>
+        return this.eventEmitter.addListener(topic, async (event) => {
+            await this.retryStrategy.execute(() =>
                 this.notificationStrategy.notify(subscriber, event)
             );
         });
-    }
-
-    private async retrieveMessage(event: Event): Promise<Message> {
-        const messageId = await this.idempotencyService.getIdempotentId(
-            event.id
-        );
-        const message = await this.messageStorage.findById(messageId);
-        return message.get();
     }
 
     async publish(message: Message): Promise<Status> {
