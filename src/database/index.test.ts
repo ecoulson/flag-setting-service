@@ -1,5 +1,5 @@
 import { DatabaseModule } from '.';
-import { ConnectionStringModule } from './connection-string';
+import { ConnectionStringModule } from '../connections/connection-string';
 import { DatabaseDebugModule } from './debug-info';
 import { DialectModule } from './dialect';
 import { FlagDatabaseModule } from './flags';
@@ -16,7 +16,6 @@ describe('Database Module Test Suite', () => {
 
     test('Should register expected modules', () => {
         expect(module.isRegistered(TypeORMModule)).toBeTruthy();
-        expect(module.isRegistered(ConnectionStringModule)).toBeTruthy();
         expect(module.isRegistered(DialectModule)).toBeTruthy();
         expect(module.isRegistered(DatabaseDebugModule)).toBeTruthy();
         expect(module.isRegistered(MessageDatabaseModule)).toBeTruthy();

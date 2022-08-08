@@ -1,4 +1,5 @@
 import { MetricStorageRetrieverModule } from '.';
+import { ConnectionModule } from '../../../connections';
 import { DatabaseModule } from '../../../database';
 import { EnvironmentModule } from '../../../environment';
 import { LoggingModule } from '../../../logging';
@@ -12,6 +13,7 @@ describe('Metric Storage Retriever Module', () => {
 
     beforeAll(() => {
         new StorageModule().configure();
+        new ConnectionModule().configure();
         new DatabaseModule().configure();
         new EnvironmentModule().configure();
         new LoggingModule().configure();

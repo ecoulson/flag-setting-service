@@ -11,6 +11,7 @@ import { LocalMessageQueueAnnotation } from './local-message-queue-annotations';
 import { LocalMessageQueue } from './local-message-queue';
 import { RetryStrategyModule } from '../retry-strategy';
 import { NotificationStrategyModule } from '../notification-strategy';
+import { ConnectionModule } from '../../connections';
 
 describe('Local Message Queue Module Test Suite', () => {
     const module = new LocalMessageQueueModule();
@@ -21,6 +22,7 @@ describe('Local Message Queue Module Test Suite', () => {
         new MessageQueueIdempotencyModule().configure();
         new IdentifierModule().configure();
         new DatabaseModule().configure();
+        new ConnectionModule().configure();
         new NotificationStrategyModule().configure();
         new EnvironmentModule().configure();
         new ModelModule().configure();

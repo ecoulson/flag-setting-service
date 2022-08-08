@@ -11,7 +11,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Optional } from '../../common/optional/optional';
 import { EnvironmentVariable } from '../../environment/variable/environment-variable';
 import { Logger } from '../../logging/logger';
-import { PostgreSQLConnectionString } from '../connection-string/postgresql-connection-string';
+import { PostgreSQLConnectionString } from '../../connections/connection-string/postgresql-connection-string';
 import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
 import { Dialect } from '../dialect/dialect';
 import { DialectType } from '../dialect/dialect-type';

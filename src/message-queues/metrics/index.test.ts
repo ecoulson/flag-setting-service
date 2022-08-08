@@ -13,6 +13,7 @@ import { MetricLocalMessageQueueConnectionStrategyAnnotation } from './connectio
 import { MetricsLocalConnectionStrategy } from './metrics-local-connection-strategy';
 import { RetryStrategyModule } from '../retry-strategy';
 import { NotificationStrategyModule } from '../notification-strategy';
+import { ConnectionModule } from '../../connections';
 
 describe('Metric Message Queue Connection Strategy Test Suite', () => {
     const module = new MetricMessageQueueConnectionStrategyModule();
@@ -21,6 +22,7 @@ describe('Metric Message Queue Connection Strategy Test Suite', () => {
         new LocalMessageQueueModule().configure();
         new StorageModule().configure();
         new EventModule().configure();
+        new ConnectionModule().configure();
         new MessageQueueIdempotencyModule().configure();
         new IdentifierModule().configure();
         new DatabaseModule().configure();

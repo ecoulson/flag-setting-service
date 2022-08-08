@@ -1,4 +1,5 @@
 import { Module } from 'noose-injection';
+import { MessageQueueConnectionStrategyModule } from './connection-strategy';
 import { MessageQueueIdempotencyModule } from './idempotency';
 import { LocalMessageQueueModule } from './local';
 import { MetricMessageQueueConnectionStrategyModule } from './metrics';
@@ -12,5 +13,6 @@ export class MessageQueueModule extends Module {
         this.registerModule(new MetricMessageQueueConnectionStrategyModule());
         this.registerModule(new NotificationStrategyModule());
         this.registerModule(new RetryStrategyModule());
+        this.registerModule(new MessageQueueConnectionStrategyModule());
     }
 }

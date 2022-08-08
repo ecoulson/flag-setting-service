@@ -2,7 +2,7 @@ import { TypeORMModule } from '.';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
 import { ModelModule } from '../../models';
-import { ConnectionStringModule } from '../connection-string';
+import { ConnectionStringModule } from '../../connections/connection-string';
 import { DatabaseDebugModule } from '../debug-info';
 import { DialectModule } from '../dialect';
 import { DataSourceFactoryAnnotation } from './typeorm-annotations';

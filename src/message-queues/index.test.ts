@@ -1,4 +1,5 @@
 import { MessageQueueModule } from '.';
+import { MessageQueueConnectionStrategyModule } from './connection-strategy';
 import { MessageQueueIdempotencyModule } from './idempotency';
 import { LocalMessageQueueModule } from './local';
 import { MetricMessageQueueConnectionStrategyModule } from './metrics';
@@ -20,5 +21,8 @@ describe('Message Queue Module Test Suite', () => {
         ).toBeTruthy();
         expect(module.isRegistered(NotificationStrategyModule)).toBeTruthy();
         expect(module.isRegistered(RetryStrategyModule)).toBeTruthy();
+        expect(
+            module.isRegistered(MessageQueueConnectionStrategyModule)
+        ).toBeTruthy();
     });
 });

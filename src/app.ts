@@ -10,12 +10,16 @@ import { Logger } from './logging/logger';
 import {
     FlagDatabaseURLVariableAnnotation,
     MessageQueueDatabaseURLVariableAnnotation,
+    MetricDatabaseURLVariableAnnotation,
 } from './environment/variable/environment-variable-annotations';
 import { EnvironmentVariable } from './environment/variable/environment-variable';
 import { FlagDatabaseAnnotation } from './database/flags/flag-database-annotations';
 import { MessageDatabaseAnnotation } from './database/messages/message-database-annotations';
 import { MessageStorage } from './storage/messages/message-storage';
 import { MessageStorageAnnotation } from './storage/messages/message-storage-annotations';
+import { ConnectionStrategy } from './connections/connection-strategy/connection-strategy';
+import { MetricMessageQueueConnectionStrategyAnnotation } from './message-queues/connection-strategy/message-queue-connection-strategy-annotation';
+import { MetricDataSource } from './database/metrics/metric-data-source';
 
 async function main() {
     const container = new MainModule();
@@ -42,17 +46,34 @@ async function main() {
     const messageDatabaseUrl = container.resolve<EnvironmentVariable>(
         MessageQueueDatabaseURLVariableAnnotation
     );
-    const isConnectedToMetricDatabase = await connectToDatasource(
+    const isConnectedToMessageDatabase = await connectToDatasource(
         messageDataSource,
         messageDatabaseUrl,
+        logger
+    );
+    if (!isConnectedToMessageDatabase) {
+        return;
+    }
+
+    const metricDataSource = container.resolve<MetricDataSource>(
+        MessageDatabaseAnnotation
+    );
+    const metricDatabaseUrl = container.resolve<EnvironmentVariable>(
+        MetricDatabaseURLVariableAnnotation
+    );
+    const isConnectedToMetricDatabase = await connectToDatasource(
+        metricDataSource,
+        metricDatabaseUrl,
         logger
     );
     if (!isConnectedToMetricDatabase) {
         return;
     }
-    const messageStorage = container.resolve<MessageStorage>(
-        MessageStorageAnnotation
-    );
+    const messageQueueConnectionStrategy =
+        container.resolve<ConnectionStrategy>(
+            MetricMessageQueueConnectionStrategyAnnotation
+        );
+    await messageQueueConnectionStrategy.initialize();
 
     const server = container.resolve<Server>(FastifyServerAnnotation);
     server.listen(8080);

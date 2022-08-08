@@ -7,11 +7,13 @@ import { StorageModule } from '../../storage';
 import { IdentifierModule } from '../../identifiers';
 import { MessageQueueIdempotencyAnnotation } from './message-queue-idempotency-annotations';
 import { LocalMessageQueueIdempotencyService } from './local-message-idempotency-service';
+import { ConnectionModule } from '../../connections';
 
 describe('Message Queue Idempotency Module Test Suite', () => {
     const module = new MessageQueueIdempotencyModule();
 
     beforeAll(() => {
+        new ConnectionModule().configure();
         new StorageModule().configure();
         new DatabaseModule().configure();
         new EnvironmentModule().configure();

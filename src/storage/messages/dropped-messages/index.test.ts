@@ -1,4 +1,5 @@
 import { DroppedMessageStorageModule } from '.';
+import { ConnectionModule } from '../../../connections';
 import { DatabaseModule } from '../../../database';
 import { EnvironmentModule } from '../../../environment';
 import { LoggingModule } from '../../../logging';
@@ -12,6 +13,7 @@ describe('Dropped Message Storage Module Test Suite', () => {
     beforeAll(() => {
         new ModelModule().configure();
         new LoggingModule().configure();
+        new ConnectionModule().configure();
         new EnvironmentModule().configure();
         new DatabaseModule().configure();
         module.configure();

@@ -1,4 +1,5 @@
 import { MetricStorageModule } from '.';
+import { ConnectionModule } from '../../connections';
 import { DatabaseModule } from '../../database';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
@@ -13,6 +14,7 @@ describe('Metric Storage Module Test Suite', () => {
         new ModelModule().configure();
         new LoggingModule().configure();
         new EnvironmentModule().configure();
+        new ConnectionModule().configure();
         new DatabaseModule().configure();
         module.configure();
     });

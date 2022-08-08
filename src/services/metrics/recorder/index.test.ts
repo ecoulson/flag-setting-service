@@ -14,6 +14,7 @@ import { LocalMetricRecorder } from './local/local-metric-recorder';
 import { LocalMetricRecorderAnnotation } from './metric-recorder-annotations';
 import { RetryStrategyModule } from '../../../message-queues/retry-strategy';
 import { MessageQueueModule } from '../../../message-queues';
+import { ConnectionModule } from '../../../connections';
 
 describe('Metric Recorder Module', () => {
     const module = new MetricRecorderModule();
@@ -26,6 +27,7 @@ describe('Metric Recorder Module', () => {
         new EnvironmentModule().configure();
         new ModelModule().configure();
         new LoggingModule().configure();
+        new ConnectionModule().configure();
         new MessageQueueModule().configure();
         module.configure();
     });

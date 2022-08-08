@@ -2,7 +2,7 @@ import { instance, mock, reset, when } from 'ts-mockito';
 import { DataSource as TypeORMDataSource, Repository } from 'typeorm';
 import { Logger } from '../../logging/logger';
 import { Metric } from '../../models/metrics/metric';
-import { ConnectionString } from '../connection-string/connection-string';
+import { ConnectionString } from '../../connections/connection-string/connection-string';
 import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
 import { Dialect } from '../dialect/dialect';
 import { TypeORMDataSourceFactory } from '../typeorm/typeorm-data-source-factory';

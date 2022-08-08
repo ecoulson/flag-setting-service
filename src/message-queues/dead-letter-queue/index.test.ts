@@ -1,4 +1,5 @@
 import { DeadLetterQueueModule } from '.';
+import { ConnectionModule } from '../../connections';
 import { DatabaseModule } from '../../database';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
@@ -16,6 +17,7 @@ describe('Local Dead Letter Queue Module Test Suite', () => {
         new StorageModule().configure();
         new LoggingModule().configure();
         new ModelModule().configure();
+        new ConnectionModule().configure();
         module.configure();
     });
 

@@ -1,3 +1,4 @@
+import { ConnectionModule } from './connections';
 import { DatabaseModule } from './database';
 import { EnvironmentModule } from './environment';
 import { EventModule } from './events';
@@ -28,5 +29,6 @@ describe('Main Module Test Suite', () => {
         expect(module.isRegistered(MessageQueueModule)).toBeTruthy();
         expect(module.isRegistered(EventModule)).toBeTruthy();
         expect(module.isRegistered(IdentifierModule)).toBeTruthy();
+        expect(module.isRegistered(ConnectionModule)).toBeTruthy();
     });
 });

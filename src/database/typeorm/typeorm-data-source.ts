@@ -1,5 +1,5 @@
 import { DataSource as TypeORMDataSouceInstance } from 'typeorm';
-import { ConnectionString } from '../connection-string/connection-string';
+import { ConnectionString } from '../../connections/connection-string/connection-string';
 import { DataSource } from '../data-source';
 import { DatabaseDebugInfo } from '../debug-info/database-debug-info';
 import { Dialect } from '../dialect/dialect';
@@ -9,7 +9,7 @@ import { Logger } from '../../logging/logger';
 import { EnvironmentVariable } from '../../environment/variable/environment-variable';
 import { TypeORMDataSourceFactory } from './typeorm-data-source-factory';
 import { Optional } from '../../common/optional/optional';
-import { ConnectionParameters } from '/Users/evancoulson/Code/flag-setting/src/database/connection-string/connection-parameters';
+import { ConnectionParameters } from '../../connections/connection-string/connection-parameters';
 import { DebugStringBuilder } from '../../common/debug/debug-string-builder';
 import { EntityConstructor } from '../entities/entity-constructor';
 import { Broker } from '../broker/broker';

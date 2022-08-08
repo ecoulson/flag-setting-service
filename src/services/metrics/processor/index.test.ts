@@ -1,5 +1,6 @@
 import { MetricProcessorModule } from '.';
 import { MetricServiceModule } from '..';
+import { ConnectionModule } from '../../../connections';
 import { DatabaseModule } from '../../../database';
 import { EnvironmentModule } from '../../../environment';
 import { LoggingModule } from '../../../logging';
@@ -15,6 +16,7 @@ describe('Metric Processor Module Test Suite', () => {
         new StorageModule().configure();
         new DatabaseModule().configure();
         new EnvironmentModule().configure();
+        new ConnectionModule().configure();
         new ModelModule().configure();
         new MetricServiceModule().configure();
         new LoggingModule().configure();

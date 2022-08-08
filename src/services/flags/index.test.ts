@@ -1,4 +1,5 @@
 import { FlagServiceModule } from '.';
+import { ConnectionModule } from '../../connections';
 import { DatabaseModule } from '../../database';
 import { EnvironmentModule } from '../../environment';
 import { LoggingModule } from '../../logging';
@@ -15,6 +16,7 @@ describe('Flag Service Module Test Suite', () => {
         new DatabaseModule().configure();
         new EnvironmentModule().configure();
         new ModelModule().configure();
+        new ConnectionModule().configure();
         new LoggingModule().configure();
         module.configure();
     });

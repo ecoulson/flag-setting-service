@@ -1,4 +1,5 @@
 import { NotificationStrategyModule } from '.';
+import { ConnectionModule } from '../../connections';
 import { DatabaseModule } from '../../database';
 import { EnvironmentModule } from '../../environment';
 import { EventModule } from '../../events';
@@ -22,6 +23,7 @@ describe('Notification Strategy Module Test Suite', () => {
         new EnvironmentModule().configure();
         new ModelModule().configure();
         new LoggingModule().configure();
+        new ConnectionModule().configure();
         module.configure();
     });
 
