@@ -13,6 +13,7 @@ import { LocalMessageQueueModule } from '../../../message-queues/local';
 import { LocalMetricRecorder } from './local/local-metric-recorder';
 import { LocalMetricRecorderAnnotation } from './metric-recorder-annotations';
 import { RetryStrategyModule } from '../../../message-queues/retry-strategy';
+import { MessageQueueModule } from '../../../message-queues';
 
 describe('Metric Recorder Module', () => {
     const module = new MetricRecorderModule();
@@ -20,14 +21,12 @@ describe('Metric Recorder Module', () => {
     beforeAll(() => {
         new EventModule().configure();
         new IdentifierModule().configure();
-        new LocalMessageQueueModule().configure();
-        new MessageQueueIdempotencyModule().configure();
         new StorageModule().configure();
         new DatabaseModule().configure();
         new EnvironmentModule().configure();
         new ModelModule().configure();
         new LoggingModule().configure();
-        new RetryStrategyModule().configure();
+        new MessageQueueModule().configure();
         module.configure();
     });
 
