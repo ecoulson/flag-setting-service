@@ -7,11 +7,13 @@ import { DatabaseDebugModule } from '../debug-info';
 import { DialectModule } from '../dialect';
 import { TypeORMModule } from '../typeorm';
 import {
+    MessageConnectionStrategyAnnotation,
     MessageDatabaseAnnotation,
     MessageDatabaseEntitiesAnnotation,
 } from './message-database-annotations';
 import { MessageDatabaseEntities } from './message-database-entities';
 import { TypeORMMessageDataSource } from './typeorm-message-data-source';
+import { MessageConnectionStrategy } from './message-connection-strategy';
 
 describe('Messages Database Module Test Suite', () => {
     const module = new MessageDatabaseModule();
@@ -37,5 +39,11 @@ describe('Messages Database Module Test Suite', () => {
         const datasource = module.resolve(MessageDatabaseAnnotation);
 
         expect(datasource).toBeInstanceOf(TypeORMMessageDataSource);
+    });
+
+    test('Should resolve the messages connection strategy', () => {
+        const datasource = module.resolve(MessageConnectionStrategyAnnotation);
+
+        expect(datasource).toBeInstanceOf(MessageConnectionStrategy);
     });
 });

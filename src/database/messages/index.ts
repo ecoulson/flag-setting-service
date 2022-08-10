@@ -1,5 +1,7 @@
 import { Module } from 'noose-injection';
+import { MessageConnectionStrategy } from './message-connection-strategy';
 import {
+    MessageConnectionStrategyAnnotation,
     MessageDatabaseAnnotation,
     MessageDatabaseEntitiesAnnotation,
 } from './message-database-annotations';
@@ -12,6 +14,10 @@ export class MessageDatabaseModule extends Module {
         this.registerClass(
             MessageDatabaseEntitiesAnnotation,
             MessageDatabaseEntities
+        );
+        this.registerClass(
+            MessageConnectionStrategyAnnotation,
+            MessageConnectionStrategy
         );
     }
 }
