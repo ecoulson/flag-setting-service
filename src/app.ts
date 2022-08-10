@@ -1,94 +1,36 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
-import 'reflect-metadata';
-import { MainModule } from '.';
-import { Server } from './server/server';
 import { FastifyServerAnnotation } from './server/server-annotations';
-import { DataSource } from './database/data-source';
-import { LoggerAnnotation } from './logging/logging-annotations';
-import { Logger } from './logging/logger';
-import {
-    FlagDatabaseURLVariableAnnotation,
-    MessageQueueDatabaseURLVariableAnnotation,
-    MetricDatabaseURLVariableAnnotation,
-} from './environment/variable/environment-variable-annotations';
-import { EnvironmentVariable } from './environment/variable/environment-variable';
-import { FlagDatabaseAnnotation } from './database/flags/flag-database-annotations';
-import { MessageDatabaseAnnotation } from './database/messages/message-database-annotations';
+import { FlagConnectionStrategyAnnotation } from './database/flags/flag-database-annotations';
+import { MessageConnectionStrategyAnnotation } from './database/messages/message-database-annotations';
 import { ConnectionStrategy } from './connections/connection-strategy/connection-strategy';
 import { MetricMessageQueueConnectionStrategyAnnotation } from './message-queues/connection-strategy/message-queue-connection-strategy-annotation';
-import { MetricDataSource } from './database/metrics/metric-data-source';
+import { MetricConnectionStrategyAnnotation } from './database/metrics/metric-data-source-annotations';
+import { Status } from './common/status/status';
+import { Injectable } from 'noose-injection';
+import { Server } from './server/server';
 
-async function main() {
-    const container = new MainModule();
-    container.configure();
+@Injectable()
+export class App {
+    constructor(
+        @FastifyServerAnnotation.inject()
+        private readonly server: Server,
+        @FlagConnectionStrategyAnnotation.inject()
+        private readonly flagConnectionStrategy: ConnectionStrategy,
+        @MessageConnectionStrategyAnnotation.inject()
+        private readonly messageConnectionStrategy: ConnectionStrategy,
+        @MetricConnectionStrategyAnnotation.inject()
+        private readonly metricConnectionStrategy: ConnectionStrategy,
+        @MetricMessageQueueConnectionStrategyAnnotation.inject()
+        private readonly metricMessageQueueConnectionStrategy: ConnectionStrategy
+    ) {}
 
-    const logger = container.resolve<Logger>(LoggerAnnotation);
-
-    const dataSource = container.resolve<DataSource>(FlagDatabaseAnnotation);
-    const databaseUrl = container.resolve<EnvironmentVariable>(
-        FlagDatabaseURLVariableAnnotation
-    );
-    const isConnectedToDatabase = await connectToDatasource(
-        dataSource,
-        databaseUrl,
-        logger
-    );
-    if (!isConnectedToDatabase) {
-        return;
+    async start(): Promise<Status> {
+        await Promise.all([
+            this.flagConnectionStrategy.initialize(),
+            this.messageConnectionStrategy.initialize(),
+            this.metricConnectionStrategy.initialize(),
+            this.metricMessageQueueConnectionStrategy.initialize(),
+            this.server.listen(8080),
+        ]);
+        return Status.ok();
     }
-
-    const messageDataSource = container.resolve<DataSource>(
-        MessageDatabaseAnnotation
-    );
-    const messageDatabaseUrl = container.resolve<EnvironmentVariable>(
-        MessageQueueDatabaseURLVariableAnnotation
-    );
-    const isConnectedToMessageDatabase = await connectToDatasource(
-        messageDataSource,
-        messageDatabaseUrl,
-        logger
-    );
-    if (!isConnectedToMessageDatabase) {
-        return;
-    }
-
-    const metricDataSource = container.resolve<MetricDataSource>(
-        MessageDatabaseAnnotation
-    );
-    const metricDatabaseUrl = container.resolve<EnvironmentVariable>(
-        MetricDatabaseURLVariableAnnotation
-    );
-    const isConnectedToMetricDatabase = await connectToDatasource(
-        metricDataSource,
-        metricDatabaseUrl,
-        logger
-    );
-    if (!isConnectedToMetricDatabase) {
-        return;
-    }
-    const messageQueueConnectionStrategy =
-        container.resolve<ConnectionStrategy>(
-            MetricMessageQueueConnectionStrategyAnnotation
-        );
-    await messageQueueConnectionStrategy.initialize();
-
-    const server = container.resolve<Server>(FastifyServerAnnotation);
-    server.listen(8080);
 }
-
-async function connectToDatasource(
-    dataSource: DataSource,
-    databaseUrl: EnvironmentVariable,
-    logger: Logger
-) {
-    const dataSourceInitialized = await dataSource.initialize(databaseUrl);
-
-    if (!dataSourceInitialized.ok()) {
-        logger.fatal('Failed to initialize connection with data source');
-        return false;
-    }
-    return true;
-}
-
-main();

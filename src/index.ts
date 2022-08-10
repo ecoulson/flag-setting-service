@@ -1,4 +1,6 @@
 import { Module } from 'noose-injection';
+import { App } from './app';
+import { AppAnnotation } from './app-annotations';
 import { ConnectionModule } from './connections';
 import { DatabaseModule } from './database';
 import { EnvironmentModule } from './environment';
@@ -13,6 +15,7 @@ import { StorageModule } from './storage';
 
 export class MainModule extends Module {
     configure(): void {
+        this.registerClass(AppAnnotation, App);
         this.registerModule(new DatabaseModule());
         this.registerModule(new EnvironmentModule());
         this.registerModule(new LoggingModule());

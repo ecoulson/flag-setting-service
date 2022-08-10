@@ -1,5 +1,4 @@
 -   Record elapsed time metric in flag service
--   Add connection strategies for database
 -   Run a live test to see if the metric is recorded in the database
 -   Move logged errors to status exceptions. Find a way to log the statuses that are errors, perhaps at request handling level?
 -   Find places where optionals are being used in place of statuses to handle error states in the app

@@ -10,6 +10,8 @@ import { ModelModule } from './models';
 import { ServerModule } from './server';
 import { ServiceModule } from './services';
 import { StorageModule } from './storage';
+import { AppAnnotation } from './app-annotations';
+import { App } from './app';
 
 describe('Main Module Test Suite', () => {
     const module = new MainModule();
@@ -30,5 +32,11 @@ describe('Main Module Test Suite', () => {
         expect(module.isRegistered(EventModule)).toBeTruthy();
         expect(module.isRegistered(IdentifierModule)).toBeTruthy();
         expect(module.isRegistered(ConnectionModule)).toBeTruthy();
+    });
+
+    test('Should register the app with the app annotation', () => {
+        const app = module.resolve(AppAnnotation);
+
+        expect(app).toBeInstanceOf(App);
     });
 });
