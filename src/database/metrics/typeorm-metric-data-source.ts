@@ -14,8 +14,8 @@ import { DataSourceFactoryAnnotation } from '../typeorm/typeorm-annotations';
 import { TypeORMDataSource } from '../typeorm/typeorm-data-source';
 import { TypeORMDataSourceFactory } from '../typeorm/typeorm-data-source-factory';
 import { MetricDataSource } from './metric-data-source';
-import { MetricDatabaseEntitiesAnnotation } from './metric-database-annotations';
 import { MetricDatabaseEntities } from './metric-database-entities';
+import { MetricDatabaseEntitiesAnnotation } from './metric-data-source-annotations';
 
 @Injectable()
 export class TypeORMMetricDataSource

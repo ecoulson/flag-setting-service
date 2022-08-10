@@ -6,10 +6,14 @@ import { ConnectionStringModule } from '../../connections/connection-string';
 import { DatabaseDebugModule } from '../debug-info';
 import { DialectModule } from '../dialect';
 import { TypeORMModule } from '../typeorm';
-import { MetricDataSourceAnnotation } from './metric-data-source-annotations';
-import { MetricDatabaseEntitiesAnnotation } from './metric-database-annotations';
+import {
+    MetricConnectionStrategyAnnotation,
+    MetricDatabaseEntitiesAnnotation,
+    MetricDataSourceAnnotation,
+} from './metric-data-source-annotations';
 import { MetricDatabaseEntities } from './metric-database-entities';
 import { TypeORMMetricDataSource } from './typeorm-metric-data-source';
+import { MetricConnectionStrategy } from './metric-connection-strategy';
 
 describe('Metric Database Module Test Suite', () => {
     const module = new MetricDatabaseModule();
@@ -35,5 +39,11 @@ describe('Metric Database Module Test Suite', () => {
         const dataSource = module.resolve(MetricDataSourceAnnotation);
 
         expect(dataSource).toBeInstanceOf(TypeORMMetricDataSource);
+    });
+
+    test('Should resolve the metric connection strategy', () => {
+        const dataSource = module.resolve(MetricConnectionStrategyAnnotation);
+
+        expect(dataSource).toBeInstanceOf(MetricConnectionStrategy);
     });
 });

@@ -1,5 +1,4 @@
 import { DatabaseModule } from '.';
-import { ConnectionStringModule } from '../connections/connection-string';
 import { DatabaseDebugModule } from './debug-info';
 import { DialectModule } from './dialect';
 import { FlagDatabaseModule } from './flags';

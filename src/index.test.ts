@@ -4,7 +4,7 @@ import { EnvironmentModule } from './environment';
 import { EventModule } from './events';
 import { IdentifierModule } from './identifiers';
 import { LoggingModule } from './logging';
-import { MainModule } from './main';
+import { MainModule } from '.';
 import { MessageQueueModule } from './message-queues';
 import { ModelModule } from './models';
 import { ServerModule } from './server';

@@ -1,6 +1,10 @@
 import { Module } from 'noose-injection';
-import { MetricDataSourceAnnotation } from './metric-data-source-annotations';
-import { MetricDatabaseEntitiesAnnotation } from './metric-database-annotations';
+import { MetricConnectionStrategy } from './metric-connection-strategy';
+import {
+    MetricConnectionStrategyAnnotation,
+    MetricDatabaseEntitiesAnnotation,
+    MetricDataSourceAnnotation,
+} from './metric-data-source-annotations';
 import { MetricDatabaseEntities } from './metric-database-entities';
 import { TypeORMMetricDataSource } from './typeorm-metric-data-source';
 
@@ -11,5 +15,9 @@ export class MetricDatabaseModule extends Module {
             MetricDatabaseEntities
         );
         this.registerClass(MetricDataSourceAnnotation, TypeORMMetricDataSource);
+        this.registerClass(
+            MetricConnectionStrategyAnnotation,
+            MetricConnectionStrategy
+        );
     }
 }
