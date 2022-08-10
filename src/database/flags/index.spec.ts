@@ -7,11 +7,13 @@ import { DatabaseDebugModule } from '../debug-info';
 import { DialectModule } from '../dialect';
 import { TypeORMModule } from '../typeorm';
 import {
+    FlagConnectionStrategyAnnotation,
     FlagDatabaseAnnotation,
     FlagDatabaseEntitiesAnnotation,
 } from './flag-database-annotations';
 import { FlagDatabaseEntities } from './flag-database-entities';
 import { TypeORMFlagDataSource } from './typeorm-flag-data-source';
+import { FlagConnectionStrategy } from './flag-connection-strategy';
 
 describe('Flag Database Module Test Suite', () => {
     const module = new FlagDatabaseModule();
@@ -37,5 +39,11 @@ describe('Flag Database Module Test Suite', () => {
         const database = module.resolve(FlagDatabaseAnnotation);
 
         expect(database).toBeInstanceOf(TypeORMFlagDataSource);
+    });
+
+    test('Should resolve the flag connection strategy', () => {
+        const database = module.resolve(FlagConnectionStrategyAnnotation);
+
+        expect(database).toBeInstanceOf(FlagConnectionStrategy);
     });
 });

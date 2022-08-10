@@ -1,5 +1,7 @@
 import { Module } from 'noose-injection';
+import { FlagConnectionStrategy } from './flag-connection-strategy';
 import {
+    FlagConnectionStrategyAnnotation,
     FlagDatabaseAnnotation,
     FlagDatabaseEntitiesAnnotation,
 } from './flag-database-annotations';
@@ -13,5 +15,9 @@ export class FlagDatabaseModule extends Module {
             FlagDatabaseEntities
         );
         this.registerClass(FlagDatabaseAnnotation, TypeORMFlagDataSource);
+        this.registerClass(
+            FlagConnectionStrategyAnnotation,
+            FlagConnectionStrategy
+        );
     }
 }
